@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+          <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main_page.css') }}">
+            <script src="https://kit.fontawesome.com/8cab6fe611.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<nav>
+  <img src="static/logo.png" id="logo" alt="Logo">
+  <div id="headerButtons">
+  <button id="leftButton">Trending Movies</button>
+  <button id="rightButton">Blog</button>
+  </div>
+</nav>
+<section class="title">
+  <h1 class="mainText"> Can't Decide? Enter a great movie and let us do the work!</h1>
+  <p id="mainTextExtra"> Recommendations based on your favorite movie</p>
+  <form class="search" action="{{url_for('search_movies')}}">
+    <input type="text" name="movie" list="movies" placeholder="Search here..." required>
+    <button type="submit">Search</button>
+  </form>
+    <datalist id="movies"></datalist>
+</section>
+{{movie}}
+</body>
+</html>
