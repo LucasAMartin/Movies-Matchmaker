@@ -73,7 +73,7 @@ def recommend(choice):
 
 
 app = Flask(__name__)
-
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 @app.route("/")
 def home():

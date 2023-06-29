@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Movies Matchmaker</title>
 
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var movies = {
             movie0: "{{ movie[0] }}",
@@ -18,6 +19,10 @@
             movie6: "{{ movie[6] }}",
             movie7: "{{ movie[7] }}",
             movie8: "{{ movie[8] }}",
+            movie9: "{{ movie[9] }}",
+            movie10: "{{ movie[10] }}",
+            movie11: "{{ movie[11] }}",
+            movie12: "{{ movie[12] }}",
         };
     </script>
     <script src="{{ url_for('static',filename='app.js') }}" defer></script>
@@ -56,7 +61,7 @@
 <div id="headrow">
     <div class="row">
         <h2 class="row_title"></h2>
-        <div class="row_posters"></div>
+        <div class="row_posters" onclick="newMovie()"></div>
     </div>
 </div>
 
