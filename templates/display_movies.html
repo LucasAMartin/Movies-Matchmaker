@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Movies Matchmaker</title>
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
+    <script>
+        var movies = {
+            movie0: "{{ movie[0] }}",
+            movie1: "{{ movie[1] }}",
+            movie2: "{{ movie[2] }}",
+            movie3: "{{ movie[3] }}",
+            movie4: "{{ movie[4] }}",
+            movie5: "{{ movie[5] }}",
+            movie6: "{{ movie[6] }}",
+            movie7: "{{ movie[7] }}",
+            movie8: "{{ movie[8] }}",
+        };
+    </script>
+    <script src="{{ url_for('static',filename='app.js') }}" defer></script>
+</head>
+<body>
+
+<!-- navbar section -->
+<div class="nav">
+    <div class="nav__left">
+        <img class="nav_logo" src="/static/logo.png" alt="">
+    </div>
+
+    <div class="nav__right">
+        <img src="/static/logo.png" class="nav_avatar" alt="">
+    </div>
+
+</div>
+
+
+<!-- banner section -->
+<header id="banner">
+    <div id="banner_contents">
+        <h1 id="banner_title"></h1>
+        <div id="banner_buttons">
+            <button id="banner_button">Play</button>
+            <button id="banner_button">My List</button>
+        </div>
+
+        <p id="banner_desc"></p>
+    </div>
+
+    <div id="banner_fadeBottom"></div>
+</header>
+
+<!-- rows -->
+<div id="headrow">
+    <div class="row">
+        <h2 class="row_title"></h2>
+        <div class="row_posters"></div>
+    </div>
+</div>
+
+<script>
+    window.addEventListener("scroll", function () {
+
+        var nav = document.querySelector(".nav");
+        nav.classList.toggle("active", window.scrollY > 0);
+    })
+</script>
+</body>
+</html>

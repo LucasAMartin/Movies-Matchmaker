@@ -1,5 +1,5 @@
 * {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Netflix Sans', sans-serif;
     box-sizing: border-box;
     color: white;
 }
@@ -132,6 +132,7 @@ button:active {
 .search button:focus {
     outline: 0;
 }
+
 
 
 

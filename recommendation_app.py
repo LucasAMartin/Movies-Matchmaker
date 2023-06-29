@@ -91,9 +91,9 @@ def search_movies():
     # if rocommendation is a string and not list then it is else part of the
     # recommend() function.
     if type(movies) == type('string'):
-        return render_template('movie_list.html', movie=movies, s='opps')
+        return render_template('display_movies.html', movie=movies, s='opps')
     else:
-        return render_template('movie_list.html', movie=movies)
+        return render_template('display_movies.html', movie=movies)
 
 
 if __name__ == "__main__":
