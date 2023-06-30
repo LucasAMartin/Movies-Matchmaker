@@ -10,7 +10,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var choice = '{{ choice }}';
-        console.log(choice)
         var movies = {
             movie0: "{{ movie[0] }}",
             movie1: "{{ movie[1] }}",
@@ -34,7 +33,9 @@
 <!-- navbar section -->
 <div class="nav">
     <div class="nav__left">
-        <img class="nav_logo" src="/static/logo.png" alt="">
+        <a href="/">
+            <img class="nav_logo" src="/static/logo.png" alt="">
+        </a>
     </div>
 
     <div class="nav__right">
