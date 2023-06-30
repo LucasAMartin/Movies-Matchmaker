@@ -1,12 +1,13 @@
 function newMovie() {
     const urlParams = new URLSearchParams(window.location.search);
     const movieName = this.id;
-    const cleanedMovieName = movieName.replace(/[^a-zA-Z0-9 ]/g, "").toLowerCase();
+    const cleanedMovieName = movieName.replace(/[^a-zA-Z0-9 ]/g, "");
     urlParams.set('movie', encodeURI(cleanedMovieName));
     const newUrl = window.location.pathname + '?' + urlParams.toString();
     window.history.pushState({}, '', newUrl);
     location.reload();
 }
+
 
 // My Api key from TMDB
 const api = "api_key=65088f30b11eb50d43a411d49c206b5f";
@@ -116,6 +117,7 @@ waitForSetMovie().then(() => {
         fetch(requests[1])
             .then((res) => res.json())
             .then((data) => {
+                console.log(data.results)
                 const headrow = document.getElementById("headrow");
                 const row = document.createElement("div");
                 row.className = "row";
@@ -129,6 +131,9 @@ waitForSetMovie().then(() => {
                 row_posters.className = "row_posters";
                 row.appendChild(row_posters);
                 data.results.forEach(movie => {
+                    if (movie.media_type === 'tv') {
+                        return;
+                    }
                     const poster = document.createElement("img");
                     poster.className = "row_posterLarge";
                     poster.id = movie.id;
@@ -136,7 +141,6 @@ waitForSetMovie().then(() => {
                     poster.setAttribute("id", movie.title);
                     poster.onclick = newMovie;
                     row_posters.appendChild(poster);
-
                 });
             });
     }
