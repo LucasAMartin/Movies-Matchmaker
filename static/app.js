@@ -1,4 +1,4 @@
-function newMovie() {
+function changeMovie() {
     const urlParams = new URLSearchParams(window.location.search);
     const movieName = this.id;
     const cleanedMovieName = movieName.replace(/[^a-zA-Z0-9 ]/g, "");
@@ -36,7 +36,6 @@ const MAX_POSTERS = 12;
 // requests for the movies data
 let requests = [];
 let bannerRequest = `${base_url}/search/movie?query=${movies["movie0"]}&${api}`;
-requests[0] = `${base_url}/search/movie?query=${movies["movie0"]}&${api}`;
 let setMovie;
 let bannerMovie;
 
@@ -125,7 +124,7 @@ waitForSetMovie().then(() => {
                     poster.className = "row_posterLarge";
                     poster.src = img_url + movie.poster_path;
                     poster.setAttribute("id", movie.title);
-                    poster.onclick = newMovie;
+                    poster.onclick = changeMovie;
                     row_posters.appendChild(poster);
                 });
         }
@@ -154,7 +153,7 @@ waitForSetMovie().then(() => {
                     poster.id = movie.id;
                     poster.src = img_url + movie.poster_path;
                     poster.setAttribute("id", movie.title);
-                    poster.onclick = newMovie;
+                    poster.onclick = changeMovie;
                     row_posters.appendChild(poster);
                 });
             });
@@ -199,7 +198,7 @@ waitForFirstGenreID().then(() => {
                 poster.className = "row_posterLarge";
                 poster.src = img_url + data.results[i].poster_path;
                 poster.setAttribute("id", data.results[i].title);
-                poster.onclick = newMovie;
+                poster.onclick = changeMovie;
                 row_posters.appendChild(poster);
             }
         });
@@ -242,7 +241,7 @@ waitForSecondGenreID().then(() => {
                 poster.className = "row_posterLarge";
                 poster.src = img_url + data.results[i].poster_path;
                 poster.setAttribute("id", data.results[i].title);
-                poster.onclick = newMovie;
+                poster.onclick = changeMovie;
                 row_posters.appendChild(poster);
             }
         });
