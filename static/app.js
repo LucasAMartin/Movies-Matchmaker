@@ -62,7 +62,7 @@ fetch(bannerRequest)
                 var banner_title = document.getElementById("banner_title");
                 var banner_desc = document.getElementById("banner_desc");
                 banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
-                banner_desc.innerText = truncate(bannerMovie.overview, 150);
+                banner_desc.innerText = truncate(bannerMovie.overview, 350);
                 banner_title.innerText = `Movies like ${bannerMovie.title}`;
             })
     })
