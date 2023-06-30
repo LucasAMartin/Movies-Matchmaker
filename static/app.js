@@ -8,6 +8,19 @@ function newMovie() {
     location.reload();
 }
 
+function launchMoviePlayer() {
+    let bannerID = bannerMovie.id;
+    let IMDBurl = `${base_url}/movie/${bannerID}/external_ids?${api}`;
+    fetch(IMDBurl)
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(IMDBurl);
+            let imdbID = data.imdb_id;
+            let movieURL = `https://vidsrc.me/embed/${imdbID}/`;
+            window.open(movieURL, "_blank");
+        })
+}
+
 
 // My Api key from TMDB
 const api = "api_key=65088f30b11eb50d43a411d49c206b5f";
@@ -25,12 +38,15 @@ let requests = [];
 let bannerRequest = `${base_url}/search/movie?query=${movies["movie0"]}&${api}`;
 requests[0] = `${base_url}/search/movie?query=${movies["movie0"]}&${api}`;
 let setMovie;
+let bannerMovie;
+
 // fetch the information for the banner movies
 fetch(bannerRequest)
     .then((res) => res.json())
     .then((data) => {
         // testing if movie is in database or not
         // if not manually set the url
+        console.log(data.results)
         setMovie = data.results[0];
         if (setMovie.id === 893712) {
             bannerRequest = `${base_url}/search/movie?query=${choice}&${api}`;
@@ -39,7 +55,7 @@ fetch(bannerRequest)
         fetch(bannerRequest)
             .then((res) => res.json())
             .then((data) => {
-                let bannerMovie = data.results[0];
+                bannerMovie = data.results[0];
                 firstGenreID = bannerMovie.genre_ids[0];
                 secondGenreID = bannerMovie.genre_ids[1];
                 var banner = document.getElementById("banner");
@@ -117,7 +133,6 @@ waitForSetMovie().then(() => {
         fetch(requests[1])
             .then((res) => res.json())
             .then((data) => {
-                console.log(data.results)
                 const headrow = document.getElementById("headrow");
                 const row = document.createElement("div");
                 row.className = "row";
