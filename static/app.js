@@ -1,10 +1,11 @@
 function newMovie() {
     const urlParams = new URLSearchParams(window.location.search);
     const movieName = this.id;
-    const cleanedMovieName = movieName.replace(/[^a-zA-Z1-9]/g, '').toLowerCase();;
+    const cleanedMovieName = movieName.replace(/[^a-zA-Z0-9 ]/g, "").toLowerCase();
     urlParams.set('movie', encodeURI(cleanedMovieName));
     const newUrl = window.location.pathname + '?' + urlParams.toString();
     window.history.pushState({}, '', newUrl);
+    location.reload();
 }
 
 // My Api key from TMDB
@@ -20,9 +21,60 @@ const MAX_POSTERS = 12;
 
 // requests for the movies data
 let requests = [];
-for (let i = 0; i <= 12; i++) {
-    requests[i] = `${base_url}/search/movie?query=${movies["movie" + i]}&${api}`;
-}
+let bannerRequest = `${base_url}/search/movie?query=${movies["movie0"]}&${api}`;
+requests[0] = `${base_url}/search/movie?query=${movies["movie0"]}&${api}`;
+let setMovie;
+// fetch the information for the banner movies
+fetch(bannerRequest)
+    .then((res) => res.json())
+    .then((data) => {
+        // testing if movie is in database or not
+        // if not manually set the url
+        setMovie = data.results[0];
+        if (setMovie.id === 893712) {
+            bannerRequest = `${base_url}/search/movie?query=${choice}&${api}`;
+        }
+        // set the banner movie
+        fetch(bannerRequest)
+            .then((res) => res.json())
+            .then((data) => {
+                let bannerMovie = data.results[0];
+                firstGenreID = bannerMovie.genre_ids[0];
+                secondGenreID = bannerMovie.genre_ids[1];
+                var banner = document.getElementById("banner");
+                var banner_title = document.getElementById("banner_title");
+                var banner_desc = document.getElementById("banner_desc");
+                banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
+                banner_desc.innerText = truncate(bannerMovie.overview, 150);
+                banner_title.innerText = `Movies like ${bannerMovie.title}`;
+            })
+    })
+
+// if the banner movie is not in database, we can't give recommendations
+// in this case just display the trending movies
+const waitForSetMovie = () => {
+    return new Promise((resolve) => {
+        const checkSetMovie = () => {
+            if (setMovie) {
+                resolve();
+            } else {
+                setTimeout(checkSetMovie, 5);
+            }
+        };
+        checkSetMovie();
+    });
+};
+
+waitForSetMovie().then(() => {
+    for (let i = 0; i <= 12; i++) {
+        requests[i] = `${base_url}/search/movie?query=${movies["movie" + i]}&${api}`;
+        if (setMovie.id === 893712) {
+            requests[1] = `${base_url}/trending/all/week?${api}&language=en-US`;
+            break;
+        }
+    }
+});
+
 
 let firstGenreID;
 let secondGenreID;
@@ -32,50 +84,64 @@ function truncate(str, n) {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
 }
 
-// banner
-fetch(requests[0])
-    .then((res) => res.json())
-    .then((data) => {
-        console.log(data.results);
-        console.log(data);
-
-        const setMovie = data.results[0];
-        firstGenreID = setMovie.genre_ids[0];
-        secondGenreID = setMovie.genre_ids[1];
-        var banner = document.getElementById("banner");
-        var banner_title = document.getElementById("banner_title");
-        var banner_desc = document.getElementById("banner_desc");
-        banner.style.backgroundImage = "url(" + img_url + setMovie.backdrop_path + ")";
-        banner_desc.innerText = truncate(setMovie.overview, 150);
-        banner_title.innerText = `Movies like ${setMovie.title}`;
-    })
-
+waitForSetMovie().then(() => {
+    if (!(setMovie.id === 893712)) {
 // top recommendations
-const headrow = document.getElementById("headrow");
-const row = document.createElement("div");
-row.className = "row";
-row.classList.add("top_row");
-headrow.appendChild(row);
-const title = document.createElement("h2");
-title.className = "row_title";
-title.innerText = "Top Recommendations";
-row.appendChild(title);
-const row_posters = document.createElement("div");
-row_posters.className = "row_posters";
-row.appendChild(row_posters);
-for (let i = 1; i <= MAX_POSTERS; i++) {
-    fetch(requests[i])
-        .then((res) => res.json())
-        .then((data) => {
-            const movie = data.results[0];
-            const poster = document.createElement("img");
-            poster.className = "row_posterLarge";
-            poster.src = img_url + movie.poster_path;
-            poster.setAttribute("id", movie.title);
-            poster.onclick = newMovie;
-            row_posters.appendChild(poster);
-        });
-}
+        const headrow = document.getElementById("headrow");
+        const row = document.createElement("div");
+        row.className = "row";
+        row.classList.add("top_row");
+        headrow.appendChild(row);
+        const title = document.createElement("h2");
+        title.className = "row_title";
+        title.innerText = "Top Recommendations";
+        row.appendChild(title);
+        const row_posters = document.createElement("div");
+        row_posters.className = "row_posters";
+        row.appendChild(row_posters);
+        for (let i = 1; i <= MAX_POSTERS; i++) {
+            fetch(requests[i])
+                .then((res) => res.json())
+                .then((data) => {
+                    const movie = data.results[0];
+                    const poster = document.createElement("img");
+                    poster.className = "row_posterLarge";
+                    poster.src = img_url + movie.poster_path;
+                    poster.setAttribute("id", movie.title);
+                    poster.onclick = newMovie;
+                    row_posters.appendChild(poster);
+                });
+        }
+    } else {
+        fetch(requests[1])
+            .then((res) => res.json())
+            .then((data) => {
+                const headrow = document.getElementById("headrow");
+                const row = document.createElement("div");
+                row.className = "row";
+                row.classList.add("popularrow");
+                headrow.appendChild(row);
+                const title = document.createElement("h2");
+                title.className = "row_title";
+                title.innerText = "Top Recommendations";
+                row.appendChild(title);
+                const row_posters = document.createElement("div");
+                row_posters.className = "row_posters";
+                row.appendChild(row_posters);
+                data.results.forEach(movie => {
+                    const poster = document.createElement("img");
+                    poster.className = "row_posterLarge";
+                    poster.id = movie.id;
+                    poster.src = img_url + movie.poster_path;
+                    poster.setAttribute("id", movie.title);
+                    poster.onclick = newMovie;
+                    row_posters.appendChild(poster);
+
+                });
+            });
+    }
+});
+
 
 const waitForFirstGenreID = () => {
     return new Promise((resolve) => {

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        var choice = '{{ choice }}';
+        console.log(choice)
         var movies = {
             movie0: "{{ movie[0] }}",
             movie1: "{{ movie[1] }}",

@@ -83,17 +83,17 @@ def home():
 @app.route("/Search")
 def search_movies():
     # getting user input
-    choice = request.args.get('movie')
+    original_choice = request.args.get('movie')
     # removing all the characters except alphabets and numbers.
-    choice = re.sub("[^a-zA-Z1-9]", "", choice).lower()
+    choice = re.sub("[^a-zA-Z1-9]", "", original_choice).lower()
     # passing the choice to the recommend() function
     movies = recommend(choice)
     # if rocommendation is a string and not list then it is else part of the
     # recommend() function.
     if type(movies) == type('string'):
-        return render_template('display_movies.html', movie=movies, s='opps')
+        return render_template('display_movies.html', movie=movies, choice=original_choice, s='opps')
     else:
-        return render_template('display_movies.html', movie=movies)
+        return render_template('display_movies.html', movie=movies, choice=original_choice)
 
 
 if __name__ == "__main__":
