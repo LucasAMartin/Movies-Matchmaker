@@ -23,7 +23,7 @@ def create_model():
 
 # this function will find movies related to choice entered and return list of 16 movies
 # in which first movie will be the choice.
-def recommend(choice):
+def recommend(choice, original_choice):
     # this try-except block will check whether count matrix is created or not, if not
     # the it will call create_model() function.
     try:
@@ -34,7 +34,6 @@ def recommend(choice):
 
     # If movie name exactly matches with the name of movie in the data's title column
     # then this block will be executed.
-
     if choice in data['title'].values:
         choice_index = data[data['title'] == choice].index.values[0]
         distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=16)
@@ -56,7 +55,6 @@ def recommend(choice):
         similar_names.sort()
         # taking the first movie from the sorted similar movie name.
         new_choice = similar_names[0]
-        print(new_choice)
         # getting index of the choice from the dataset
         choice_index = data[data['title'] == new_choice].index.values[0]
         # getting distances and indices of 16 mostly related movies with the choice.
@@ -71,7 +69,7 @@ def recommend(choice):
 
     # If no name matches then this else statement will be executed.
     else:
-        return "opps! movie not found in our database"
+        return get_trending_info(original_choice)
 
 
 def get_data(query):
@@ -83,10 +81,6 @@ def get_data(query):
         return ("error")
 
 
-def test(choice):
-    requests = f"{BASE_URLl}/search/movie?query={choice}&{API}"
-
-
 def get_movie_info(movies):
     movies = movies[:15]
     requests = [None] * len(movies)
@@ -94,27 +88,38 @@ def get_movie_info(movies):
         # clean the movie names
         movies[i] = re.sub("[^a-zA-Z0-9\s]", "", movie).lower()
         # create query requests
-        requests[i] = f"{BASE_URLl}/search/movie?query={movies[i]}&{API}"
+        requests[i] = f"{BASE_URL}/search/movie?query={movies[i]}&{API}"
         # fetch data for each movie
         response = get_data(requests[i])
         movies[i] = response
     return movies
 
 
-def get_genre_info(genre_id):
-    if genre_id is None:
-        genre_id = random.choice([80, 10751, 28, 12, 16])
+def get_genre_info(movies, index):
+    genre = None
+    try:
+        genre = movies[0]['results'][0]['genre_ids'][index]
+    except IndexError:
+        genre = random.choice([80, 10751, 28, 12, 16])
     # create query request
-    request = f"{BASE_URLl}/discover/movie?{API}&with_genres={genre_id}"
+    request = f"{BASE_URL}/discover/movie?{API}&with_genres={genre}"
     # fetch movies for the genre
     return get_data(request)
 
 
-def gen_trending_info():
+def get_trending_info(banner_movie):
     # create query request
-    request = f"{BASE_URLl}/discover/movie?{API}&with_genres="
+    request = f"{BASE_URL}/trending/all/week?{API}&language=en-US"
     # fetch movies for the genre
-    return get_data(request)
+    response = get_data(request)
+    movies = []
+    for movie in response['results']:
+        if 'title' in movie:
+            movies.append(movie['title'])
+        else:
+            movies.append('The Dark Knight')
+    movies[0] = banner_movie
+    return movies
 
 
 app = Flask(__name__)
@@ -125,7 +130,7 @@ MAX_MOVIES = 15
 API = "api_key=65088f30b11eb50d43a411d49c206b5f"
 
 # base url of the site
-BASE_URLl = "https://api.themoviedb.org/3"
+BASE_URL = "https://api.themoviedb.org/3"
 
 
 @app.route("/")
@@ -136,18 +141,14 @@ def home():
 @app.route("/Search")
 def search_movies():
     # getting user input
-    choice = request.args.get('movie')
+    original_choice = request.args.get('movie')
     # removing all the characters except alphabets and numbers.
-    choice = re.sub("[^a-zA-Z1-9]", "", choice).lower()
+    choice = re.sub("[^a-zA-Z1-9]", "", original_choice).lower()
     # passing the choice to the recommend() function
-    movies = recommend(choice)
+    movies = recommend(choice, original_choice)
     movies = get_movie_info(movies)
-    genre_1 = movies[0]['results'][0]['genre_ids'][0]
-    genre_2 = movies[0]['results'][0]['genre_ids'][1]
-    genre_1_movies = get_genre_info(genre_1)
-    genre_2_movies = get_genre_info(genre_2)
-    print(type(genre_1_movies))
-    print(type(movies))
+    genre_1_movies = get_genre_info(movies, 0)
+    genre_2_movies = get_genre_info(movies, 1)
 
     return render_template('display_movies.html', movies=movies, genre1=genre_1_movies, genre2=genre_2_movies, s='opps')
 

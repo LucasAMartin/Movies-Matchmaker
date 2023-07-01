@@ -28,10 +28,10 @@ const bannerMovie = movies[0].results[0];
 const MAX_POSTERS = 12;
 // main functions, displays a banner and 3 rows
 requestBanner();
-console.log(bannerMovie)
+
 addRow(movies, "Top Recommendations");
 addRow(genre1Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[0]]} Movies`);
-addRow(genre2Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[0]]} Movies`);
+addRow(genre2Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[1]]} Movies`);
 
 
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
@@ -40,7 +40,7 @@ function changeMovie() {
     const urlParams = new URLSearchParams(window.location.search);
     const movieName = this.id;
     const cleanedMovieName = movieName.replace(/[^a-zA-Z0-9 ]/g, "");
-    urlParams.set('movie', encodeURI(cleanedMovieName));
+    urlParams.set('movie', cleanedMovieName.trim().replace(/\s+/g, ' '));
     const newUrl = window.location.pathname + '?' + urlParams.toString();
     window.history.pushState({}, '', newUrl);
     location.reload();
