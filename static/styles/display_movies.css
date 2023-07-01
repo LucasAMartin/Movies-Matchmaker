@@ -21,6 +21,8 @@ body {
     position: relative;
     z-index: 0;
     margin-bottom: -2rem;
+    animation: fadeIn 1500ms;
+
 }
 
 .banner_gradient {
@@ -130,13 +132,10 @@ body {
 
 .row {
     margin-left: 20px;
+    margin-right: 30px;
     color: white;
     padding-bottom: 1.5rem;
-
-}
-
-.row_posters::-webkit-scrollbar-track {
-    background: #111;
+    position: relative;
 }
 
 .row_posters {
@@ -144,7 +143,49 @@ body {
     overflow-y: hidden;
     overflow-x: scroll;
     padding: 20px;
+    scroll-behavior: smooth;
+}
 
+.row_posters::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 5rem 1rem;
+    cursor: pointer;
+    border-radius: 25px;
+    opacity: 0;
+    transition: opacity 200ms;
+}
+
+.scroll-button.active {
+    opacity: 1;
+}
+
+
+.scroll-button.prev {
+    left: -2rem;
+}
+
+.scroll-button.next {
+    right: -2rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .row_posterLarge {
@@ -153,7 +194,10 @@ body {
     max-height: 250px;
     margin-right: 10px;
     transition: transform 500ms;
+    animation: fadeIn 500ms;
+
 }
+
 
 .row_posterLarge:hover,
 .row_posterLarge1:hover,
@@ -167,6 +211,7 @@ body {
     margin-left: 1rem;
 
 }
+
 
 @media only screen and (max-width: 1250px) {
     #banner_contents {

@@ -33,7 +33,6 @@ addRow(movies, "Top Recommendations");
 addRow(genre1Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[0]]} Movies`);
 addRow(genre2Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[1]]} Movies`);
 
-
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
 // this.id is the id of the banner that it is pressed from
 function changeMovie() {
@@ -60,13 +59,13 @@ function requestBanner() {
     var banner_desc = document.getElementById("banner_desc");
     banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
     banner_desc.innerText = truncateString(bannerMovie.overview, 350);
-    banner_title.innerText = `Movies like ${bannerMovie.title}`;
+    banner_title.innerText = bannerMovie.title;
 }
 
 // if the banner movie is not in database, we can't give recommendations
 // in this case just display the trending movies
 function addRow(movieList, category) {
-// top recommendations
+    // top recommendations
     const headrow = document.getElementById("headrow");
     const row = document.createElement("div");
     row.className = "row";
@@ -93,7 +92,18 @@ function addRow(movieList, category) {
         poster.onclick = changeMovie;
         row_posters.appendChild(poster);
     }
+    const prevButton = document.createElement("button");
+    prevButton.className = "scroll-button prev";
+    prevButton.innerText = "<";
+    prevButton.onclick = () => scrollPosters(prevButton, -1);
+    row.appendChild(prevButton);
+    const nextButton = document.createElement("button");
+    nextButton.className = "scroll-button next";
+    nextButton.innerText = ">";
+    nextButton.onclick = () => scrollPosters(nextButton, 1);
+    row.appendChild(nextButton);
 }
+
 
 // used to truncate the string in the banner desc
 function truncateString(string, maxLength) {
@@ -103,5 +113,41 @@ function truncateString(string, maxLength) {
         return string;
     }
 }
+
+
+// make the scroll buttons appear when the posters are hovered over
+const rows = document.querySelectorAll('.row');
+rows.forEach(row => {
+    const rowPosters = row.querySelector('.row_posters');
+    const buttons = row.querySelectorAll('.scroll-button');
+    rowPosters.addEventListener('mouseenter', () => {
+        buttons.forEach(button => {
+            button.classList.add('active');
+        });
+    });
+    rowPosters.addEventListener('mouseleave', () => {
+        buttons.forEach(button => {
+            button.classList.remove('active');
+        });
+    });
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', () => {
+            button.classList.add('active');
+        });
+        button.addEventListener('mouseleave', () => {
+            button.classList.remove('active');
+        });
+    });
+});
+
+function scrollPosters(button, direction) {
+    const rowPosters = button.parentElement.querySelector('.row_posters');
+    rowPosters.scrollBy({
+        left: direction * rowPosters.offsetWidth,
+        behavior: 'smooth'
+    });
+}
+
+
 
 

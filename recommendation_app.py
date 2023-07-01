@@ -116,8 +116,6 @@ def get_trending_info(banner_movie):
     for movie in response['results']:
         if 'title' in movie:
             movies.append(movie['title'])
-        else:
-            movies.append('The Dark Knight')
     movies[0] = banner_movie
     return movies
 
