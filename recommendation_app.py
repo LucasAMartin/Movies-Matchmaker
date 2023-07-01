@@ -120,6 +120,16 @@ def get_trending_info(banner_movie):
     return movies
 
 
+def get_trending_movie():
+    request = f"{BASE_URL}/trending/all/week?{API}&language=en-US&page=1&limit=1"
+    response = get_data(request)
+    if response and response.get('results'):
+        movie = response['results'][0]
+        return movie.get('title')
+    return None
+
+
+
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 MAX_MOVIES = 15
@@ -140,12 +150,13 @@ def home():
 def search_movies():
     # getting user input
     original_choice = request.args.get('movie')
+    if original_choice is None:
+        original_choice = get_trending_movie()
     # removing all the characters except alphabets and numbers.
     choice = re.sub("[^a-zA-Z1-9]", "", original_choice).lower()
     # passing the choice to the recommend() function
     movies = recommend(choice, original_choice)
     movies = get_movie_info(movies)
-    print(movies)
     genre_1_movies = get_genre_info(movies, 0)
     genre_2_movies = get_genre_info(movies, 1)
 
