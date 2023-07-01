@@ -9,9 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
     <script>
         let movies = {{ movies|tojson }};
-        console.log(movies[0].results[0].title);
-
-
+        let genre1Movies = {{ genre1|tojson }};
+        let genre2Movies = {{ genre2|tojson }};
     </script>
     <script src="{{ url_for('static',filename='app.js') }}" defer></script>
 </head>

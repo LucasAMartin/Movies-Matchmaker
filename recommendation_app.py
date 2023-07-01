@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.neighbors import NearestNeighbors
 from flask import Flask, request, render_template, jsonify
 import re
+import random
 
 
 # this function will import dataset, create count matrix and create similarity score matrix
@@ -82,6 +83,40 @@ def get_data(query):
         return ("error")
 
 
+def test(choice):
+    requests = f"{BASE_URLl}/search/movie?query={choice}&{API}"
+
+
+def get_movie_info(movies):
+    movies = movies[:15]
+    requests = [None] * len(movies)
+    for i, movie in enumerate(movies):
+        # clean the movie names
+        movies[i] = re.sub("[^a-zA-Z0-9\s]", "", movie).lower()
+        # create query requests
+        requests[i] = f"{BASE_URLl}/search/movie?query={movies[i]}&{API}"
+        # fetch data for each movie
+        response = get_data(requests[i])
+        movies[i] = response
+    return movies
+
+
+def get_genre_info(genre_id):
+    if genre_id is None:
+        genre_id = random.choice([80, 10751, 28, 12, 16])
+    # create query request
+    request = f"{BASE_URLl}/discover/movie?{API}&with_genres={genre_id}"
+    # fetch movies for the genre
+    return get_data(request)
+
+
+def gen_trending_info():
+    # create query request
+    request = f"{BASE_URLl}/discover/movie?{API}&with_genres="
+    # fetch movies for the genre
+    return get_data(request)
+
+
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 MAX_MOVIES = 15
@@ -101,20 +136,20 @@ def home():
 @app.route("/Search")
 def search_movies():
     # getting user input
-    original_choice = request.args.get('movie')
+    choice = request.args.get('movie')
     # removing all the characters except alphabets and numbers.
-    choice = re.sub("[^a-zA-Z1-9]", "", original_choice).lower()
+    choice = re.sub("[^a-zA-Z1-9]", "", choice).lower()
     # passing the choice to the recommend() function
     movies = recommend(choice)
-    movies = movies[:15]
-    # clean the movie names
-    requests = [None] * len(movies)
-    for i, movie in enumerate(movies):
-        movies[i] = re.sub("[^a-zA-Z0-9\s]", "", movie).lower()
-        requests[i] = f"{BASE_URLl}/search/movie?query={movies[i]}&{API}"
-        response = get_data(requests[i])
-        movies[i] = response
-    return render_template('display_movies.html', movies=movies, choice=original_choice, s='opps')
+    movies = get_movie_info(movies)
+    genre_1 = movies[0]['results'][0]['genre_ids'][0]
+    genre_2 = movies[0]['results'][0]['genre_ids'][1]
+    genre_1_movies = get_genre_info(genre_1)
+    genre_2_movies = get_genre_info(genre_2)
+    print(type(genre_1_movies))
+    print(type(movies))
+
+    return render_template('display_movies.html', movies=movies, genre1=genre_1_movies, genre2=genre_2_movies, s='opps')
 
 
 if __name__ == "__main__":
