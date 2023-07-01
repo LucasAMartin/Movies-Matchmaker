@@ -1,7 +1,8 @@
 import pandas as pd
+import requests, json, csv, os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.neighbors import NearestNeighbors
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import re
 
 
@@ -72,8 +73,25 @@ def recommend(choice):
         return "opps! movie not found in our database"
 
 
+def get_data(query):
+    response = requests.get(query)
+    if response.status_code == 200:
+        # status code ==200 indicates the API query was successful
+        return response.json()
+    else:
+        return ("error")
+
+
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+MAX_MOVIES = 15
+
+# My Api key from TMDB
+API = "api_key=65088f30b11eb50d43a411d49c206b5f"
+
+# base url of the site
+BASE_URLl = "https://api.themoviedb.org/3"
+
 
 @app.route("/")
 def home():
@@ -88,12 +106,15 @@ def search_movies():
     choice = re.sub("[^a-zA-Z1-9]", "", original_choice).lower()
     # passing the choice to the recommend() function
     movies = recommend(choice)
-    # if rocommendation is a string and not list then it is else part of the
-    # recommend() function.
-    if type(movies) == type('string'):
-        return render_template('display_movies.html', movie=movies, choice=original_choice, s='opps')
-    else:
-        return render_template('display_movies.html', movie=movies, choice=original_choice)
+    movies = movies[:15]
+    # clean the movie names
+    requests = [None] * len(movies)
+    for i, movie in enumerate(movies):
+        movies[i] = re.sub("[^a-zA-Z0-9\s]", "", movie).lower()
+        requests[i] = f"{BASE_URLl}/search/movie?query={movies[i]}&{API}"
+        response = get_data(requests[i])
+        movies[i] = response
+    return render_template('display_movies.html', movies=movies, choice=original_choice, s='opps')
 
 
 if __name__ == "__main__":

@@ -8,22 +8,10 @@
 
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
     <script>
-        var choice = '{{ choice }}';
-        var movies = {
-            movie0: "{{ movie[0] }}",
-            movie1: "{{ movie[1] }}",
-            movie2: "{{ movie[2] }}",
-            movie3: "{{ movie[3] }}",
-            movie4: "{{ movie[4] }}",
-            movie5: "{{ movie[5] }}",
-            movie6: "{{ movie[6] }}",
-            movie7: "{{ movie[7] }}",
-            movie8: "{{ movie[8] }}",
-            movie9: "{{ movie[9] }}",
-            movie10: "{{ movie[10] }}",
-            movie11: "{{ movie[11] }}",
-            movie12: "{{ movie[12] }}",
-        };
+        let movies = {{ movies|tojson }};
+        console.log(movies[0].results[0].title);
+
+
     </script>
     <script src="{{ url_for('static',filename='app.js') }}" defer></script>
 </head>

@@ -8,15 +8,12 @@ const base_url = "https://api.themoviedb.org/3";
 const img_url = "https://image.tmdb.org/t/p/original";
 
 // request for the banner movie, hold this separate, so it can be accessed easier
-let bannerRequest = `${base_url}/search/movie?query=${movies["movie0"]}&${api}`;
 let bannerMovie;
 let bannerMovieResults;
 
 // requests for the main recommendations
-let requests = [];
 
 // the max number of posters I want displayed
-const MAX_POSTERS = 12;
 
 // the top two genre for the banner movie
 // used to customize movies shown
@@ -49,7 +46,6 @@ function launchMoviePlayer() {
     fetch(IMDBurl)
         .then((res) => res.json())
         .then((data) => {
-            console.log(IMDBurl);
             let imdbID = data.imdb_id;
             let movieURL = `https://vidsrc.me/embed/${imdbID}/`;
             window.open(movieURL);
@@ -63,7 +59,6 @@ function requestBanner() {
         .then((data) => {
             // testing if movie is in database or not
             // if not manually set the url
-            console.log(data.results)
             bannerMovieResults = data.results[0];
             // if the movie is not in the db, it will show up as some random anime movie
             // if it has that id, manuallly query for the movie and set it correctly
