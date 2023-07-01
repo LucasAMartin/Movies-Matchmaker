@@ -145,6 +145,7 @@ def search_movies():
     # passing the choice to the recommend() function
     movies = recommend(choice, original_choice)
     movies = get_movie_info(movies)
+    print(movies)
     genre_1_movies = get_genre_info(movies, 0)
     genre_2_movies = get_genre_info(movies, 1)
 

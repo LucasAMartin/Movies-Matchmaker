@@ -54,6 +54,13 @@ function launchMoviePlayer() {
 
 // fetch the information for the banner movies
 function requestBanner() {
+    if (bannerMovie == null) {
+        var banner_title = document.getElementById("banner_title");
+        banner_title.innerText = "Retry Search";
+        var banner_desc = document.getElementById("banner_desc");
+        banner_desc.innerText = "Movie not found in the TMDB database."
+        return
+    }
     var banner = document.getElementById("banner");
     var banner_title = document.getElementById("banner_title");
     var banner_desc = document.getElementById("banner_desc");
