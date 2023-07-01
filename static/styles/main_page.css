@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Roboto&display=swap');
+
 * {
-    font-family: 'Netflix Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
     color: white;
 }
@@ -13,7 +15,6 @@ body {
     padding: 10px 8%;
     position: relative;
 }
-
 
 #logo {
     width: 200px;
@@ -75,18 +76,22 @@ button:active {
 
 .title {
     display: flex;
-    height: 60vh;
+    height: 70vh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
 .mainText {
+    font-family: 'Lato', sans-serif;
     font-weight: bold;
     font-size: xx-large;
     text-align: center;
 }
 
+#mainTextExtra{
+    padding-bottom: 1rem;
+}
 .search {
     width: 500px;
     height: 40px;
@@ -94,7 +99,6 @@ button:active {
     background: rgba(0, 0, 0, .2);
     border-radius: 3px;
     border: 1px solid #fff;
-    margin-top: 10px;
 }
 
 .search input {
@@ -104,11 +108,9 @@ button:active {
     color: #ccc;
     border: 0;
     background: transparent;
-    border-radius: 3px 0 0 3px;
 }
 
 .search input:focus {
-    outline: 0;
     background: transparent;
 }
 
@@ -123,20 +125,11 @@ button:active {
     color: #fff;
     background: transparent;
     border-left: 1px solid #fff;
-    border-radius: 0 3px 3px 0;
     justify-content: center;
 }
 
 .search button:hover {
     background-color: rgba(0, 0, 0, .40);
-}
-
-.search button:active {
-    box-shadow: 0 0 12px 0 red;
-}
-
-.search button:focus {
-    outline: 0;
 }
 
 

@@ -1,17 +1,17 @@
 import pandas as pd
-import requests, json, csv, os
+import requests, os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.neighbors import NearestNeighbors
 from flask import Flask, request, render_template, jsonify
 import re
 import random
 
-
 # this function will import dataset, create count matrix and create similarity score matrix
 def create_model():
     # import dataset
     # Thid dataset is preprocessed tmdb_5000 dataset
-    data = pd.read_csv(r'C:\Users\lucas\PycharmProjects\Movie-Recommendation-Web-App\final_data.csv')
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    data = pd.read_csv("final_data.csv")
     # create count matrix
     cv = CountVectorizer()
     count_matrix = cv.fit_transform(data['combined_features'])
@@ -36,7 +36,7 @@ def recommend(choice, original_choice):
     # then this block will be executed.
     if choice in data['title'].values:
         choice_index = data[data['title'] == choice].index.values[0]
-        distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=16)
+        distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=18)
         movie_list = []
         for i in indices.flatten():
             movie_list.append(data[data.index == i]['original_title'].values[0].title())
@@ -58,7 +58,7 @@ def recommend(choice, original_choice):
         # getting index of the choice from the dataset
         choice_index = data[data['title'] == new_choice].index.values[0]
         # getting distances and indices of 16 mostly related movies with the choice.
-        distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=16)
+        distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=18)
         # creating movie list
         movie_list = []
         for i in indices.flatten():
@@ -82,7 +82,7 @@ def get_data(query):
 
 
 def get_movie_info(movies):
-    movies = movies[:15]
+    movies = movies[:MAX_MOVIES]
     requests = [None] * len(movies)
     for i, movie in enumerate(movies):
         # clean the movie names
@@ -96,7 +96,6 @@ def get_movie_info(movies):
 
 
 def get_genre_info(movies, index):
-    genre = None
     try:
         genre = movies[0]['results'][0]['genre_ids'][index]
     except IndexError:
@@ -105,6 +104,25 @@ def get_genre_info(movies, index):
     request = f"{BASE_URL}/discover/movie?{API}&with_genres={genre}"
     # fetch movies for the genre
     return get_data(request)
+
+
+def get_lead_actor(movie_id):
+    request = f"{BASE_URL}/movie/{movie_id}/credits?{API}"
+    response = get_data(request)
+    if response and response.get('cast'):
+        lead_actor = response['cast'][0]
+        return lead_actor.get('name'), lead_actor.get('id')
+    return None, None
+
+
+def get_actor_movies(actor_id):
+    request = f"{BASE_URL}/discover/movie?{API}&with_cast={actor_id}"
+    response = get_data(request)
+    movies = []
+    for result in response['results']:
+        if 'original_title' in result:
+            movies.append(result['original_title'])
+    return movies
 
 
 def get_trending_info(banner_movie):
@@ -129,10 +147,9 @@ def get_trending_movie():
     return None
 
 
-
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-MAX_MOVIES = 15
+MAX_MOVIES = 18
 
 # My Api key from TMDB
 API = "api_key=65088f30b11eb50d43a411d49c206b5f"
@@ -148,19 +165,40 @@ def home():
 
 @app.route("/Search")
 def search_movies():
-    # getting user input
+    # Get user input for movie search
     original_choice = request.args.get('movie')
+
+    # If no user input, get a trending movie as the default choice
     if original_choice is None:
         original_choice = get_trending_movie()
-    # removing all the characters except alphabets and numbers.
+
+    # Remove all characters except letters and numbers from the movie choice
     choice = re.sub("[^a-zA-Z1-9]", "", original_choice).lower()
-    # passing the choice to the recommend() function
+
+    # Get recommended movies based on the user's choice
     movies = recommend(choice, original_choice)
+
+    # Get information for the recommended movies
     movies = get_movie_info(movies)
+
+    # Get the lead actor and their ID for the first recommended movie
+    lead_actor, lead_actor_id = get_lead_actor(movies[0]['results'][0]['id'])
+
+    # Get movies featuring the lead actor
+    lead_actor_movies = get_actor_movies(lead_actor_id)
+
+    # Get information for the lead actor's movies
+    lead_actor_movies = get_movie_info(lead_actor_movies)
+
+    # Add the lead actor's name to the list of their movies
+    lead_actor_movies.insert(0, lead_actor)
+
+    # Get movies in the same genres as the first two recommended movies
     genre_1_movies = get_genre_info(movies, 0)
     genre_2_movies = get_genre_info(movies, 1)
 
-    return render_template('display_movies.html', movies=movies, genre1=genre_1_movies, genre2=genre_2_movies, s='opps')
+    return render_template('display_movies.html', movies=movies, genre1=genre_1_movies, genre2=genre_2_movies,
+                           actorMovies=lead_actor_movies, s='opps')
 
 
 if __name__ == "__main__":

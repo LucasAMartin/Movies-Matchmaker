@@ -25,13 +25,15 @@ const genreIdToName = {
 };
 
 const bannerMovie = movies[0].results[0];
-const MAX_POSTERS = 12;
+const MAX_POSTERS = 18;
 // main functions, displays a banner and 3 rows
 requestBanner();
 
 addRow(movies, "Top Recommendations");
 addRow(genre1Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[0]]} Movies`);
 addRow(genre2Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[1]]} Movies`);
+addRow(actorMovies, `Movies With ${actorMovies[0]}`);
+
 
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
 // this.id is the id of the banner that it is pressed from
@@ -45,7 +47,7 @@ function changeMovie() {
     location.reload();
 }
 
-// takes the TMDB id from the banner, uses it to get the IMDB id, then uses that to launch a movie player
+//  Uses the TMDB id to launch a movie player
 function launchMoviePlayer() {
     let bannerID = bannerMovie.id;
     let movieURL = `https://vidsrc.me/embed/${bannerID}/`;
@@ -86,18 +88,22 @@ function addRow(movieList, category) {
     row_posters.className = "row_posters";
     row.appendChild(row_posters);
     for (let i = 1; i <= MAX_POSTERS; i++) {
-        let movie;
-        if (movieList === movies) {
-            movie = movies[i].results[0];
-        } else {
-            movie = movieList.results[i];
+        try {
+            let movie;
+            if (movieList === movies || movieList === actorMovies) {
+                movie = movieList[i].results[0];
+            } else {
+                movie = movieList.results[i];
+            }
+            let poster = document.createElement("img");
+            poster.className = "row_posterLarge";
+            poster.src = img_url + movie.poster_path;
+            poster.setAttribute("id", movie.title);
+            poster.onclick = changeMovie;
+            row_posters.appendChild(poster);
+        } catch (error) {
+            break;
         }
-        let poster = document.createElement("img");
-        poster.className = "row_posterLarge";
-        poster.src = img_url + movie.poster_path;
-        poster.setAttribute("id", movie.title);
-        poster.onclick = changeMovie;
-        row_posters.appendChild(poster);
     }
     const prevButton = document.createElement("button");
     prevButton.className = "scroll-button prev";
