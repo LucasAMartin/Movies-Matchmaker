@@ -1,13 +1,37 @@
 // img url
 const img_url = "https://image.tmdb.org/t/p/original";
 
+// map of the genre names
+const genreIdToName = {
+    28: "Action",
+    12: "Adventure",
+    16: "Animation",
+    35: "Comedy",
+    80: "Crime",
+    99: "Documentary",
+    18: "Drama",
+    10751: "Family",
+    14: "Fantasy",
+    36: "History",
+    27: "Horror",
+    10402: "Music",
+    9648: "Mystery",
+    10749: "Romance",
+    878: "Science Fiction",
+    10770: "TV Movie",
+    53: "Thriller",
+    10752: "War",
+    37: "Western",
+};
+
 const bannerMovie = movies[0].results[0];
 const MAX_POSTERS = 12;
 // main functions, displays a banner and 3 rows
 requestBanner();
+console.log(bannerMovie)
 addRow(movies, "Top Recommendations");
-addRow(genre1Movies, "Genre 1 Recommendations");
-addRow(genre2Movies, "Genre 2 Recommendations");
+addRow(genre1Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[0]]} Movies`);
+addRow(genre2Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[0]]} Movies`);
 
 
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
@@ -25,14 +49,8 @@ function changeMovie() {
 // takes the TMDB id from the banner, uses it to get the IMDB id, then uses that to launch a movie player
 function launchMoviePlayer() {
     let bannerID = bannerMovie.id;
-    let IMDBurl = `${base_url}/movie/${bannerID}/external_ids?${api}`;
-    fetch(IMDBurl)
-        .then((res) => res.json())
-        .then((data) => {
-            let imdbID = data.imdb_id;
-            let movieURL = `https://vidsrc.me/embed/${imdbID}/`;
-            window.open(movieURL);
-        })
+    let movieURL = `https://vidsrc.me/embed/${bannerID}/`;
+    window.open(movieURL);
 }
 
 // fetch the information for the banner movies
@@ -85,29 +103,5 @@ function truncateString(string, maxLength) {
         return string;
     }
 }
-
-
-// map of the genre names
-const genreIdToName = {
-    28: "Action",
-    12: "Adventure",
-    16: "Animation",
-    35: "Comedy",
-    80: "Crime",
-    99: "Documentary",
-    18: "Drama",
-    10751: "Family",
-    14: "Fantasy",
-    36: "History",
-    27: "Horror",
-    10402: "Music",
-    9648: "Mystery",
-    10749: "Romance",
-    878: "Science Fiction",
-    10770: "TV Movie",
-    53: "Thriller",
-    10752: "War",
-    37: "Western",
-};
 
 
