@@ -6,6 +6,24 @@ from flask import Flask, request, render_template, jsonify
 import re
 import random
 import time
+import aiohttp
+import asyncio
+import platform
+
+
+app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+MAX_MOVIES = 18
+# My Api key from TMDB
+API = "api_key=65088f30b11eb50d43a411d49c206b5f"
+# base url of the site
+BASE_URL = "https://api.themoviedb.org/3"
+
+# Do this to avoid a huge stack trace of errors
+if platform.system() == 'Windows':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 
 # this function will import dataset, create count matrix and create similarity score matrix
 def create_model():
@@ -70,33 +88,36 @@ def recommend(choice, original_choice):
 
     # If no name matches then this else statement will be executed.
     else:
-        return get_trending_info(original_choice)
+        return None
 
 
-def get_data(query):
-    response = requests.get(query)
-    if response.status_code == 200:
-        # status code ==200 indicates the API query was successful
-        return response.json()
-    else:
-        return ("error")
+async def get_data_async(session, query):
+    async with session.get(query) as response:
+        if response.status == 200:
+            return await response.json()
+        else:
+            return "error"
 
 
-def get_movie_info(movies):
+async def get_movie_info_async(session, movies):
     movies = movies[:MAX_MOVIES]
     requests = [None] * len(movies)
+    tasks = []
     for i, movie in enumerate(movies):
         # clean the movie names
         movies[i] = re.sub("[^a-zA-Z0-9\s]", "", movie).lower()
         # create query requests
         requests[i] = f"{BASE_URL}/search/movie?query={movies[i]}&{API}"
         # fetch data for each movie
-        response = get_data(requests[i])
+        task = asyncio.ensure_future(get_data_async(session, requests[i]))
+        tasks.append(task)
+    responses = await asyncio.gather(*tasks)
+    for i, response in enumerate(responses):
         movies[i] = response
     return movies
 
 
-def get_genre_info(movies, index):
+async def get_genre_info_async(session, movies, index):
     try:
         genre = movies[0]['results'][0]['genre_ids'][index]
     except IndexError:
@@ -104,21 +125,21 @@ def get_genre_info(movies, index):
     # create query request
     request = f"{BASE_URL}/discover/movie?{API}&with_genres={genre}"
     # fetch movies for the genre
-    return get_data(request)
+    return await get_data_async(session, request)
 
 
-def get_lead_actor(movie_id):
+async def get_lead_actor_async(session, movie_id):
     request = f"{BASE_URL}/movie/{movie_id}/credits?{API}"
-    response = get_data(request)
+    response = await get_data_async(session, request)
     if response and response.get('cast'):
         lead_actor = response['cast'][0]
         return lead_actor.get('name'), lead_actor.get('id')
     return None, None
 
 
-def get_actor_movies(actor_id):
+async def get_actor_movies_async(session, actor_id):
     request = f"{BASE_URL}/discover/movie?{API}&with_cast={actor_id}"
-    response = get_data(request)
+    response = await get_data_async(session, request)
     movies = []
     for result in response['results']:
         if 'original_title' in result:
@@ -126,11 +147,11 @@ def get_actor_movies(actor_id):
     return movies
 
 
-def get_trending_info(banner_movie):
+async def get_trending_info_async(session, banner_movie):
     # create query request
     request = f"{BASE_URL}/trending/all/week?{API}&language=en-US"
     # fetch movies for the genre
-    response = get_data(request)
+    response = await get_data_async(session, request)
     movies = []
     for movie in response['results']:
         if 'title' in movie:
@@ -139,24 +160,13 @@ def get_trending_info(banner_movie):
     return movies
 
 
-def get_trending_movie():
+async def get_trending_movie_async(session):
     request = f"{BASE_URL}/trending/all/week?{API}&language=en-US&page=1&limit=1"
-    response = get_data(request)
+    response = await get_data_async(session, request)
     if response and response.get('results'):
         movie = response['results'][0]
         return movie.get('title')
     return None
-
-
-app = Flask(__name__)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
-MAX_MOVIES = 18
-
-# My Api key from TMDB
-API = "api_key=65088f30b11eb50d43a411d49c206b5f"
-
-# base url of the site
-BASE_URL = "https://api.themoviedb.org/3"
 
 
 @app.route("/")
@@ -165,40 +175,37 @@ def home():
 
 
 @app.route("/Search")
-def search_movies():
+async def search_movies():
     # Get user input for movie search
     original_choice = request.args.get('movie')
     first = time.perf_counter()
     # If no user input, get a trending movie as the default choice
     if original_choice is None:
-        original_choice = get_trending_movie()
-
+        async with aiohttp.ClientSession() as session:
+            original_choice = await get_trending_movie_async(session)
     # Remove all characters except letters and numbers from the movie choice
     choice = re.sub("[^a-zA-Z1-9]", "", original_choice).lower()
-
     # Get recommended movies based on the user's choice
     movies = recommend(choice, original_choice)
-
+    if movies is None:
+        async with aiohttp.ClientSession() as session:
+            movies = await get_trending_info_async(session, original_choice)
     # Get information for the recommended movies
-    movies = get_movie_info(movies)
-
-    # Get the lead actor and their ID for the first recommended movie
-    lead_actor, lead_actor_id = get_lead_actor(movies[0]['results'][0]['id'])
-
-    # Get movies featuring the lead actor
-    lead_actor_movies = get_actor_movies(lead_actor_id)
-
-    # Get information for the lead actor's movies
-    lead_actor_movies = get_movie_info(lead_actor_movies)
-
-    # Add the lead actor's name to the list of their movies
-    lead_actor_movies.insert(0, lead_actor)
-
-    # Get movies in the same genres as the first two recommended movies
-    genre_1_movies = get_genre_info(movies, 0)
-    genre_2_movies = get_genre_info(movies, 1)
+    async with aiohttp.ClientSession() as session:
+        movies = await get_movie_info_async(session, movies)
+        # Get the lead actor and their ID for the first recommended movie
+        lead_actor, lead_actor_id = await get_lead_actor_async(session, movies[0]['results'][0]['id'])
+        # Get movies featuring the lead actor
+        lead_actor_movies = await get_actor_movies_async(session, lead_actor_id)
+        # Get information for the lead actor's movie
+        lead_actor_movies = await get_movie_info_async(session, lead_actor_movies)
+        # Add the lead actor's name to the list of their movies
+        lead_actor_movies.insert(0, lead_actor)
+        # Get movies in the same genres as the first two recommended movies
+        genre_1_movies = await get_genre_info_async(session, movies, 0)
+        genre_2_movies = await get_genre_info_async(session, movies, 1)
     second = time.perf_counter()
-    print(second - first)
+    print(second-first)
     return render_template('display_movies.html', movies=movies, genre1=genre_1_movies, genre2=genre_2_movies,
                            actorMovies=lead_actor_movies, s='opps')
 
