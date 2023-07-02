@@ -110,10 +110,6 @@ button:active {
     background: transparent;
 }
 
-.search input:focus {
-    background: transparent;
-}
-
 .search button {
     position: relative;
     float: right;

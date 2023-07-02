@@ -6,6 +6,10 @@
     font-family: 'Roboto', sans-serif;
 }
 
+body, html {
+    overflow-x: hidden;
+}
+
 body {
     background-color: #111;
 }
@@ -35,11 +39,6 @@ body {
 
 .nav_logo {
     width: 180px
-}
-
-.nav__left {
-    margin-left: 10px;
-
 }
 
 .nav__right {
@@ -77,8 +76,8 @@ body {
 }
 
 #banner_contents {
-    margin-left: 70px;
-    padding-top: 100px;
+    margin-left: 3%;
+    padding-top: 4%;
     height: 150px;
     z-index: 2;
 }
@@ -88,7 +87,6 @@ body {
     font-family: 'Lato', sans-serif;
     font-weight: 800;
     max-width: 55%;
-    padding-bottom: 2rem;
     z-index: 2;
 }
 
@@ -245,11 +243,27 @@ body {
     }
 
     #banner_desc {
-        max-width: 80%;
+        max-width: 90%;
         padding-top: 0;
     }
 
     #headrow {
         margin-top: -2rem;
+    }
+
+    .row {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    #banner_contents {
+        margin-left: 1rem;
+    }
+
+    .nav__left {
+        margin-left: -6.5%;
+    }
+    .nav__right {
+        margin-right: -5%;
     }
 }
