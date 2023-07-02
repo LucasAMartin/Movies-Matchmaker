@@ -49,10 +49,34 @@ function changeMovie() {
 
 //  Uses the TMDB id to launch a movie player
 function launchMoviePlayer() {
-    let bannerID = bannerMovie.id;
-    let movieURL = `https://vidsrc.me/embed/${bannerID}/`;
-    window.open(movieURL);
+  let bannerTMDB = bannerMovie.id;
+  let movieURL;
+  const play = document.querySelector('#banner_button.play');
+  if (!play.classList.contains('pressed')) {
+    play.classList.add('pressed');
+    movieURL = `https://vidsrc.me/embed/${bannerIMDB}/`;
+  } else {
+    movieURL = `https://vidsrc.me/embed/${bannerTMDB}/`;
+  }
+
+  // Open a blank window
+  let movieWindow = window.open();
+
+  // Display a popup message in the new window
+  movieWindow.alert('If the movie is incorrect, press the play button a second time');
+  movieWindow.document.title = bannerMovie.title;
+
+
+  // Create an iframe element in the new window
+  let iframe = movieWindow.document.createElement('iframe');
+  iframe.src = movieURL;
+  iframe.style.width = '100%';
+  iframe.style.height = '100%';
+
+  // Append the iframe to the body of the new window
+  movieWindow.document.body.appendChild(iframe);
 }
+
 
 // fetch the information for the banner movies
 function requestBanner() {
@@ -160,6 +184,7 @@ function scrollPosters(button, direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 

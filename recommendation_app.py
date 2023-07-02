@@ -1,5 +1,5 @@
 import pandas as pd
-import requests, os
+import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.neighbors import NearestNeighbors
 from flask import Flask, request, render_template, jsonify
@@ -169,6 +169,13 @@ async def get_trending_movie_async(session):
     return None
 
 
+async def get_imdb_id(session, tmdb_id):
+    print(tmdb_id)
+    request = f"{BASE_URL}/movie/{tmdb_id}/external_ids?{API}"
+    response = await get_data_async(session, request)
+    return response.get('imdb_id')
+
+
 @app.route("/")
 def home():
     return render_template('main_page.html')
@@ -204,9 +211,10 @@ async def search_movies():
         # Get movies in the same genres as the first two recommended movies
         genre_1_movies = await get_genre_info_async(session, movies, 0)
         genre_2_movies = await get_genre_info_async(session, movies, 1)
+        banner_imdb = await get_imdb_id(session, movies[0]['results'][0].get('id'))
     second = time.perf_counter()
     print(second-first)
-    return render_template('display_movies.html', movies=movies, genre1=genre_1_movies, genre2=genre_2_movies,
+    return render_template('display_movies.html', movies=movies, bannerIMDB=banner_imdb, genre1=genre_1_movies, genre2=genre_2_movies,
                            actorMovies=lead_actor_movies, s='opps')
 
 
