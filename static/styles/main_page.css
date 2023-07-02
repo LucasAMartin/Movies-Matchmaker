@@ -6,6 +6,10 @@
     color: white;
 }
 
+body, html {
+    overflow-x: hidden;
+}
+
 body {
     width: 100%;
     height: 100vh;
@@ -24,13 +28,12 @@ body {
 nav {
     display: flex;
     justify-content: space-between;
-    flex-wrap: nowrap;
     align-items: center;
 }
 
 #headerButtons {
     display: flex;
-    gap: 20px;
+    gap: 10%;
 }
 
 button#leftButton {
@@ -89,9 +92,12 @@ button:active {
     text-align: center;
 }
 
-#mainTextExtra{
+#mainTextExtra {
     padding-bottom: 1rem;
+    text-align: center;
+    font-style: italic;
 }
+
 .search {
     width: 500px;
     height: 40px;
@@ -127,6 +133,59 @@ button:active {
 .search button:hover {
     background-color: rgba(0, 0, 0, .40);
 }
+
+@media only screen and (max-width: 768px) {
+    #logo {
+        width: 10rem;
+        height: auto;
+    }
+
+    .nav {
+        margin: auto -1rem auto -1rem;
+    }
+
+    button#leftButton {
+        width: 6rem;
+        height: 2rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button#rightButton {
+        width: 4rem;
+        height: 2rem;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    .search input {
+        width: 60%;
+    }
+
+    .mainText {
+        margin-bottom: 4px;
+    }
+}
+
+@media only screen and (max-width: 380px) {
+    #headerButtons {
+        gap: 2%;
+    }
+    .search input {
+        width: 70%;
+    }
+
+    .search button{
+        width: 2rem;
+    }
+
+}
+
 
 
 
