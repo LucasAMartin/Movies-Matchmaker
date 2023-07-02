@@ -96,7 +96,7 @@ function addRow(movieList, category) {
                 movie = movieList.results[i];
             }
             let poster = document.createElement("img");
-            poster.className = "row_posterLarge";
+            poster.className = "row_poster";
             poster.src = img_url + movie.poster_path;
             poster.setAttribute("id", movie.title);
             poster.onclick = changeMovie;

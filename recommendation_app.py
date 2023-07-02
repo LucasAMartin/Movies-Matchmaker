@@ -5,6 +5,7 @@ from sklearn.neighbors import NearestNeighbors
 from flask import Flask, request, render_template, jsonify
 import re
 import random
+import time
 
 # this function will import dataset, create count matrix and create similarity score matrix
 def create_model():
@@ -167,7 +168,7 @@ def home():
 def search_movies():
     # Get user input for movie search
     original_choice = request.args.get('movie')
-
+    first = time.perf_counter()
     # If no user input, get a trending movie as the default choice
     if original_choice is None:
         original_choice = get_trending_movie()
@@ -196,7 +197,8 @@ def search_movies():
     # Get movies in the same genres as the first two recommended movies
     genre_1_movies = get_genre_info(movies, 0)
     genre_2_movies = get_genre_info(movies, 1)
-
+    second = time.perf_counter()
+    print(second - first)
     return render_template('display_movies.html', movies=movies, genre1=genre_1_movies, genre2=genre_2_movies,
                            actorMovies=lead_actor_movies, s='opps')
 

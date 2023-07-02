@@ -2,40 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-          <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main_page.css') }}">
-
+    <title>Movies Matchmaker</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main_page.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <nav>
-  <img src="static/logo.png" id="logo" alt="Logo">
-  <div id="headerButtons">
-  <button id="leftButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies</button>
-  <button id="rightButton">Blog</button>
-  </div>
+    <img src="static/logo.png" id="logo" alt="Logo">
+    <div id="headerButtons">
+        <button id="leftButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies
+        </button>
+        <button id="rightButton">Blog</button>
+    </div>
 </nav>
 <section class="title">
-  <h1 class="mainText"> Can't Decide? Enter a great movie and let us do the work!</h1>
-  <p id="mainTextExtra"> Recommendations based on your favorite movie</p>
-  <form class="search" autocomplete="off" action="{{url_for('search_movies')}}">
-    <input type="text"  name="movie" list="movies" placeholder="Search here..." required>
-    <button type="submit">Search</button>
-  </form>
+    <h1 class="mainText"> Can't Decide? Enter a great movie and let us do the work!</h1>
+    <p id="mainTextExtra"> Recommendations based on your favorite movie</p>
+    <form class="search" autocomplete="off" action="{{ url_for('search_movies') }}">
+        <input type="text" name="movie" list="movies" placeholder="Search here..." required>
+        <button type="submit">Search</button>
+    </form>
     <datalist id="movies" style="max-height: 500px; overflow-y: auto;"></datalist>
 </section>
 <script>
-let datalist = document.getElementById('movies')
-fetch('static/movie_titles.csv')
-  .then(response => response.text())
-  .then(text => {
-    const movies = text.split('\n').map(line => line.split(',')[0]);
-    movies.shift();
-    movies.forEach(movie => {
-      const option = document.createElement('option');
-      option.value = movie;
-      datalist.appendChild(option);
-    });
-  });
+    let datalist = document.getElementById('movies')
+    fetch('static/movie_titles.csv')
+        .then(response => response.text())
+        .then(text => {
+            const movies = text.split('\n').map(line => line.split(',')[0]);
+            movies.shift();
+            movies.forEach(movie => {
+                const option = document.createElement('option');
+                option.value = movie;
+                datalist.appendChild(option);
+            });
+        });
 </script>
 </body>
 </html>
