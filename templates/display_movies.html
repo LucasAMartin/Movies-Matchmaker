@@ -13,6 +13,14 @@
         let genre2Movies = {{ genre2|tojson }};
         let actorMovies = {{ actorMovies|tojson }};
         let bannerIMDB = '{{ bannerIMDB }}';
+
+        document.querySelector('input[name="movie"]').addEventListener('keypress', function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.querySelector('form.search').submit();
+            }
+        });
+
     </script>
     <script src="{{ url_for('static',filename='app.js') }}" defer></script>
 </head>

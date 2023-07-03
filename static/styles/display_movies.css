@@ -10,6 +10,10 @@ body, html {
     overflow-x: hidden;
 }
 
+body {
+    background-color: #111;
+}
+
 body.preload * {
     animation-duration: 0s !important;
     -webkit-animation-duration: 0s !important;
@@ -111,20 +115,24 @@ body.preload * {
     padding: .5rem 2rem;
 }
 
+#headrow{
+    margin-top: -4rem;
+}
+
 #banner_button:hover {
     color: black;
     background-color: #e6e6e6;
     transition: all .3s;
 }
 
-#banner_fadeBottom {
-    height: 8rem;
-    background-image: linear-gradient(to right, black 10%, transparent);
-);
-}
-
-#headrow {
-    margin-top: -5rem;
+#banner_fadeBottom{
+  height: 7.4rem;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(37,37,37, .61),
+    #111
+  );
 }
 
 .row {
@@ -213,11 +221,12 @@ body.preload * {
 
     #banner_title {
         font-size: 1.5rem;
-        max-width: 80%;
     }
 
     #banner_description {
         font-size: .9rem;
+        max-width: 50%;
+
     }
 }
 
@@ -227,6 +236,11 @@ body.preload * {
         padding-top: 80px;
         margin-right: 0;
         margin-bottom: -5%;
+    }
+
+    #banner_title {
+        font-size: 1.5rem;
+        max-width: 80%;
     }
 
     .banner_gradient {
