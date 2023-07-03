@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Movies Matchmaker</title>
-
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/lozad@latest"></script>
     <script>
         let movies = {{ movies|tojson }};
         let genre1Movies = {{ genre1|tojson }};
         let genre2Movies = {{ genre2|tojson }};
-        let actorMovies= {{ actorMovies|tojson }};
-        let bannerIMDB= '{{ bannerIMDB }}';
+        let actorMovies = {{ actorMovies|tojson }};
+        let bannerIMDB = '{{ bannerIMDB }}';
     </script>
     <script src="{{ url_for('static',filename='app.js') }}" defer></script>
 </head>
@@ -42,7 +42,7 @@
             <button id="banner_button" class="play" onclick="launchMoviePlayer()">Play</button>
             <button id="banner_button">My List</button>
         </div>
-        <p id="banner_desc"></p>
+        <p id="banner_description"></p>
     </div>
     <div id="banner_fadeBottom"></div>
 

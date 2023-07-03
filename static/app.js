@@ -26,6 +26,19 @@ const genreIdToName = {
 
 const bannerMovie = movies[0].results[0];
 const MAX_POSTERS = 20;
+
+// Create an instance of the Lozad.js library
+const lazyLoadInstance = lozad('.lazy', {
+    rootMargin: '300px 0px', // start loading images 300px before they become visible
+    loaded: function (el) {
+        // Fade in the image once it has been loaded
+        el.classList.add('fade');
+    }
+});
+
+// Start observing for lazy loading
+lazyLoadInstance.observe();
+
 // main functions, displays a banner and 3 rows
 requestBanner();
 
@@ -49,32 +62,32 @@ function changeMovie() {
 
 //  Uses the TMDB id to launch a movie player
 function launchMoviePlayer() {
-  let bannerTMDB = bannerMovie.id;
-  let movieURL;
-  const play = document.querySelector('#banner_button.play');
-  if (!play.classList.contains('pressed')) {
-    play.classList.add('pressed');
-    movieURL = `https://vidsrc.me/embed/${bannerIMDB}/`;
-  } else {
-    movieURL = `https://vidsrc.me/embed/${bannerTMDB}/`;
-  }
+    let bannerTMDB = bannerMovie.id;
+    let movieURL;
+    const play = document.querySelector('#banner_button.play');
+    if (!play.classList.contains('pressed')) {
+        play.classList.add('pressed');
+        movieURL = `https://vidsrc.me/embed/${bannerIMDB}/`;
+    } else {
+        movieURL = `https://vidsrc.me/embed/${bannerTMDB}/`;
+    }
 
-  // Open a blank window
-  let movieWindow = window.open();
+    // Open a blank window
+    let movieWindow = window.open();
 
-  // Display a popup message in the new window
-  movieWindow.alert('If the movie is incorrect, press the play button a second time');
-  movieWindow.document.title = bannerMovie.title;
+    // Display a popup message in the new window
+    movieWindow.alert('If the movie is incorrect, press the play button a second time');
+    movieWindow.document.title = bannerMovie.title;
 
 
-  // Create an iframe element in the new window
-  let iframe = movieWindow.document.createElement('iframe');
-  iframe.src = movieURL;
-  iframe.style.width = '100%';
-  iframe.style.height = '100%';
+    // Create an iframe element in the new window
+    let iframe = movieWindow.document.createElement('iframe');
+    iframe.src = movieURL;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
 
-  // Append the iframe to the body of the new window
-  movieWindow.document.body.appendChild(iframe);
+    // Append the iframe to the body of the new window
+    movieWindow.document.body.appendChild(iframe);
 }
 
 
@@ -83,15 +96,15 @@ function requestBanner() {
     if (bannerMovie == null) {
         var banner_title = document.getElementById("banner_title");
         banner_title.innerText = "Retry Search";
-        var banner_desc = document.getElementById("banner_desc");
-        banner_desc.innerText = "Movie not found in the TMDB database."
+        var banner_description = document.getElementById("banner_description");
+        banner_description.innerText = "Movie not found in the TMDB database."
         return
     }
     var banner = document.getElementById("banner");
     var banner_title = document.getElementById("banner_title");
-    var banner_desc = document.getElementById("banner_desc");
+    var banner_description = document.getElementById("banner_description");
     banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
-    banner_desc.innerText = truncateString(bannerMovie.overview, 350);
+    banner_description.innerText = truncateString(bannerMovie.overview, 350);
     banner_title.innerText = bannerMovie.title;
 }
 
@@ -121,7 +134,16 @@ function addRow(movieList, category) {
             }
             let poster = document.createElement("img");
             poster.className = "row_poster";
-            poster.src = img_url + movie.poster_path;
+
+            // Set the src attribute to the low-quality image placeholder
+            poster.src = 'static/lqip.jpeg';
+
+            // Set the data-src attribute to the full-resolution image
+            poster.setAttribute("data-src", img_url + movie.poster_path);
+
+            // Add the 'lazy' class to the img element
+            poster.classList.add('lazy');
+
             poster.setAttribute("id", movie.title);
             poster.onclick = changeMovie;
             row_posters.appendChild(poster);
@@ -129,6 +151,7 @@ function addRow(movieList, category) {
             break;
         }
     }
+
     const prevButton = document.createElement("button");
     prevButton.className = "scroll-button prev";
     prevButton.innerText = "<";
@@ -139,10 +162,11 @@ function addRow(movieList, category) {
     nextButton.innerText = ">";
     nextButton.onclick = () => scrollPosters(nextButton, 1);
     row.appendChild(nextButton);
+
+    lazyLoadInstance.observe()
 }
 
-
-// used to truncate the string in the banner desc
+// used to truncate the string in the banner description
 function truncateString(string, maxLength) {
     if (string && string.length > maxLength) {
         return string.substring(0, maxLength - 1) + "...";
