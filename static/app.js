@@ -135,7 +135,7 @@ function addRow(movieList, category) {
             poster.className = "row_poster";
 
             // Set the src attribute to the low-quality image placeholder
-            poster.src = 'static/lqip.jpeg';
+            poster.src = 'static/img/lqip.jpeg';
 
             // Set the data-src attribute to the full-resolution image
             poster.setAttribute("data-src", img_url + movie.poster_path);
