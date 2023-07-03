@@ -14,7 +14,7 @@ import platform
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-MAX_MOVIES = 18
+MAX_MOVIES = 20
 # My Api key from TMDB
 API = "api_key=65088f30b11eb50d43a411d49c206b5f"
 # base url of the site
@@ -55,7 +55,7 @@ def recommend(choice, original_choice):
     # then this block will be executed.
     if choice in data['title'].values:
         choice_index = data[data['title'] == choice].index.values[0]
-        distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=18)
+        distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=20)
         movie_list = []
         for i in indices.flatten():
             movie_list.append(data[data.index == i]['original_title'].values[0].title())
@@ -77,7 +77,7 @@ def recommend(choice, original_choice):
         # getting index of the choice from the dataset
         choice_index = data[data['title'] == new_choice].index.values[0]
         # getting distances and indices of 16 mostly related movies with the choice.
-        distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=18)
+        distances, indices = model.kneighbors(count_matrix[choice_index], n_neighbors=20)
         # creating movie list
         movie_list = []
         for i in indices.flatten():
@@ -161,7 +161,7 @@ async def get_trending_info_async(session, banner_movie):
 
 
 async def get_trending_movie_async(session):
-    request = f"{BASE_URL}/trending/all/week?{API}&language=en-US&page=1&limit=1"
+    request = f"{BASE_URL}/trending/all/week?{API}&language=en-US"
     response = await get_data_async(session, request)
     if response and response.get('results'):
         movie = response['results'][0]
@@ -170,7 +170,6 @@ async def get_trending_movie_async(session):
 
 
 async def get_imdb_id(session, tmdb_id):
-    print(tmdb_id)
     request = f"{BASE_URL}/movie/{tmdb_id}/external_ids?{API}"
     response = await get_data_async(session, request)
     return response.get('imdb_id')
@@ -185,7 +184,6 @@ def home():
 async def search_movies():
     # Get user input for movie search
     original_choice = request.args.get('movie')
-    first = time.perf_counter()
     # If no user input, get a trending movie as the default choice
     if original_choice is None:
         async with aiohttp.ClientSession() as session:
@@ -212,8 +210,6 @@ async def search_movies():
         genre_1_movies = await get_genre_info_async(session, movies, 0)
         genre_2_movies = await get_genre_info_async(session, movies, 1)
         banner_imdb = await get_imdb_id(session, movies[0]['results'][0].get('id'))
-    second = time.perf_counter()
-    print(second-first)
     return render_template('display_movies.html', movies=movies, bannerIMDB=banner_imdb, genre1=genre_1_movies, genre2=genre_2_movies,
                            actorMovies=lead_actor_movies, s='opps')
 

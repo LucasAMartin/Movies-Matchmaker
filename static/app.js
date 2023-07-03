@@ -25,7 +25,7 @@ const genreIdToName = {
 };
 
 const bannerMovie = movies[0].results[0];
-const MAX_POSTERS = 18;
+const MAX_POSTERS = 20;
 // main functions, displays a banner and 3 rows
 requestBanner();
 
