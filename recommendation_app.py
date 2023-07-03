@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.neighbors import NearestNeighbors
-from flask import Flask, request, render_template
+from quart import Quart, request, render_template
 import re
 import random
 import time
@@ -10,8 +10,7 @@ import aiohttp
 import asyncio
 import platform
 
-
-app = Flask(__name__)
+app = Quart(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 MAX_MOVIES = 20
@@ -176,8 +175,8 @@ async def get_imdb_id(session, tmdb_id):
 
 
 @app.route("/")
-def home():
-    return render_template('main_page.html')
+async def home():
+    return await render_template('main_page.html')
 
 
 @app.route("/Search")
@@ -210,8 +209,9 @@ async def search_movies():
         genre_1_movies = await get_genre_info_async(session, movies, 0)
         genre_2_movies = await get_genre_info_async(session, movies, 1)
         banner_imdb = await get_imdb_id(session, movies[0]['results'][0].get('id'))
-    return render_template('display_movies.html', movies=movies, bannerIMDB=banner_imdb, genre1=genre_1_movies, genre2=genre_2_movies,
-                           actorMovies=lead_actor_movies, s='opps')
+    return await render_template('display_movies.html', movies=movies, bannerIMDB=banner_imdb, genre1=genre_1_movies,
+                                 genre2=genre_2_movies,
+                                 actorMovies=lead_actor_movies, s='opps')
 
 
 if __name__ == "__main__":
