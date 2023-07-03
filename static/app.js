@@ -29,7 +29,7 @@ const MAX_POSTERS = 20;
 
 // Create an instance of the Lozad.js library
 const lazyLoadInstance = lozad('.lazy', {
-    rootMargin: '300px 0px', // start loading images 300px before they become visible
+    rootMargin: '400px 0px', // start loading images 300px before they become visible
     loaded: function (el) {
         // Fade in the image once it has been loaded
         el.classList.add('fade');
@@ -61,7 +61,7 @@ function changeMovie() {
 }
 
 //  Uses the TMDB id to launch a movie player
-function launchMoviePlayer() {
+function launchMoviePlayer(qualifiedName, value) {
     let bannerTMDB = bannerMovie.id;
     let movieURL;
     const play = document.querySelector('#banner_button.play');
@@ -76,7 +76,6 @@ function launchMoviePlayer() {
     let movieWindow = window.open();
 
     // Display a popup message in the new window
-    movieWindow.alert('If the movie is incorrect, press the play button a second time');
     movieWindow.document.title = bannerMovie.title;
 
 
