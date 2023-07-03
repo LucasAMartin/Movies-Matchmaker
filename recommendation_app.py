@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.neighbors import NearestNeighbors
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template
 import re
 import random
 import time
