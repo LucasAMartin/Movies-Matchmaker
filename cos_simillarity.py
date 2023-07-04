@@ -9,7 +9,7 @@ def load_data(file_name):
     data.rename(columns={'Unnamed: 0': 'movie_id'}, inplace=True)
     return data
 
-2
+
 def get_important_features(data):
     important_features = []
     for i in range(0, data.shape[0]):

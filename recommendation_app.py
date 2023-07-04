@@ -130,7 +130,9 @@ def get_recommendations(title, data, indices, cosine_sim):
         sim_scores = sim_scores[0:20]
         movie_indices = [i[0] for i in sim_scores]
         # Return the top 20 most similar movies
-        return list(data['Title'].iloc[movie_indices])
+        movies = list(data['Title'].iloc[movie_indices])
+        movies[0] = title
+        return movies
     except ValueError:
         return None
 
@@ -139,14 +141,12 @@ def get_recommendations(title, data, indices, cosine_sim):
 async def search_movies():
     # Get user input for movie search
     choice = request.args.get('movie')
-    print(choice)
     # If no user input, get a trending movie as the default choice
     if choice is None:
         async with aiohttp.ClientSession() as session:
             choice = await get_trending_movie_async(session)
     # Get recommended movies based on the user's choice
     movies = get_recommendations(choice, movie_data, indices, cosine_sim)
-    print(movies)
     if movies is None:
         async with aiohttp.ClientSession() as session:
             movies = await get_trending_info_async(session, choice)
