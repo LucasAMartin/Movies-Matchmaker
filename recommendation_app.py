@@ -53,7 +53,7 @@ async def get_genre_info_async(session, movies, index):
     try:
         genre = movies[0]['results'][0]['genre_ids'][index]
     except IndexError:
-        genre = random.choice([80, 10751, 28, 12, 16])
+        genre = 12
     # create query request
     request = f"{BASE_URL}/discover/movie?{API}&with_genres={genre}"
     # fetch movies for the genre
@@ -153,7 +153,7 @@ async def search_movies():
             choice = await get_trending_movie_async(session)
     # Get recommended movies based on the user's choice
     movies = get_recommendations(choice, movie_data, indices, cosine_sim)
-    # Fallvback in case the movie is not in the dataset
+    # Fallback in case the movie is not in the dataset
     if movies is None:
         async with aiohttp.ClientSession() as session:
             movies = await get_trending_info_async(session, choice)

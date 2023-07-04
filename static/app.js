@@ -42,9 +42,21 @@ lazyLoadInstance.observe();
 // main functions, displays a banner and 3 rows
 requestBanner();
 
+let genre1 = genreIdToName[bannerMovie.genre_ids[0]];
+let genre2 = genreIdToName[bannerMovie.genre_ids[1]];
+
+if (typeof genre1 === "undefined") {
+    genre1 = "Adventure";
+}
+
+if (typeof genre2 === "undefined") {
+    genre2 = "Adventure";
+}
+
+
 addRow(movies, "Top Recommendations");
-addRow(genre1Movies, `Top ${genreIdToName[bannerMovie.genre_ids[0]]} Movies`);
-addRow(genre2Movies, `Top ${genreIdToName[bannerMovie.genre_ids[1]]} Movies`);
+addRow(genre1Movies, `Top ${genre1} Movies`);
+addRow(genre2Movies, `Top ${genre2} Movies`);
 addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
 
