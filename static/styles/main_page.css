@@ -134,6 +134,26 @@ button:active {
     background-color: rgba(0, 0, 0, .40);
 }
 
+ul {
+  background-color: #000;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 16px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+li {
+  padding: 12px;
+}
+
+li:hover,
+li.selected {
+  background-color: #e50914;
+}
+
+
 @media only screen and (max-width: 768px) {
     #logo {
         width: 10rem;

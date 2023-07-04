@@ -2,6 +2,7 @@
   "name": "Movies-Matchmaker",
   "version": "1.0.0",
   "dependencies": {
+    "csv-parse": "^5.4.0",
     "lozad": "^1.16.0"
   }
 }
