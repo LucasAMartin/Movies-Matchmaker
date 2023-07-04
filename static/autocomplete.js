@@ -47,34 +47,64 @@ d3.csv('/static/movieNames.csv').then(data => {
             suggestionsList.appendChild(li)
         }
     })
+
+    // Initialize the current suggestion index to -1
+    let currentSuggestionNumber = -1
     // Listen for keydown events on the input element
     input.addEventListener('keydown', event => {
-    // Check if the Tab key was pressed
-    if (event.key === 'Tab' ) {
-        // Prevent the default behavior of moving focus to the next element
-        event.preventDefault()
+        // Check if the Tab or ArrowDown key was pressed
+        if (event.key === 'Tab' || event.key === 'ArrowDown') {
+            // Prevent the default behavior of moving focus to the next element
+            event.preventDefault()
 
-        // Get the suggestions from the suggestions list
-        let lis = Array.from(suggestionsList.querySelectorAll('li'))
-        let suggestions = lis.map(li => li.textContent)
+            // Get the suggestions from the suggestions list
+            let lis = Array.from(suggestionsList.querySelectorAll('li'))
+            let suggestions = lis.map(li => li.textContent)
 
-        // Check if there are any suggestions
-        if (suggestions.length > 0) {
-            // Update the value of the input element with the value of the currently selected suggestion
-            input.value = suggestions[currentSuggestionIndex]
+            // Check if there are any suggestions
+            if (suggestions.length > 0) {
+                // Move the selection to the next suggestion
+                currentSuggestionNumber = (currentSuggestionNumber + 1) % suggestions.length
 
-            // Add a class to the currently selected suggestion to highlight it
-            lis.forEach((li, index) => {
-                if (index === currentSuggestionIndex) {
-                    li.classList.add('selected')
-                } else {
-                    li.classList.remove('selected')
-                }
-            })
+                // Update the value of the input element with the value of the currently selected suggestion
+                input.value = suggestions[currentSuggestionNumber]
 
-            // Move the selection to the next suggestion
-            currentSuggestionIndex = (currentSuggestionIndex + 1) % suggestions.length
+                // Add a class to the currently selected suggestion to highlight it
+                lis.forEach((li, index) => {
+                    if (index === currentSuggestionNumber) {
+                        li.classList.add('selected')
+                    } else {
+                        li.classList.remove('selected')
+                    }
+                })
+            }
         }
-    }
-})
+        // Check if the ArrowUp key was pressed
+        else if (event.key === 'ArrowUp') {
+            // Prevent the default behavior of moving focus to the previous element
+            event.preventDefault()
+
+            // Get the suggestions from the suggestions list
+            let lis = Array.from(suggestionsList.querySelectorAll('li'))
+            let suggestions = lis.map(li => li.textContent)
+
+            // Check if there are any suggestions
+            if (suggestions.length > 0) {
+                // Move the selection to the previous suggestion
+                currentSuggestionNumber = (currentSuggestionNumber - 1 + suggestions.length) % suggestions.length
+
+                // Update the value of the input element with the value of the currently selected suggestion
+                input.value = suggestions[currentSuggestionNumber]
+
+                // Add a class to the currently selected suggestion to highlight it
+                lis.forEach((li, index) => {
+                    if (index === currentSuggestionNumber) {
+                        li.classList.add('selected')
+                    } else {
+                        li.classList.remove('selected')
+                    }
+                })
+            }
+        }
+    })
 })
