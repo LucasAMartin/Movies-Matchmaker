@@ -49,22 +49,8 @@ d3.csv('/static/movieNames.csv').then(data => {
     })
     // Listen for keydown events on the input element
     input.addEventListener('keydown', event => {
-        if (event.key === 'Enter') {
-            // Get the suggestions from the suggestions list
-            let lis = Array.from(suggestionsList.querySelectorAll('li'))
-            let suggestions = lis.map(li => li.textContent)
-
-            // Check if there are any suggestions
-            if (suggestions.length > 0) {
-                currentSuggestionIndex = lis.findIndex(li => li.classList.contains('selected'))
-            // Update the value of the input element with the value of the currently selected suggestion
-            input.value = suggestions[currentSuggestionIndex]
-            // Clear the suggestions list
-            suggestionsList.innerHTML = ''
-        }
-    }
     // Check if the Tab key was pressed
-    if (event.key === 'Tab') {
+    if (event.key === 'Tab' ) {
         // Prevent the default behavior of moving focus to the next element
         event.preventDefault()
 
