@@ -107,6 +107,12 @@ async def get_imdb_id(session, tmdb_id):
     return response.get('imdb_id')
 
 
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store'
+    return response
+
+
 @app.route("/")
 async def home():
     return await render_template('main_page.html')

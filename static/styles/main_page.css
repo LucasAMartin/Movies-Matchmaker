@@ -105,6 +105,7 @@ button:active {
     background: rgba(0, 0, 0, .2);
     border-radius: 3px;
     border: 1px solid #fff;
+    padding-bottom: 20px;
 }
 
 .search input {
@@ -134,23 +135,29 @@ button:active {
     background-color: rgba(0, 0, 0, .40);
 }
 
+
 ul {
-  background-color: #000;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  color: #fff;
-  font-size: 16px;
-  max-height: 200px;
-  overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+    width: 500px;
+    background-color: #000;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 16px;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
 }
 
 li {
-  padding: 12px;
+    padding: 12px;
 }
 
 li:hover,
 li.selected {
-  background-color: #e50914;
+    background-color: #e50914;
 }
 
 
@@ -184,8 +191,17 @@ li.selected {
     }
 
     .search input {
-        width: 60%;
+        width: 75%;
     }
+
+    .search button {
+        width: 25%;
+    }
+
+    ul{
+        width: 83%;
+    }
+
 
     .mainText {
         margin-bottom: 4px;
@@ -196,12 +212,13 @@ li.selected {
     #headerButtons {
         gap: 2%;
     }
+
     .search input {
         width: 70%;
     }
 
-    .search button{
-        width: 2rem;
+    .search button {
+        width: 30%;
     }
 
 }

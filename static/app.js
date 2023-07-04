@@ -43,8 +43,8 @@ lazyLoadInstance.observe();
 requestBanner();
 
 addRow(movies, "Top Recommendations");
-addRow(genre1Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[0]]} Movies`);
-addRow(genre2Movies, `Top ${genreIdToName[genre1Movies.results[0].genre_ids[1]]} Movies`);
+addRow(genre1Movies, `Top ${genreIdToName[bannerMovie.genre_ids[0]]} Movies`);
+addRow(genre2Movies, `Top ${genreIdToName[bannerMovie.genre_ids[1]]} Movies`);
 addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
 

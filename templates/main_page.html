@@ -11,7 +11,7 @@
     <link rel="manifest" href="/static/img/site.webmanifest">
     <script src="https://cdn.jsdelivr.net/npm/minisearch@6.1.0/dist/umd/index.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="{{ url_for('static',filename='autocomplete.js') }}"></script>
+    <script src="{{ url_for('static',filename='autocomplete.js') }}" defer></script>
 </head>
 <body>
 <nav class="nav">
@@ -26,8 +26,9 @@
     <h1 class="mainText"> Can't Decide? Enter a great movie and let us do the work!</h1>
     <p id="mainTextExtra"> Recommendations based on your favorite movie</p>
     <form class="search" autocomplete="off" action="{{ url_for('search_movies') }}">
-        <input type="text" name="movie" list="movies" placeholder="Search here..." required>
-        <button type="submit">Search</button>
+            <input type="text" name="movie" list="movies" placeholder="Search here..." required>
+            <button type="submit">Search</button>
+            <ul id="ul"></ul>
     </form>
 </section>
 </body>
