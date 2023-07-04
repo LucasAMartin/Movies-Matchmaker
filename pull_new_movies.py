@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Aug 24 12:30:20 2021
+
+@author: Chandramouli
+"""
+
 import pandas as pd
 import numpy as np
 import requests
@@ -19,60 +26,80 @@ description = []
 genre = []
 cast = []
 cas = []
-pages = np.arange(1, 3000, 50)
+pages = np.arange(1, 5000, 50)
+
 for page in pages:
     page = requests.get("https://www.imdb.com/search/title/?title_type=feature&primary_language=en&start=" + str(
         page) + "&ref_=adv_nxt")
     soup = BeautifulSoup(page.text, 'html.parser')
     movie_data = soup.findAll('div', attrs={'class': 'lister-item mode-advanced'})
     for store in movie_data:
-        name = store.h3.a.text
-        movie_name.append(name)
+        # Use temporary variables to store data for each iteration of the loop
+        temp_name = None
+        temp_year_of_release = None
+        temp_runtime = None
+        temp_gen = None
+        temp_rate = None
+        temp_meta = None
+        temp_dire = None
+        temp_cas = None
+        temp_vote = None
+        temp_description_ = None
 
-        year_of_release = store.h3.find('span', class_="lister-item-year text-muted unbold").text.replace('(', '')
-        year_of_release = year_of_release.replace(')', '')
-        year.append(year_of_release)
+        try:
+            # Check if element exists before trying to access its attributes
+            if store.h3 and store.h3.a:
+                temp_name = store.h3.a.text
 
-        runtime = store.p.find("span", class_='runtime').text if store.find('span', class_="runtime") else "NA"
-        time.append(runtime)
+            if store.h3 and store.h3.find('span', class_="lister-item-year text-muted unbold"):
+                temp_year_of_release = store.h3.find('span', class_="lister-item-year text-muted unbold").text.replace(
+                    '(', '')
+                temp_year_of_release = temp_year_of_release.replace(')', '')
 
-        gen = store.p.find("span", class_='genre').text
-        genre.append(gen)
+            if store.p and store.p.find("span", class_='runtime'):
+                temp_runtime = store.p.find("span", class_='runtime').text
 
-        rate = store.find('div', class_="inline-block ratings-imdb-rating").text.replace('\n', '') if store.find('div',
-                                                                                                                 class_="inline-block ratings-imdb-rating") else "NA"
-        rating.append(rate)
-        # rate = store.find('div', class_ = "ratings-bar").find('strong').text.replace('\n', '')
-        # rating.append(rate)
+            if store.p and store.p.find("span", class_='genre'):
+                temp_gen = store.p.find("span", class_='genre').text
 
-        meta = store.find('span', class_="metascore").text if store.find('span',
-                                                                         class_="metascore") else "NA"  # if meta score not present then *
+            if store.find('div', class_="inline-block ratings-imdb-rating"):
+                temp_rate = store.find('div', class_="inline-block ratings-imdb-rating").text.replace('\n', '')
 
-        metascore.append(meta)
+            if store.find('span', class_="metascore"):
+                temp_meta = store.find('span', class_="metascore").text
 
-        # dire=store.find('p',class_ = "metascore")
-        dire = store.find('p', class_='').find_all('a')[0].text
+            if store.find('p', class_='') and store.find('p', class_='').find_all('a'):
+                temp_dire = store.find('p', class_='').find_all('a')[0].text
 
-        director.append(dire)
+            if store.find('p', class_='') and store.find('p', class_='').find_all('a'):
+                temp_cas = [a.text for a in store.find('p', class_='').find_all('a')[1:]]
 
-        # cas=([a.text for a in store.find('p',class_='').find_all('a')[1:]])
-        # cast=','.join(map(str,cas))
-        cast.append([a.text for a in store.find('p', class_='').find_all('a')[1:]])
+            if store.find_all('span', attrs={'name': 'nv'}):
+                value = store.find_all('span', attrs={'name': 'nv'})
+                temp_vote = value[0].text
 
-        value = store.find_all('span', attrs={'name': 'nv'}) if store.find_all('span', attrs={'name': 'nv'}) else 'NA'
-        vote = value[0].text if store.find_all('span', attrs={'name': 'nv'}) else 'NA'
+            if store.find_all('p', class_='text-muted'):
+                describe = store.find_all('p', class_='text-muted')
+                if len(describe) > 1:
+                    temp_description_ = describe[1].text.replace('\n', '')
+        except (ValueError, TypeError, AttributeError) as error:
+            print(error)
+            continue
 
-        # vote = value[0].text if len(value)>1 else 'NA'
-        votes.append(vote)
+        # Append data to lists only if all values are present and valid
+        if temp_meta is not None:
+            movie_name.append(temp_name)
+            year.append(temp_year_of_release)
+            time.append(temp_runtime)
+            genre.append(temp_gen)
+            rating.append(temp_rate)
+            metascore.append(temp_meta)
+            director.append(temp_dire)
+            cast.append(temp_cas)
+            votes.append(temp_vote)
+            description.append(temp_description_)
 
-        # grosses = value[1].text if len(value)>1 else 'NA'
-        # gross.append(grosses)
-
-        describe = store.find_all('p', class_='text-muted')
-        description_ = describe[1].text.replace('\n', '') if len(describe) > 1 else 'NA'
-        description.append(description_)
-
-# dataframe
+# Create DataFrame and write to Excel file
 for i in cast:
     c = ','.join(map(str, i))
     cas.append(c)
