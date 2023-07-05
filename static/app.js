@@ -62,10 +62,9 @@ addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
 // this.id is the id of the banner that it is pressed from
-function changeMovie() {
+function changeMovie(movie) {
     const urlParams = new URLSearchParams(window.location.search);
-    const movieName = this.id;
-    const cleanedMovieName = movieName.replace(/[^a-zA-Z0-9 ]/g, "");
+    const cleanedMovieName = movie.replace(/[^a-zA-Z0-9 ]/g, "");
     urlParams.set('movie', cleanedMovieName.trim().replace(/\s+/g, ' '));
     const newUrl = window.location.pathname + '?' + urlParams.toString();
     window.history.pushState({}, '', newUrl);
@@ -144,6 +143,7 @@ function addRow(movieList, category) {
                 movie = movieList.results[i];
             }
             let poster = document.createElement("img");
+
             poster.className = "row_poster";
 
             // Set the src attribute to the low-quality image placeholder
@@ -155,12 +155,48 @@ function addRow(movieList, category) {
             // Add the 'lazy' class to the img element
             poster.classList.add('lazy');
 
-            poster.setAttribute("id", movie.title);
-            poster.onclick = changeMovie;
+            // Set the data-title attribute to the title of the movie
+            poster.setAttribute("data-title", movie.title);
+            poster.setAttribute("data-desc", movie.overview);
+            // Set the data-img attribute to the image URL of the movie
+            poster.setAttribute("data-img", img_url + movie.backdrop_path);
+
+            poster.onclick = openModal;
             row_posters.appendChild(poster);
         } catch (error) {
             break;
         }
+    }
+
+    function openModal() {
+        const modal = document.querySelector('#modal');
+        const overlay = document.querySelector('#overlay');
+        overlay.onclick = closeModal;
+        const modalImg = document.querySelector('#modal .modal-header img');
+        const modalTitle = document.querySelector('#modal .modal-header .title');
+        const modalBody = document.querySelector('#modal .modal-body');
+        const modalExpand = document.querySelector('#modal .modal-header button');
+
+
+        // Get the title and image URL of the clicked poster from its data-* attributes
+        const title = this.getAttribute('data-title');
+        const overview = this.getAttribute('data-desc');
+        const imgUrl = this.getAttribute('data-img');
+
+        // Set the src attribute of the modal image to the image URL of the clicked poster
+        modalImg.src = imgUrl;
+
+        // Set the text content of the modal title and body to the title of the clicked poster
+        modalTitle.textContent = title;
+        modalBody.textContent = overview;
+        modalExpand.onclick = () => changeMovie(title);
+        modal.classList.add('active');
+        overlay.classList.add('active');
+    }
+
+    function closeModal() {
+        modal.classList.remove('active')
+        overlay.classList.remove('active')
     }
 
     const prevButton = document.createElement("button");
@@ -220,9 +256,9 @@ function scrollPosters(button, direction) {
     });
 }
 
-setTimeout(function(){
-    document.body.className="";
-},400);
+setTimeout(function () {
+    document.body.className = "";
+}, 400);
 
 
 

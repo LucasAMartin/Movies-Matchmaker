@@ -53,8 +53,8 @@
         <p id="banner_description"></p>
     </div>
     <div id="banner_fadeBottom"></div>
-
 </header>
+
 
 <!-- rows -->
 <div id="headrow">
@@ -63,6 +63,19 @@
         <div class="row_posters" onclick="changeMovie()"></div>
     </div>
 </div>
+
+<div class="modal" id="modal">
+    <div class="modal-header">
+        <img src="null" alt="img">
+        <div>
+            <div class="title">Example Modal</div>
+            <button id="modal_button">Expand</button>
+        </div>
+    </div>
+    <div class="modal-body">
+    </div>
+</div>
+<div id="overlay"></div>
 
 <script>
     window.addEventListener("scroll", function () {
