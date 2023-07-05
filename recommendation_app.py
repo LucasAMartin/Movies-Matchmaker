@@ -1,3 +1,5 @@
+import time
+
 from quart import Quart, request, render_template
 import re
 import random
@@ -7,7 +9,6 @@ import platform
 import pickle
 import pandas as pd
 from fuzzywuzzy import process
-
 
 app = Quart(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -39,14 +40,35 @@ async def get_movie_info_async(session, movies):
         # clean the movie names
         movies[i] = re.sub("[^a-zA-Z0-9\s]", "", movie).lower()
         # create query requests
-        requests[i] = f"{BASE_URL}/search/movie?query={movies[i]}&{API}"
+        requests[i] = f"{BASE_URL}/search/movie?query={movies[i]}&{API}&append_to_response=videos"
         # fetch data for each movie
         task = asyncio.ensure_future(get_data_async(session, requests[i]))
         tasks.append(task)
     responses = await asyncio.gather(*tasks)
+    video_tasks = []
     for i, response in enumerate(responses):
         movies[i] = response
+        # Create a task to get video data for each movie
+        if movies[i]['results']:
+            task = asyncio.ensure_future(get_movie_videos_async(session, movies[i]['results'][0]))
+            video_tasks.append(task)
+    # Run all video tasks concurrently
+    responses = await asyncio.gather(*video_tasks)
+    for i, response in enumerate(responses):
+        movies[i]['results'][0]['videos'] = response['videos']
     return movies
+
+
+async def get_movie_videos_async(session, movie):
+    # Extract the movie ID from the movie object
+    movie_id = movie['id']
+    # Construct the URL
+    url = f"{BASE_URL}/movie/{movie_id}/videos?{API}"
+    # Make the API call
+    data = await get_data_async(session, url)
+    # Append the video data to the movie
+    movie['videos'] = data['results']
+    return movie
 
 
 async def get_genre_info_async(session, movies, index):
@@ -57,7 +79,21 @@ async def get_genre_info_async(session, movies, index):
     # create query request
     request = f"{BASE_URL}/discover/movie?{API}&with_genres={genre}"
     # fetch movies for the genre
-    return await get_data_async(session, request)
+    response = await get_data_async(session, request)
+
+    # Create a task to get video data for each movie
+    video_tasks = []
+    for movie in response['results']:
+        task = asyncio.ensure_future(get_movie_videos_async(session, movie))
+        video_tasks.append(task)
+
+    # Run all video tasks concurrently
+    responses = await asyncio.gather(*video_tasks)
+
+    # Update the movies with the video data
+    for i, movie in enumerate(response['results']):
+        movie['videos'] = responses[i]['videos']
+    return response
 
 
 async def get_lead_actor_async(session, movie_id):
@@ -145,20 +181,19 @@ def get_recommendations(title, data, indices, cosine_sim):
 
 @app.route("/Search")
 async def search_movies():
+    f = time.process_time()
     # Get user input for movie search
     choice = request.args.get('movie')
     # If no user input, get a trending movie as the default choice
-    if choice is None:
-        async with aiohttp.ClientSession() as session:
-            choice = await get_trending_movie_async(session)
-    # Get recommended movies based on the user's choice
-    movies = get_recommendations(choice, movie_data, indices, cosine_sim)
-    # Fallback in case the movie is not in the dataset
-    if movies is None:
-        async with aiohttp.ClientSession() as session:
-            movies = await get_trending_info_async(session, choice)
-    # Get information for the recommended movies
     async with aiohttp.ClientSession() as session:
+        if choice is None:
+            choice = await get_trending_movie_async(session)
+        # Get recommended movies based on the user's choice
+        movies = get_recommendations(choice, movie_data, indices, cosine_sim)
+        # Fallback in case the movie is not in the dataset
+        if movies is None:
+            movies = await get_trending_info_async(session, choice)
+        # Get information for the recommended movies
         movies = await get_movie_info_async(session, movies)
         # Makes sure that the banner movie is correct
         banner_movie = await get_data_async(session, f"{BASE_URL}/search/movie?query={choice}&{API}")
@@ -176,9 +211,14 @@ async def search_movies():
         genre_1_movies = await get_genre_info_async(session, movies, 0)
         genre_2_movies = await get_genre_info_async(session, movies, 1)
         banner_imdb = await get_imdb_id(session, movies[0]['results'][0].get('id'))
-    return await render_template('display_movies.html', movies=movies, bannerIMDB=banner_imdb, genre1=genre_1_movies,
-                                 genre2=genre_2_movies,
-                                 actorMovies=lead_actor_movies, s='opps')
+        s = time.process_time()
+        print(movies[0]['results'][0])
+        print(s - f)
+
+        return await render_template('display_movies.html', movies=movies, bannerIMDB=banner_imdb,
+                                     genre1=genre_1_movies,
+                                     genre2=genre_2_movies,
+                                     actorMovies=lead_actor_movies, s='opps')
 
 
 if __name__ == "__main__":
