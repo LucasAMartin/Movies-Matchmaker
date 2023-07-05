@@ -1,6 +1,8 @@
 // img url
 const img_url = "https://image.tmdb.org/t/p/original";
 
+const youtubeBase = 'https://www.youtube.com/embed/';
+
 // map of the genre names
 const genreIdToName = {
     28: "Action",
@@ -59,6 +61,18 @@ addRow(genre1Movies, `Top ${genre1} Movies`);
 addRow(genre2Movies, `Top ${genre2} Movies`);
 addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
+
+function getYoutubeTrailerKey(movie) {
+    if ('videos' in movie) {
+        for (let i = 0; i < movie.videos.length; i++) {
+            let video = movie.videos[i];
+            if (video.site === 'YouTube' && video.type === 'Trailer') {
+                return video.key;
+            }
+        }
+    }
+    return null;
+}
 
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
 // this.id is the id of the banner that it is pressed from
@@ -143,7 +157,7 @@ function addRow(movieList, category) {
                 movie = movieList.results[i];
             }
             let poster = document.createElement("img");
-
+            let youtubeKey = getYoutubeTrailerKey(movie);
             poster.className = "row_poster";
 
             // Set the src attribute to the low-quality image placeholder
@@ -157,9 +171,11 @@ function addRow(movieList, category) {
 
             // Set the data-title attribute to the title of the movie
             poster.setAttribute("data-title", movie.title);
+            poster.setAttribute("data-genres", movie.genres_ids);
             poster.setAttribute("data-desc", movie.overview);
             // Set the data-img attribute to the image URL of the movie
             poster.setAttribute("data-img", img_url + movie.backdrop_path);
+            poster.setAttribute("data-youtube", youtubeBase + youtubeKey);
 
             poster.onclick = openModal;
             row_posters.appendChild(poster);
@@ -172,32 +188,79 @@ function addRow(movieList, category) {
         const modal = document.querySelector('#modal');
         const overlay = document.querySelector('#overlay');
         overlay.onclick = closeModal;
+        const modalHeader = document.querySelector('#modal .modal-header');
         const modalImg = document.querySelector('#modal .modal-header img');
         const modalTitle = document.querySelector('#modal .modal-header .title');
         const modalBody = document.querySelector('#modal .modal-body');
         const modalExpand = document.querySelector('#modal .modal-header button');
 
-
-        // Get the title and image URL of the clicked poster from its data-* attributes
+        // Get the title, overview, image URL, and YouTube link of the clicked poster from its data-* attributes
         const title = this.getAttribute('data-title');
         const overview = this.getAttribute('data-desc');
         const imgUrl = this.getAttribute('data-img');
+        const youtubeLink = this.getAttribute('data-youtube');
+        const genres = this.getAttribute('data-genres');
+        console.log(genres)
+
+        // Set the text content of the modal title and body to the title and overview of the clicked poster
+        modalTitle.textContent = title;
+        modalBody.textContent = overview;
 
         // Set the src attribute of the modal image to the image URL of the clicked poster
         modalImg.src = imgUrl;
 
-        // Set the text content of the modal title and body to the title of the clicked poster
-        modalTitle.textContent = title;
-        modalBody.textContent = overview;
+        // Check if a YouTube link was provided
+        if (youtubeLink) {
+            // Create an iframe element
+            let iframe = document.createElement('iframe');
+            // Set the src attribute of the iframe to the URL of the YouTube video
+            iframe.src = `${youtubeLink}?autoplay=1&mute=1&controls=0&start=10&modestbranding=1&showinfo=0`;
+            // Add a class to the iframe for styling
+            iframe.classList.add('youtube-iframe');
+            // Insert the iframe before the modal image
+            modalImg.parentNode.insertBefore(iframe, modalImg);
+
+            // Add an event listener for the load event of the iframe
+            iframe.addEventListener('load', () => {
+                // Delay execution by one second
+                setTimeout(() => {
+                    // Fade out the image and fade in the video
+                    modalImg.style.opacity = '0';
+                    iframe.style.opacity = '1';
+                }, 1000);
+            });
+
+        }
+
         modalExpand.onclick = () => changeMovie(title);
+
         modal.classList.add('active');
         overlay.classList.add('active');
     }
 
+
     function closeModal() {
-        modal.classList.remove('active')
-        overlay.classList.remove('active')
+        const modal = document.querySelector('#modal');
+        const overlay = document.querySelector('#overlay');
+
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+
+        // Get references to the image and iframe elements
+        const modalImg = document.querySelector('#modal .modal-header img');
+        const modalIframe = document.querySelector('#modal .modal-header .youtube-iframe');
+
+        // Check if an iframe element exists
+        if (modalIframe) {
+            // Remove the iframe element
+            modalIframe.remove();
+            // Show the image again
+            modalImg.style.display = 'block';
+            // Reset the opacity of the image
+            modalImg.style.opacity = '1';
+        }
     }
+
 
     const prevButton = document.createElement("button");
     prevButton.className = "scroll-button prev";
