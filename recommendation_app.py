@@ -55,7 +55,8 @@ async def get_movie_info_async(session, movies):
     # Run all video tasks concurrently
     responses = await asyncio.gather(*video_tasks)
     for i, response in enumerate(responses):
-        movies[i]['results'][0]['videos'] = response['videos']
+        if len(movies[i]['results']) > 0:
+            movies[i]['results'][0]['videos'] = response['videos']
     return movies
 
 

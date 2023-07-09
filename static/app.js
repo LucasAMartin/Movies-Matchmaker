@@ -82,7 +82,7 @@ function changeMovie(movie) {
     urlParams.set('movie', cleanedMovieName.trim().replace(/\s+/g, ' '));
     const newUrl = window.location.pathname + '?' + urlParams.toString();
     window.history.pushState({}, '', newUrl);
-    location.reload();
+    location.href = location.href;
 }
 
 //  Uses the TMDB id to launch a movie player
@@ -169,11 +169,20 @@ function addRow(movieList, category) {
             // Add the 'lazy' class to the img element
             poster.classList.add('lazy');
 
+            let genreNames = [];
+            for (let genreId of movie.genre_ids) {
+                if (genreIdToName.hasOwnProperty(genreId)) {
+                    genreNames.push(genreIdToName[genreId]);
+                }
+            }
+            let genreString = genreNames.join(", ");
+
             // Set the data-title attribute to the title of the movie
             poster.setAttribute("data-title", movie.title);
-            poster.setAttribute("data-genres", movie.genres_ids);
+            poster.setAttribute("data-genres", genreString);
             poster.setAttribute("data-desc", movie.overview);
             // Set the data-img attribute to the image URL of the movie
+            poster.setAttribute("data-year", movie.release_date.substring(0, 4));
             poster.setAttribute("data-img", img_url + movie.backdrop_path);
             poster.setAttribute("data-youtube", youtubeBase + youtubeKey);
 
@@ -188,10 +197,11 @@ function addRow(movieList, category) {
         const modal = document.querySelector('#modal');
         const overlay = document.querySelector('#overlay');
         overlay.onclick = closeModal;
-        const modalHeader = document.querySelector('#modal .modal-header');
         const modalImg = document.querySelector('#modal .modal-header img');
         const modalTitle = document.querySelector('#modal .modal-header .title');
-        const modalBody = document.querySelector('#modal .modal-body');
+        const modalDesc = document.querySelector('#modal .modal-body .modal-desc');
+        const modalGenre = document.querySelector('#modal .modal-body .modal-info .modal-genre');
+        const modalYear = document.querySelector('#modal .modal-body .modal-info .modal-year');
         const modalExpand = document.querySelector('#modal .modal-header button');
 
         // Get the title, overview, image URL, and YouTube link of the clicked poster from its data-* attributes
@@ -200,11 +210,14 @@ function addRow(movieList, category) {
         const imgUrl = this.getAttribute('data-img');
         const youtubeLink = this.getAttribute('data-youtube');
         const genres = this.getAttribute('data-genres');
-        console.log(genres)
+        const year = this.getAttribute('data-year');
+
 
         // Set the text content of the modal title and body to the title and overview of the clicked poster
         modalTitle.textContent = title;
-        modalBody.textContent = overview;
+        modalDesc.textContent = overview;
+        modalGenre.textContent = genres;
+        modalYear.textContent = year;
 
         // Set the src attribute of the modal image to the image URL of the clicked poster
         modalImg.src = imgUrl;
@@ -236,6 +249,7 @@ function addRow(movieList, category) {
 
         modal.classList.add('active');
         overlay.classList.add('active');
+
     }
 
 
@@ -258,6 +272,7 @@ function addRow(movieList, category) {
             modalImg.style.display = 'block';
             // Reset the opacity of the image
             modalImg.style.opacity = '1';
+            modalImg.src = null;
         }
     }
 

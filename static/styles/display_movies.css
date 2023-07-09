@@ -15,9 +15,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
-    transition: 260ms ease-in-out;
+    transition: 300ms;
     z-index: 10;
-    width: 50%;
+    width: 70%;
     max-width: 80%;
     color: white;
 }
@@ -34,15 +34,19 @@
 
 }
 
-.youtube-iframe, .modal-header img {
+.modal-header img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s;
+}
+
+.youtube-iframe {
     position: absolute;
     width: 100%;
     height: 100%;
     transform: scale(1.4);
     transition: opacity 1s;
-}
-
-.youtube-iframe {
     opacity: 0;
 
 }
@@ -54,9 +58,9 @@
     z-index: 10;
     left: 0;
     right: 0;
-    padding: 1%;
+    padding: 1% 1% 1% 2%;
     color: white;
-    font-size: 2.5rem;
+    font-size: 4rem;
     font-weight: bold;
 }
 
@@ -81,16 +85,38 @@
 }
 
 .modal-body {
-    position: relative;
-    text-align: left;
-    padding-bottom: 2%;
-    padding-left: 1%;
-    padding-top: 1%;
-    font-size: large;
     background-color: rgb(20, 20, 20, 1);
     border-radius: 0 0 10px 10px;
-    margin-top: -2px;
+    display: flex;
+    padding-left: 2%;
+    padding-bottom: 3%;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
+.modal-info {
+    display: flex;
+    gap: 2%;
+
+}
+
+.modal-desc {
+    margin-top: 1%;
+    max-width: 80%;
+    font-family: Bahnschrift, serif;
+    font-size: 1.1rem;
+}
+
+.modal-genre {
+    margin-top: 1%;
+    font-size: 1.3rem;
+    font-family: Bahnschrift, serif;
+}
+
+.modal-year {
+    margin-top: 1%;
+    font-size: 1.3rem;
+    font-family: Bahnschrift, serif;
 }
 
 #overlay {
@@ -285,7 +311,7 @@ button:hover {
 }
 
 .scroll-button.next {
-    right: -2rem;
+    right: -3rem;
 }
 
 @keyframes fadeIn {

@@ -14,13 +14,6 @@
         let actorMovies = {{ actorMovies|tojson }};
         let bannerIMDB = '{{ bannerIMDB }}';
 
-        document.querySelector('input[name="movie"]').addEventListener('keypress', function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                document.querySelector('form.search').submit();
-            }
-        });
-
     </script>
     <script src="{{ url_for('static',filename='app.js') }}" defer></script>
 </head>
@@ -73,7 +66,13 @@
         </div>
     </div>
     <div class="modal-body">
+    <div class="modal-info">
+        <div class="modal-year"></div>
+        <div class="modal-genre">test</div>
     </div>
+    <div class="modal-desc"></div>
+</div>
+
 </div>
 <div id="overlay"></div>
 
