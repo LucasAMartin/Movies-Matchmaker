@@ -74,11 +74,11 @@ async function getYoutubeTrailerKey(movie_id) {
         });
         const data = await response.json();
         trailer_id = data.trailer_id;
-        console.log(data.trailer_id)
     } catch (error) {
         console.error(error);
     }
-    return imdb_id;
+    console.log(trailer_id)
+    return trailer_id;
 }
 
 async function getImdbID(movie_id) {
@@ -217,7 +217,7 @@ function addRow(movieList, category) {
 
         // Set the src attribute of the modal image to the image URL of the clicked poster
         modalImg.src = imgUrl;
-        displayTrailer(id)
+        displayTrailer(id, modalImg)
         modalExpand.onclick = () => changeMovie(title);
         modal.classList.add('active');
         overlay.classList.add('active');
@@ -263,7 +263,7 @@ function addRow(movieList, category) {
     lazyLoadInstance.observe()
 }
 
-async function displayTrailer(movie_id) {
+async function displayTrailer(movie_id, modalImg) {
     const trailer_id = await getYoutubeTrailerKey(movie_id);
     // Check if a YouTube link was provided
     if (trailer_id) {
