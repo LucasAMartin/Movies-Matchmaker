@@ -45,8 +45,8 @@ body {
     background: rgba(0, 0, 0, 0.75);
     overflow: hidden;
     display: flex;
+    margin-top: 4rem;
     flex-direction: column;
-    margin-bottom: 10rem;
     padding: 60px 68px 40px 68px;
 }
 
@@ -55,7 +55,7 @@ body {
     color: white;
     font-weight: 500;
     font-size: 35px;
-    margin-bottom: 28px;
+    margin-bottom: 1rem;
 }
 
 .container #username {

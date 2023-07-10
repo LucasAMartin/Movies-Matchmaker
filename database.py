@@ -47,3 +47,11 @@ def insert_movie_id(username, movie_id):
     conn.close()
 
 
+def get_movie_ids(username):
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute('SELECT movie_ids FROM users WHERE username=?', (username,))
+    movie_ids_str = c.fetchone()[0]
+    conn.close()
+    movie_ids = list(map(int, movie_ids_str.split(',')))
+    return movie_ids

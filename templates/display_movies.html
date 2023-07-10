@@ -26,7 +26,12 @@
             <img class="nav_logo" src="/static/img/logo.png" alt="">
         </a>
     </div>
-    <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login") }}'">Login</button>
+    {% if session['logged_in'] %}
+        <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("logout") }}'">Logout</button>
+    {% else %}
+        <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login_screen") }}'">Login</button>
+    {% endif %}
+
 </div>
 
 

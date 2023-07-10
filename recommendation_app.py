@@ -120,13 +120,13 @@ async def home():
     return await render_template('main_page.html')
 
 
-@app.route("/login")
-async def login():
+@app.route("/login_screen")
+async def login_screen():
     return await render_template('login.html')
 
 
-@app.route('/login_user', methods=['POST'])
-async def login_user():
+@app.route('/login', methods=['POST'])
+async def login():
     form = await request.form
     username = form['username']
     password = form['password']
