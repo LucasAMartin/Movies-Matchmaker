@@ -6,3 +6,4 @@ quart~=0.18.4
 numpy~=1.25.0
 beautifulsoup4~=4.12.2
 fuzzywuzzy~=0.18.0
+bcrypt~=4.0.1

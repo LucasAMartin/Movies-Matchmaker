@@ -1,5 +1,5 @@
 import time
-from quart import Quart, request, render_template, jsonify
+from quart import Quart, request, render_template, jsonify, ResponseReturnValue, redirect, url_for, session
 import re
 import aiohttp
 import asyncio
@@ -7,8 +7,15 @@ import platform
 import pickle
 import pandas as pd
 from fuzzywuzzy import process
+from quart_auth import QuartAuth, login_required, Unauthorized
+from database import *
+import secrets
+import bcrypt
+from database import init_db
 
 app = Quart(__name__)
+QuartAuth(app)
+app.secret_key = secrets.token_urlsafe(16)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 MAX_MOVIES = 20
 # My Api key from TMDB
@@ -97,6 +104,11 @@ async def get_trending_info_async(session, banner_movie):
     return movies
 
 
+@app.before_serving
+async def startup():
+    init_db()
+
+
 @app.after_request
 def add_header(response):
     response.headers['Cache-Control'] = 'no-store'
@@ -107,14 +119,63 @@ def add_header(response):
 async def home():
     return await render_template('main_page.html')
 
+
 @app.route("/login")
 async def login():
     return await render_template('login.html')
 
 
+@app.route('/login_user', methods=['POST'])
+async def login_user():
+    form = await request.form
+    username = form['username']
+    password = form['password']
+    user = get_user(username)
+    if user:
+        hashed_password = user[2]
+        if isinstance(hashed_password, str):
+            hashed_password = hashed_password.encode('utf-8')
+        if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+            session['logged_in'] = True
+            session['username'] = username
+            return 'Logged in'
+    return 'Invalid credentials'
+
+
+@app.route('/logout')
+async def logout():
+    session.pop('logged_in', None)
+    session.pop('username', None)
+    return 'Logged out'
+
+
+
 @app.route("/create_account")
 async def create_account():
     return await render_template('create_account.html')
+
+
+@app.route('/register', methods=['POST'])
+async def register():
+    form = await request.form
+    username = form['username']
+    password = form['password']
+    confirm_password = form['confirm_password']
+    if password == confirm_password:
+        insert_user(username, password)
+        return 'User registered'
+    else:
+        return 'Passwords do not match'
+
+
+@app.route("/my_list")
+async def my_list():
+    return await render_template('my_list.html')
+
+
+@app.errorhandler(Unauthorized)
+async def redirect_to_login(*_: Exception) -> ResponseReturnValue:
+    return redirect(url_for("login"))
 
 
 @app.route('/get_trailer_id', methods=['POST'])

@@ -12,63 +12,60 @@
     <a href="/">
         <img src="/static/img/logo.png" alt="">
     </a></div>
-<div class="container">
-    <div class="card">
-        <p class="title">Login</p>
-        <label for="email"></label>
-        <input
-                type="text"
-                id="email"
-                placeholder="Email"
-        />
+<form method="post" action="{{ url_for('register') }}">
+    <div class="container">
+        <div class="card">
+            <p class="title">Login</p>
+            <label for="email"></label>
+            <input type="text" name="username" id="username" placeholder="Username"/>
 
-        <label for="password"></label>
-        <input type="password" class="password" placeholder="Password"/>
-        <label for="confirmPassword"></label>
-        <input type="password" class="password confirmPassword" placeholder="Confirm Password"/>
+            <label for="password"></label>
+            <input type="password" name="password" class="password" placeholder="Password"/>
+            <label for="confirmPassword"></label>
+            <input type="password" name="confirm_password" class="password confirmPassword"
+                   placeholder="Confirm Password"/>
+            <button type="submit">Login</button>
+            <div class="bottombutton">
+                <div class="remember">
+                    <label class="container-button">
+                        <input type="checkbox" checked="checked"/>
+                        <span class="checkmark"></span>
+                    </label>
 
-        <button onclick="window.location.href = '{{ url_for("home") }}'">Login</button>
+                    <p>Remember Me</p>
+                </div>
 
-        <div class="bottombutton" >
-            <div class="remember">
-                <label class="container-button">
-                    <input type="checkbox" checked="checked"/>
-                    <span class="checkmark"></span>
-                </label>
-
-                <p>Remember Me</p>
+                <a href="/">Create Account</a>
             </div>
 
-            <a href="/">Create Account</a>
-        </div>
-
-        <div class="other-login">
-            <div>
-                <img
-                        src="https://www.galeriaplazahotels.com.mx/wp-content/uploads/2021/10/face.png"
-                        alt=""
-                />
-                <p>Login with Facebook</p>
+            <div class="other-login">
+                <div>
+                    <img
+                            src="https://www.galeriaplazahotels.com.mx/wp-content/uploads/2021/10/face.png"
+                            alt=""
+                    />
+                    <p>Login with Facebook</p>
+                </div>
             </div>
-        </div>
 
-        <div class="firsttime">
-            <div>
-                <p>First Time?</p>
-                <a href="/">Subscribe Here.</a>
+            <div class="firsttime">
+                <div>
+                    <p>First Time?</p>
+                    <a href="/">Subscribe Here.</a>
+                </div>
             </div>
-        </div>
 
-        <div class="catpcha">
-            <div>
-                <p>
-                    This page is protected by Google reCAPTCHA<a href="/"
-                >More Info</a
-                >
-                </p>
+            <div class="catpcha">
+                <div>
+                    <p>
+                        This page is protected by Google reCAPTCHA<a href="/"
+                    >More Info</a
+                    >
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 </body>
 </html>
