@@ -16,9 +16,9 @@
     <div class="container">
         <div class="card">
             <p class="title">Login</p>
-            <label for="email"></label>
+            <label for="username"></label>
             <input type="text" name="username" id="username" placeholder="Username"/>
-
+            <span id="errorMessage" style="display: none; color: red; font-size: 14px; position: absolute; top: 15rem; font-family: 'Roboto', sans-serif">Invalid credentials</span>
             <label for="password"></label>
             <input type="password" name="password" class="password" placeholder="Password"/>
             <label for="confirmPassword"></label>
@@ -54,18 +54,20 @@
                     <a href="/">Subscribe Here.</a>
                 </div>
             </div>
-
-            <div class="catpcha">
-                <div>
-                    <p>
-                        This page is protected by Google reCAPTCHA<a href="/"
-                    >More Info</a
-                    >
-                    </p>
-                </div>
-            </div>
         </div>
     </div>
 </form>
 </body>
 </html>
+<script>
+    // Check if username_taken is true
+    {% if username_taken %}
+        document.getElementById('errorMessage').style.display = 'inline';
+        document.getElementById('errorMessage').textContent = 'Username Taken';
+    {% endif %}
+    // Check if passwords_no_match is true
+    {% if passwords_no_match %}
+        document.getElementById('errorMessage').style.display = 'inline';
+        document.getElementById('errorMessage').textContent = 'Passwords do not Match';
+    {% endif %}
+</script>

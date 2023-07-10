@@ -21,10 +21,17 @@ def init_db():
 def insert_user(username, password):
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
+    # Check if the username is already taken
+    c.execute('SELECT * FROM users WHERE username = ?', (username,))
+    if c.fetchone():
+        conn.close()
+        return 'Username taken'
+    # Insert the new user into the database
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     c.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, hashed_password))
     conn.commit()
     conn.close()
+    return 'User successfully inserted'
 
 
 def get_user(username):

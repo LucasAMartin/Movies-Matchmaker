@@ -16,19 +16,18 @@
     <div class="container">
         <div class="card">
             <p class="title">Login</p>
-            <label for="email"></label>
+            <label for="username"></label>
+            <span id="errorMessage" style="display: none; color: red; font-size: 14px; position: absolute; top: 15rem; font-family: 'Roboto', sans-serif">Invalid credentials</span>
             <input type="text" name="username" id="username" placeholder="Username"/>
             <label for="password"></label>
             <input type="password" name="password" class="password" placeholder="Password"/>
             <button type="submit">Login</button>
-
             <div class="bottombutton">
                 <div class="remember">
                     <label class="container-button">
-                        <input type="checkbox" checked="checked"/>
+                        <input type="checkbox" name="remember" checked="checked"/>
                         <span class="checkmark"></span>
                     </label>
-
                     <p>Remember Me</p>
                 </div>
 
@@ -51,18 +50,14 @@
                     <a href="/">Subscribe Here.</a>
                 </div>
             </div>
-
-            <div class="catpcha">
-                <div>
-                    <p>
-                        This page is protected by Google reCAPTCHA<a href="/"
-                    >More Info</a
-                    >
-                    </p>
-                </div>
-            </div>
         </div>
     </div>
 </form>
 </body>
 </html>
+<script>
+    // Check if invalid_credentials is true
+    {% if invalid_credentials %}
+        document.getElementById('errorMessage').style.display = 'inline';
+    {% endif %}
+</script>

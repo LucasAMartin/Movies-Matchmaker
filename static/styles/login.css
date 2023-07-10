@@ -10,6 +10,7 @@ body {
     background-position: center;
     padding: 10px 8%;
     position: relative;
+    overflow: hidden;
 }
 
 .login-container {
@@ -48,7 +49,7 @@ body {
     display: flex;
     margin-top: 6rem;
     flex-direction: column;
-    padding: 0 68px 40px 68px;
+    padding: 20px 68px 40px 68px;
 }
 
 .title {
@@ -158,19 +159,4 @@ body {
     color: white;
     margin-top: 16px;
     font-size: 16px;
-}
-
-.catpcha div p {
-    color: #737373;
-    margin-top: 16px;
-    font-size: 13px;
-    margin-right: 8px;
-}
-
-.catpcha div a {
-    margin-left: 4px;
-    text-decoration: none;
-    color: #0071eb;
-    margin-top: 16px;
-    font-size: 13px;
 }

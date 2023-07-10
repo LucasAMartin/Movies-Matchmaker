@@ -1,4 +1,6 @@
 import time
+from datetime import timedelta
+
 from quart import Quart, request, render_template, jsonify, ResponseReturnValue, redirect, url_for, session
 import re
 import aiohttp
@@ -130,6 +132,7 @@ async def login():
     form = await request.form
     username = form['username']
     password = form['password']
+    remember = form.get('remember') == 'on'
     user = get_user(username)
     if user:
         hashed_password = user[2]
@@ -138,15 +141,18 @@ async def login():
         if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
             session['logged_in'] = True
             session['username'] = username
-            return 'Logged in'
-    return 'Invalid credentials'
+            session.permanent = remember
+            return await render_template('main_page.html')
+    return await render_template('login.html', invalid_credentials=True)
+
+
 
 
 @app.route('/logout')
 async def logout():
     session.pop('logged_in', None)
     session.pop('username', None)
-    return 'Logged out'
+    return await render_template('main_page.html')
 
 
 
@@ -162,20 +168,26 @@ async def register():
     password = form['password']
     confirm_password = form['confirm_password']
     if password == confirm_password:
-        insert_user(username, password)
-        return 'User registered'
+        response = insert_user(username, password)
+        if response == 'Username taken':
+            return await render_template('create_account.html', username_taken=True)
+        elif response == 'User successfully inserted':
+            return await render_template('main_page.html')
+        else:
+            return "Unknown Error"
     else:
-        return 'Passwords do not match'
+        return await render_template('create_account.html', passwords_no_match=True)
 
 
 @app.route("/my_list")
+@login_required
 async def my_list():
     return await render_template('my_list.html')
 
 
 @app.errorhandler(Unauthorized)
 async def redirect_to_login(*_: Exception) -> ResponseReturnValue:
-    return redirect(url_for("login"))
+    return redirect(url_for("login_screen"))
 
 
 @app.route('/get_trailer_id', methods=['POST'])
