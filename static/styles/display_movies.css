@@ -61,6 +61,7 @@
     color: white;
     font-size: 4rem;
     font-weight: bold;
+    max-width: 75%;
 }
 
 .modal-header::after {
@@ -91,6 +92,15 @@
     padding-bottom: 3%;
     flex-direction: column;
     justify-content: space-between;
+}
+
+#muteButton {
+    z-index: 11;
+    position: absolute;
+    bottom: 1.35rem;
+    right: 10rem;
+    width: 3.2rem;
+    height: auto;
 }
 
 .modal-info {
@@ -359,23 +369,38 @@ button:hover {
     }
 
     .modal {
-        width: 60%;
+        width: 75%;
     }
 
     .modal-header .title {
         margin-bottom: 1rem;
+        font-size: 3rem;
+        max-width: 60%;
+    }
+
+    .modal-desc {
+        max-width: 95%;
+    }
+
+    #muteButton {
+        width: 2rem;
+        right: 20%;
     }
 
     #modal_button {
-        margin-bottom: 1rem;
+        margin-bottom: 1.4rem;
         background-color: transparent;
+    }
+
+    #headrow {
+        margin-top: 1rem;
     }
 
 }
 
 @media only screen and (max-width: 768px) {
     .modal {
-        width: 70%;
+        width: 80%;
     }
 
     .modal-header .title {
@@ -385,8 +410,7 @@ button:hover {
         top: auto;
         right: auto;
         bottom: 0;
-        font-size: medium;
-        width: 70%;
+        font-size: 1.5rem;
     }
 
     #modal_button {
@@ -394,13 +418,31 @@ button:hover {
         left: auto;
         top: auto;
         right: 0;
-        bottom: 0;
+        bottom: 3%;
         width: 20%;
         font-size: small;
     }
 
     .modal-body {
         font-size: small;
+    }
+
+    #muteButton {
+        bottom: .8rem;
+    }
+
+    .modal-desc {
+        margin-top: 1rem;
+        font-size: 1rem;
+    }
+
+    .modal-genre {
+        font-size: 1rem;
+    }
+
+    .modal-year {
+        font-size: 1rem;
+
     }
 
     #banner_contents {
@@ -428,11 +470,6 @@ button:hover {
     #banner_description {
         max-width: 90%;
         padding-top: 0;
-    }
-
-
-    #headrow {
-        margin-top: -2rem;
     }
 
     .row {

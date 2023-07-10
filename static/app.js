@@ -346,6 +346,33 @@ setTimeout(function () {
 }, 400);
 
 
+function toggleMute() {
+    // Find the iframe element
+    const iframe = document.querySelector('.youtube-iframe');
+    // Check if the iframe exists
+    if (iframe) {
+        // Get the player object for the YouTube video
+        const player = new YT.Player(iframe);
+        // Check if the video is muted
+        if (player.isMuted()) {
+            // Unmute the video
+            player.unMute();
+            // Change the src attribute of the #muteButton element to show the unmuted image
+            document.querySelector('#muteButton').src = '/static/img/unmuted.png';
+        } else {
+            // Mute the video
+            player.mute();
+            // Change the src attribute of the #muteButton element to show the muted image
+            document.querySelector('#muteButton').src = '/static/img/muted.png';
+        }
+    }
+}
+
+// Add an event listener for the click event of the #muteButton element
+document.querySelector('#muteButton').addEventListener('click', toggleMute);
+
+
+
 
 
 

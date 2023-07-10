@@ -7,6 +7,7 @@
     <title>Movies Matchmaker</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/lozad@latest"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let movies = {{ movies|tojson }};
         let genre1Movies = {{ genre1|tojson }};
@@ -62,6 +63,7 @@
         <img src="null" alt="img">
         <div>
             <div class="title">Example Modal</div>
+            <img id="muteButton" src="/static/img/muted.png" class="muted" alt="muted">
             <button id="modal_button">Expand</button>
         </div>
     </div>
