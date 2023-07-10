@@ -185,8 +185,10 @@ async def search_movies():
         f = time.process_time()
         if choice is None:
             choice = await get_trending_movie_async(session)
-        # Get recommended movies based on the user's choice
-        movies = get_recommendations(choice, movie_data, indices, cosine_sim)
+            movies = await get_trending_info_async(session, choice)
+        else:
+            # Get recommended movies based on the user's choice
+            movies = get_recommendations(choice, movie_data, indices, cosine_sim)
         # Fallback in case the movie is not in the dataset
         if movies is None:
             movies = await get_trending_info_async(session, choice)
