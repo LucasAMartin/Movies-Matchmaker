@@ -58,19 +58,18 @@ button {
     font-size: 12px;
     color: #fff;
     cursor: pointer;
-    background-image: linear-gradient(to right, darkred 20%, red);
     border-radius: 3px;
     padding: 16px 18px 15px;
     white-space: nowrap;
     animation-duration: 1s;
     transition: background-color .4s;
-    background-color: indianred;
+    background-color: rgba(20, 20, 20);
 }
 
 button:hover {
-    background-color: darkred;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
-}
+    color: black;
+    background-color: #e6e6e6;
+    transition: all .3s;}
 
 button:active {
     background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));

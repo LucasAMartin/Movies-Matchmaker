@@ -62,17 +62,43 @@ addRow(genre2Movies, `Top ${genre2} Movies`);
 addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
 
-function getYoutubeTrailerKey(movie) {
-    if ('videos' in movie) {
-        for (let i = 0; i < movie.videos.length; i++) {
-            let video = movie.videos[i];
-            if (video.site === 'YouTube' && video.type === 'Trailer') {
-                return video.key;
-            }
-        }
+async function getYoutubeTrailerKey(movie_id) {
+    let trailer_id = null;
+    try {
+        const response = await fetch('/get_trailer_id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({movie_id: movie_id})
+        });
+        const data = await response.json();
+        trailer_id = data.trailer_id;
+        console.log(data.trailer_id)
+    } catch (error) {
+        console.error(error);
     }
-    return null;
+    return imdb_id;
 }
+
+async function getImdbID(movie_id) {
+    let imdb_id = null;
+    try {
+        const response = await fetch('/get_imdb_id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({movie_id: movie_id})
+        });
+        const data = await response.json();
+        imdb_id = data.imdb_id;
+    } catch (error) {
+        console.error(error);
+    }
+    return imdb_id;
+}
+
 
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
 // this.id is the id of the banner that it is pressed from
@@ -84,36 +110,6 @@ function changeMovie(movie) {
     window.history.pushState({}, '', newUrl);
     location.href = location.href;
 }
-
-//  Uses the TMDB id to launch a movie player
-function launchMoviePlayer(qualifiedName, value) {
-    let bannerTMDB = bannerMovie.id;
-    let movieURL;
-    const play = document.querySelector('#banner_button.play');
-    if (!play.classList.contains('pressed')) {
-        play.classList.add('pressed');
-        movieURL = `https://vidsrc.me/embed/${bannerIMDB}/`;
-    } else {
-        movieURL = `https://vidsrc.me/embed/${bannerTMDB}/`;
-    }
-
-    // Open a blank window
-    let movieWindow = window.open();
-
-    // Display a popup message in the new window
-    movieWindow.document.title = bannerMovie.title;
-
-
-    // Create an iframe element in the new window
-    let iframe = movieWindow.document.createElement('iframe');
-    iframe.src = movieURL;
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-
-    // Append the iframe to the body of the new window
-    movieWindow.document.body.appendChild(iframe);
-}
-
 
 // fetch the information for the banner movies
 function requestBanner() {
@@ -157,7 +153,6 @@ function addRow(movieList, category) {
                 movie = movieList.results[i];
             }
             let poster = document.createElement("img");
-            let youtubeKey = getYoutubeTrailerKey(movie);
             poster.className = "row_poster";
 
             // Set the src attribute to the low-quality image placeholder
@@ -179,12 +174,12 @@ function addRow(movieList, category) {
 
             // Set the data-title attribute to the title of the movie
             poster.setAttribute("data-title", movie.title);
+            poster.setAttribute("data-id", movie.id);
             poster.setAttribute("data-genres", genreString);
             poster.setAttribute("data-desc", movie.overview);
             // Set the data-img attribute to the image URL of the movie
             poster.setAttribute("data-year", movie.release_date.substring(0, 4));
             poster.setAttribute("data-img", img_url + movie.backdrop_path);
-            poster.setAttribute("data-youtube", youtubeBase + youtubeKey);
 
             poster.onclick = openModal;
             row_posters.appendChild(poster);
@@ -206,6 +201,7 @@ function addRow(movieList, category) {
 
         // Get the title, overview, image URL, and YouTube link of the clicked poster from its data-* attributes
         const title = this.getAttribute('data-title');
+        const id = this.getAttribute('data-id');
         const overview = this.getAttribute('data-desc');
         const imgUrl = this.getAttribute('data-img');
         const youtubeLink = this.getAttribute('data-youtube');
@@ -221,32 +217,8 @@ function addRow(movieList, category) {
 
         // Set the src attribute of the modal image to the image URL of the clicked poster
         modalImg.src = imgUrl;
-
-        // Check if a YouTube link was provided
-        if (youtubeLink) {
-            // Create an iframe element
-            let iframe = document.createElement('iframe');
-            // Set the src attribute of the iframe to the URL of the YouTube video
-            iframe.src = `${youtubeLink}?autoplay=1&mute=1&controls=0&start=10&modestbranding=1&showinfo=0`;
-            // Add a class to the iframe for styling
-            iframe.classList.add('youtube-iframe');
-            // Insert the iframe before the modal image
-            modalImg.parentNode.insertBefore(iframe, modalImg);
-
-            // Add an event listener for the load event of the iframe
-            iframe.addEventListener('load', () => {
-                // Delay execution by one second
-                setTimeout(() => {
-                    // Fade out the image and fade in the video
-                    modalImg.style.opacity = '0';
-                    iframe.style.opacity = '1';
-                }, 1000);
-            });
-
-        }
-
+        displayTrailer(id)
         modalExpand.onclick = () => changeMovie(title);
-
         modal.classList.add('active');
         overlay.classList.add('active');
 
@@ -289,6 +261,41 @@ function addRow(movieList, category) {
     row.appendChild(nextButton);
 
     lazyLoadInstance.observe()
+}
+
+async function displayTrailer(movie_id) {
+    const trailer_id = await getYoutubeTrailerKey(movie_id);
+    // Check if a YouTube link was provided
+    if (trailer_id) {
+        // Create an iframe element
+        let iframe = document.createElement('iframe');
+        // Set the src attribute of the iframe to the URL of the YouTube video
+        iframe.src = `${youtubeBase}${trailer_id}?autoplay=1&mute=1&controls=0&start=10&modestbranding=1&showinfo=0`;
+        console.log(iframe.src);
+        // Add a class to the iframe for styling
+        iframe.classList.add('youtube-iframe');
+        // Insert the iframe before the modal image
+        modalImg.parentNode.insertBefore(iframe, modalImg);
+
+        // Add an event listener for the load event of the iframe
+        iframe.addEventListener('load', () => {
+            // Delay execution by one second
+            setTimeout(() => {
+                // Fade out the image and fade in the video
+                modalImg.style.opacity = '0';
+                iframe.style.opacity = '1';
+            }, 1000);
+        });
+
+    }
+}
+
+async function launchMoviePlayer() {
+    let bannerTMDB = bannerMovie.id;
+    const bannerIMDB = await getImdbID(bannerTMDB);
+    //  Uses the IMDB id to launch a movie player
+    let movieURL = `https://vidsrc.me/embed/${bannerIMDB}/`;
+    window.open(movieURL);
 }
 
 // used to truncate the string in the banner description

@@ -31,7 +31,6 @@
     padding-bottom: 42.857%;
     overflow: hidden;
     border-radius: 10px 10px 0 0;
-
 }
 
 .modal-header img {
@@ -67,10 +66,10 @@
 .modal-header::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 0;
     right: 0;
-    height: 20%;
+    height: 10%;
     background-image: linear-gradient(to top, rgba(20, 20, 20, 1), rgba(20, 20, 20, 0));
 }
 

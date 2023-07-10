@@ -1,8 +1,6 @@
 import time
-
-from quart import Quart, request, render_template
+from quart import Quart, request, render_template, jsonify
 import re
-import random
 import aiohttp
 import asyncio
 import platform
@@ -12,13 +10,11 @@ from fuzzywuzzy import process
 
 app = Quart(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-
 MAX_MOVIES = 20
 # My Api key from TMDB
 API = "api_key=65088f30b11eb50d43a411d49c206b5f"
-# base url of the site
+# base url of the tmdb site
 BASE_URL = "https://api.themoviedb.org/3"
-
 # Do this to avoid a huge stack trace of errors
 if platform.system() == 'Windows':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
@@ -45,31 +41,7 @@ async def get_movie_info_async(session, movies):
         task = asyncio.ensure_future(get_data_async(session, requests[i]))
         tasks.append(task)
     responses = await asyncio.gather(*tasks)
-    video_tasks = []
-    for i, response in enumerate(responses):
-        movies[i] = response
-        # Create a task to get video data for each movie
-        if movies[i]['results']:
-            task = asyncio.ensure_future(get_movie_videos_async(session, movies[i]['results'][0]))
-            video_tasks.append(task)
-    # Run all video tasks concurrently
-    responses = await asyncio.gather(*video_tasks)
-    for i, response in enumerate(responses):
-        if len(movies[i]['results']) > 0:
-            movies[i]['results'][0]['videos'] = response['videos']
-    return movies
-
-
-async def get_movie_videos_async(session, movie):
-    # Extract the movie ID from the movie object
-    movie_id = movie['id']
-    # Construct the URL
-    url = f"{BASE_URL}/movie/{movie_id}/videos?{API}"
-    # Make the API call
-    data = await get_data_async(session, url)
-    # Append the video data to the movie
-    movie['videos'] = data['results']
-    return movie
+    return responses
 
 
 async def get_genre_info_async(session, movies, index):
@@ -81,19 +53,6 @@ async def get_genre_info_async(session, movies, index):
     request = f"{BASE_URL}/discover/movie?{API}&with_genres={genre}"
     # fetch movies for the genre
     response = await get_data_async(session, request)
-
-    # Create a task to get video data for each movie
-    video_tasks = []
-    for movie in response['results']:
-        task = asyncio.ensure_future(get_movie_videos_async(session, movie))
-        video_tasks.append(task)
-
-    # Run all video tasks concurrently
-    responses = await asyncio.gather(*video_tasks)
-
-    # Update the movies with the video data
-    for i, movie in enumerate(response['results']):
-        movie['videos'] = responses[i]['videos']
     return response
 
 
@@ -116,6 +75,15 @@ async def get_actor_movies_async(session, actor_id):
     return movies
 
 
+async def get_trending_movie_async(session):
+    request = f"{BASE_URL}/trending/all/week?{API}&language=en-US"
+    response = await get_data_async(session, request)
+    if response and response.get('results'):
+        movie = response['results'][0]
+        return movie.get('title')
+    return None
+
+
 async def get_trending_info_async(session, banner_movie):
     # create query request
     request = f"{BASE_URL}/trending/all/week?{API}&language=en-US"
@@ -129,30 +97,52 @@ async def get_trending_info_async(session, banner_movie):
     return movies
 
 
-async def get_trending_movie_async(session):
-    request = f"{BASE_URL}/trending/all/week?{API}&language=en-US"
-    response = await get_data_async(session, request)
-    if response and response.get('results'):
-        movie = response['results'][0]
-        return movie.get('title')
-    return None
-
-
-async def get_imdb_id(session, tmdb_id):
-    request = f"{BASE_URL}/movie/{tmdb_id}/external_ids?{API}"
-    response = await get_data_async(session, request)
-    return response.get('imdb_id')
-
-
-@app.after_request
-def add_header(response):
-    response.headers['Cache-Control'] = 'no-store'
-    return response
-
-
 @app.route("/")
 async def home():
     return await render_template('main_page.html')
+
+
+@app.route('/get_trailer_id', methods=['POST'])
+async def get_trailer_id():
+    data = await request.get_json()
+    movie_id = data['movie_id']
+    # Use the get_trailer_id_async function to retrieve the trailer ID
+
+    async def get_trailer_id_async():
+        async with aiohttp.ClientSession() as session:
+            # Construct the URL
+            query = f"{BASE_URL}/movie/{movie_id}/videos?{API}"
+            # Make the API call
+            data = await get_data_async(session, query)
+            # Find the trailer ID
+            trailer_id = None
+            for video in data['results']:
+                if video['type'] == 'Trailer':
+                    trailer_id = video['key']
+                    break
+            return trailer_id
+
+    trailer_id = await get_trailer_id_async()
+    return jsonify({'trailer_id': trailer_id})
+
+
+@app.route('/get_imdb_id', methods=['POST'])
+async def get_imdb_id():
+    data = await request.get_json()
+    tmdb_id = data['movie_id']
+    # Use the get_imdb_id_async function to retrieve the imdb ID
+
+    async def get_imdb_id_async():
+        async with aiohttp.ClientSession() as session:
+            # Construct the URL
+            query = f"{BASE_URL}/movie/{tmdb_id}/external_ids?{API}"
+            # Make the API call
+            data = await get_data_async(session, query)
+            # Find the trailer ID
+            return data.get('imdb_id')
+
+    imdb_id = await get_imdb_id_async()
+    return jsonify({'imdb_id': imdb_id})
 
 
 # Load the pickled objects from the cos_similarity class
@@ -182,11 +172,11 @@ def get_recommendations(title, data, indices, cosine_sim):
 
 @app.route("/Search")
 async def search_movies():
-    f = time.process_time()
     # Get user input for movie search
     choice = request.args.get('movie')
     # If no user input, get a trending movie as the default choice
     async with aiohttp.ClientSession() as session:
+        f = time.process_time()
         if choice is None:
             choice = await get_trending_movie_async(session)
         # Get recommended movies based on the user's choice
@@ -211,12 +201,9 @@ async def search_movies():
         # Get movies in the same genres as the first two recommended movies
         genre_1_movies = await get_genre_info_async(session, movies, 0)
         genre_2_movies = await get_genre_info_async(session, movies, 1)
-        banner_imdb = await get_imdb_id(session, movies[0]['results'][0].get('id'))
         s = time.process_time()
-        print(movies[0]['results'][0])
         print(s - f)
-
-        return await render_template('display_movies.html', movies=movies, bannerIMDB=banner_imdb,
+        return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,
                                      actorMovies=lead_actor_movies, s='opps')
