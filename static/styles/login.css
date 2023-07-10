@@ -8,7 +8,8 @@ body {
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../img/background.jpg');
     background-size: cover;
     background-position: center;
-    overflow: hidden;
+    padding: 10px 8%;
+    position: relative;
 }
 
 .login-container {
@@ -21,14 +22,12 @@ body {
 
 * {
     font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
 .logo img {
-    width: 150px;
-    margin: 21px 0 40px 26px;
+    width: 200px;
+    height: auto;
 }
 
 .container {
@@ -37,6 +36,8 @@ body {
     display: grid;
     place-items: center;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 .card {
@@ -45,9 +46,9 @@ body {
     background: rgba(0, 0, 0, 0.75);
     overflow: hidden;
     display: flex;
-    margin-top: 4rem;
+    margin-top: 6rem;
     flex-direction: column;
-    padding: 60px 68px 40px 68px;
+    padding: 0 68px 40px 68px;
 }
 
 .title {
@@ -91,6 +92,10 @@ body {
     margin-bottom: 12px;
     text-align: center;
     cursor: pointer;
+    padding: 20px 20px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .remember {
@@ -109,7 +114,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
 }
 
 .bottombutton a {
