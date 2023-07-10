@@ -124,7 +124,12 @@ function requestBanner() {
     var banner_title = document.getElementById("banner_title");
     var banner_description = document.getElementById("banner_description");
     banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
-    banner_description.innerText = truncateString(bannerMovie.overview, 350);
+    if (window.innerWidth <= 450) {
+        banner_description.innerText = truncateString(bannerMovie.overview, 250);
+    }
+    else {
+        banner_description.innerText = truncateString(bannerMovie.overview, 600);
+    }
     banner_title.innerText = bannerMovie.title;
 }
 
@@ -197,7 +202,7 @@ function addRow(movieList, category) {
         const modalDesc = document.querySelector('#modal .modal-body .modal-desc');
         const modalGenre = document.querySelector('#modal .modal-body .modal-info .modal-genre');
         const modalYear = document.querySelector('#modal .modal-body .modal-info .modal-year');
-        const modalExpand = document.querySelector('#modal .modal-header button');
+        const modalExpand = document.querySelector('#modal .modal-header #modal_button');
 
         // Get the title, overview, image URL, and YouTube link of the clicked poster from its data-* attributes
         const title = this.getAttribute('data-title');
@@ -271,7 +276,6 @@ async function displayTrailer(movie_id, modalImg) {
         let iframe = document.createElement('iframe');
         // Set the src attribute of the iframe to the URL of the YouTube video
         iframe.src = `${youtubeBase}${trailer_id}?autoplay=1&mute=1&controls=0&start=10&modestbranding=1&showinfo=0`;
-        console.log(iframe.src);
         // Add a class to the iframe for styling
         iframe.classList.add('youtube-iframe');
         // Insert the iframe before the modal image
@@ -345,31 +349,6 @@ setTimeout(function () {
     document.body.className = "";
 }, 400);
 
-
-function toggleMute() {
-    // Find the iframe element
-    const iframe = document.querySelector('.youtube-iframe');
-    // Check if the iframe exists
-    if (iframe) {
-        // Get the player object for the YouTube video
-        const player = new YT.Player(iframe);
-        // Check if the video is muted
-        if (player.isMuted()) {
-            // Unmute the video
-            player.unMute();
-            // Change the src attribute of the #muteButton element to show the unmuted image
-            document.querySelector('#muteButton').src = '/static/img/unmuted.png';
-        } else {
-            // Mute the video
-            player.mute();
-            // Change the src attribute of the #muteButton element to show the muted image
-            document.querySelector('#muteButton').src = '/static/img/muted.png';
-        }
-    }
-}
-
-// Add an event listener for the click event of the #muteButton element
-document.querySelector('#muteButton').addEventListener('click', toggleMute);
 
 
 

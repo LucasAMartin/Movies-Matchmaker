@@ -21,16 +21,12 @@
 
 <!-- navbar section -->
 <div class="nav">
-    <div class="nav__left">
+    <div class="nav_left">
         <a href="/">
             <img class="nav_logo" src="/static/img/logo.png" alt="">
         </a>
     </div>
-
-    <div class="nav__right">
-        <img src="/static/img/user-icon.png" class="nav_avatar" alt="">
-    </div>
-
+    <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login") }}'">Login</button>
 </div>
 
 
@@ -45,7 +41,7 @@
         </div>
         <p id="banner_description"></p>
     </div>
-    <div id="banner_fadeBottom"></div>
+    <div class="banner_fadeBottom"></div>
 </header>
 
 
@@ -62,17 +58,17 @@
         <img src="null" alt="img">
         <div>
             <div class="title">Example Modal</div>
-            <img id="muteButton" src="/static/img/muted.png" class="muted" alt="muted">
+            <button id="modal_button_list">Add to List</button>
             <button id="modal_button">Expand</button>
         </div>
     </div>
     <div class="modal-body">
-    <div class="modal-info">
-        <div class="modal-year"></div>
-        <div class="modal-genre">test</div>
+        <div class="modal-info">
+            <div class="modal-year"></div>
+            <div class="modal-genre"></div>
+        </div>
+        <div class="modal-desc"></div>
     </div>
-    <div class="modal-desc"></div>
-</div>
 
 </div>
 <div id="overlay"></div>

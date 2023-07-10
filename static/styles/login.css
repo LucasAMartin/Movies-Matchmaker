@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Roboto&display=swap');
+
+
+body {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../img/background.jpg');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 340px;
+    height: 340px;
+}
+
+* {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.logo img {
+    width: 150px;
+    margin: 21px 0 40px 26px;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+}
+
+.card {
+    width: 28rem;
+    height: 36rem;
+    background: rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10rem;
+    padding: 60px 68px 40px 68px;
+}
+
+.title {
+    font-family: 'Bebas Neue', sans-serif;
+    color: white;
+    font-weight: 500;
+    font-size: 35px;
+    margin-bottom: 28px;
+}
+
+.container #email {
+    color: white;
+    border: 0;
+    background-color: rgba(50, 50, 50);
+    height: 50px;
+    font-size: 16px;
+    padding: 20px 20px 20px;
+    border-radius: 4px;
+}
+
+.container .password {
+    border: 0;
+    background-color: rgba(50, 50, 50);
+    color: white;
+    height: 50px;
+    font-size: 16px;
+    padding: 20px 20px 20px;
+    border-radius: 4px;
+    margin-top: 16px;
+}
+
+.container button {
+    border: 0;
+    background-color: #e50914;
+    color: white;
+    font-weight: 500;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 4px;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.remember {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.remember p {
+    color: #b3b3b3;
+    margin-left: 4px;
+    font-size: 13px;
+}
+
+.bottombutton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.bottombutton a {
+    text-decoration: none;
+    color: #b3b3b3;
+    font-size: 13px;
+}
+
+.other-login {
+    cursor: pointer;
+}
+
+.other-login div:nth-child(1) {
+    display: flex;
+    align-items: center;
+}
+
+.other-login div img {
+    width: 20px;
+    height: 20px;
+}
+
+.other-login div p {
+    color: #737373;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+.firsttime div:nth-child(1) {
+    display: flex;
+}
+
+.firsttime div p {
+    color: #737373;
+    margin-top: 16px;
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.firsttime div a {
+    text-decoration: none;
+    color: white;
+    margin-top: 16px;
+    font-size: 16px;
+}
+
+.catpcha div p {
+    color: #737373;
+    margin-top: 16px;
+    font-size: 13px;
+    margin-right: 8px;
+}
+
+.catpcha div a {
+    margin-left: 4px;
+    text-decoration: none;
+    color: #0071eb;
+    margin-top: 16px;
+    font-size: 13px;
+}

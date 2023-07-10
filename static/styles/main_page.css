@@ -7,7 +7,7 @@
 }
 
 body, html {
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 body {
@@ -63,7 +63,7 @@ button {
     white-space: nowrap;
     animation-duration: 1s;
     transition: background-color .4s;
-    background-color: rgba(20, 20, 20);
+    background-color: #e50914;
 }
 
 button:hover {

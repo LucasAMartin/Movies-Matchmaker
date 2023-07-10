@@ -64,15 +64,6 @@
     max-width: 75%;
 }
 
-.modal-header::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: 10%;
-    background-image: linear-gradient(to top, rgba(20, 20, 20, 1), rgba(20, 20, 20, 0));
-}
 
 
 #modal_button {
@@ -94,13 +85,23 @@
     justify-content: space-between;
 }
 
-#muteButton {
+#modal_button_list {
     z-index: 11;
     position: absolute;
-    bottom: 1.35rem;
-    right: 10rem;
-    width: 3.2rem;
+    right: 8rem;
+    bottom: 0;
+    margin-bottom: 2rem;
     height: auto;
+}
+
+.modal-header::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    height: 15%;
+    background-image: linear-gradient(to top, rgba(20, 20, 20, 1), rgba(20, 20, 20, 0));
 }
 
 .modal-info {
@@ -167,7 +168,7 @@ body.preload * {
 .nav {
     position: fixed;
     top: 0;
-    padding: 1.5rem 2rem;
+    padding: .5rem 2rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -185,16 +186,17 @@ body.preload * {
     width: 180px
 }
 
-.nav__right {
+.nav_right {
     position: fixed;
     right: 20px;
     display: flex;
     margin-right: 10px;
 }
 
-.nav_avatar {
+.nav_login {
     width: 35px;
     margin-right: 25px;
+    color: white;
 }
 
 #banner {
@@ -254,17 +256,13 @@ button {
     padding: .5rem 2rem;
 }
 
-#headrow {
-    margin-top: -4rem;
-}
-
 button:hover {
     color: black;
     background-color: #e6e6e6;
     transition: all .3s;
 }
 
-#banner_fadeBottom {
+.banner_fadeBottom {
     height: 7.4rem;
     background: linear-gradient(
             180deg,
@@ -382,18 +380,13 @@ button:hover {
         max-width: 95%;
     }
 
-    #muteButton {
-        width: 2rem;
-        right: 20%;
-    }
 
-    #modal_button {
+    #modal_button, #modal_button_list {
         margin-bottom: 1.4rem;
         background-color: transparent;
     }
-
-    #headrow {
-        margin-top: 1rem;
+    #modal_button_list{
+        margin-right: -3rem;
     }
 
 }
@@ -413,7 +406,7 @@ button:hover {
         font-size: 1.5rem;
     }
 
-    #modal_button {
+    #modal_button, #modal_button_list {
         margin-bottom: .5rem;
         left: auto;
         top: auto;
@@ -421,6 +414,9 @@ button:hover {
         bottom: 3%;
         width: 20%;
         font-size: small;
+    }
+    #modal_button_list {
+        margin-right: 3rem;
     }
 
     .modal-body {

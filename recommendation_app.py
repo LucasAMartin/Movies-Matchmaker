@@ -107,6 +107,15 @@ def add_header(response):
 async def home():
     return await render_template('main_page.html')
 
+@app.route("/login")
+async def login():
+    return await render_template('login.html')
+
+
+@app.route("/create_account")
+async def create_account():
+    return await render_template('create_account.html')
+
 
 @app.route('/get_trailer_id', methods=['POST'])
 async def get_trailer_id():

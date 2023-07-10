@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/login.css') }}">
+    <title>Login</title>
+</head>
+<body>
+<div class="logo">
+    <a href="/">
+        <img src="/static/img/logo.png" alt="">
+    </a></div>
+<div class="container">
+    <div class="card">
+        <p class="title">Login</p>
+        <label for="email"></label>
+        <input
+                type="text"
+                id="email"
+                placeholder="Email"
+        />
+
+        <label for="password"></label>
+        <input type="password" class="password" placeholder="Password"/>
+
+        <button onclick="window.location.href = '{{ url_for("home") }}'">Login</button>
+
+        <div class="bottombutton" >
+            <div class="remember">
+                <label class="container-button">
+                    <input type="checkbox" checked="checked"/>
+                    <span class="checkmark"></span>
+                </label>
+
+                <p>Remember Me</p>
+            </div>
+
+            <a href="/create_account">Create Account</a>
+        </div>
+
+        <div class="other-login">
+            <div>
+                <img
+                        src="https://www.galeriaplazahotels.com.mx/wp-content/uploads/2021/10/face.png"
+                        alt=""
+                />
+                <p>Login with Facebook</p>
+            </div>
+        </div>
+
+        <div class="firsttime">
+            <div>
+                <p>First Time?</p>
+                <a href="/">Subscribe Here.</a>
+            </div>
+        </div>
+
+        <div class="catpcha">
+            <div>
+                <p>
+                    This page is protected by Google reCAPTCHA<a href="/"
+                >More Info</a
+                >
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
