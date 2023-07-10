@@ -65,7 +65,6 @@
 }
 
 
-
 #modal_button {
     z-index: 11;
     position: absolute;
@@ -196,6 +195,11 @@ body.preload * {
 .nav_login {
     width: 35px;
     margin-right: 25px;
+    color: white;
+}
+
+.nav_list {
+    width: 35px;
     color: white;
 }
 
@@ -385,7 +389,8 @@ button:hover {
         margin-bottom: 1.4rem;
         background-color: transparent;
     }
-    #modal_button_list{
+
+    #modal_button_list {
         margin-right: -3rem;
     }
 
@@ -415,6 +420,7 @@ button:hover {
         width: 20%;
         font-size: small;
     }
+
     #modal_button_list {
         margin-right: 3rem;
     }

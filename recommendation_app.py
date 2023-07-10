@@ -1,5 +1,6 @@
 import time
 from datetime import timedelta
+from functools import wraps
 
 from quart import Quart, request, render_template, jsonify, ResponseReturnValue, redirect, url_for, session
 import re
@@ -106,6 +107,17 @@ async def get_trending_info_async(session, banner_movie):
     return movies
 
 
+def login_required(view_func):
+    @wraps(view_func)
+    async def wrapper(*args, **kwargs):
+        # Check if user is authenticated
+        if not session['logged_in']:
+            return redirect(url_for('login'))  # Replace 'login' with your login route
+        return await view_func(*args, **kwargs)
+    return wrapper
+
+
+
 @app.before_serving
 async def startup():
     init_db()
@@ -144,7 +156,6 @@ async def login():
             session.permanent = remember
             return await render_template('main_page.html')
     return await render_template('login.html', invalid_credentials=True)
-
 
 
 
