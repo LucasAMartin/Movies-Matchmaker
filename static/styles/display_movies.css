@@ -292,6 +292,7 @@ button:hover {
     scroll-behavior: smooth;
 }
 
+
 .row_posters::-webkit-scrollbar {
     display: none;
 }

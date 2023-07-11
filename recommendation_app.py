@@ -46,7 +46,7 @@ async def get_movie_info_async(session, movies):
         # clean the movie names
         movies[i] = re.sub("[^a-zA-Z0-9\s]", "", movie).lower()
         # create query requests
-        requests[i] = f"{BASE_URL}/search/movie?query={movies[i]}&{API}&append_to_response=videos"
+        requests[i] = f"{BASE_URL}/search/movie?query={movies[i]}&{API}"
         # fetch data for each movie
         task = asyncio.ensure_future(get_data_async(session, requests[i]))
         tasks.append(task)
@@ -187,10 +187,18 @@ async def create_account():
         return await render_template('create_account.html')
 
 
-@app.route("/my_list", methods=['POST'])
+@app.route("/my_list", methods=['POST', 'GET'])
 async def my_list():
-    movies = get_movie_ids(session['username'])
-    return await render_template('my_list.html')
+    async with aiohttp.ClientSession() as client_session:
+        movies = get_movie_ids(session['username'])
+        tasks = []
+        for i, movie in enumerate(movies):
+            url = f"{BASE_URL}/movie/{movie}?{API}"
+            tasks.append(asyncio.ensure_future(get_data_async(client_session, url)))
+            print(url)
+        movies = await asyncio.gather(*tasks)
+        print(movies)
+    return await render_template('my_list.html', movies=movies)
 
 
 @app.route("/add_list", methods=['POST'])

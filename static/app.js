@@ -154,11 +154,11 @@ function requestBanner() {
 // in this case just display the trending movies
 function addRow(movieList, category) {
     // top recommendations
-    const headrow = document.getElementById("headrow");
+    const topRow = document.getElementById("topRow");
     const row = document.createElement("div");
     row.className = "row";
     row.classList.add("top_row");
-    headrow.appendChild(row);
+    topRow.appendChild(row);
     const title = document.createElement("h2");
     title.className = "row_title";
     title.innerText = category;

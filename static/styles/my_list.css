@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+#topRowList{
+    margin-top: 5%;
+}
+
+.row_poster_list {
+    object-fit: contain;
+    width: 100%;
+    max-height: 320px;
+    margin-right: 10px;
+    transition: transform 300ms;
+}
+
+.row_poster_list:hover {
+    transform: scale(1.11);
+    opacity: 1;
+    transition: transform 300ms;
+
+}
+.row_posters_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 15px;
+    padding: 15px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.row_posters_list::-webkit-scrollbar {
+    display: none;
+}
+
+.row_title_list{
+    font-size: 3rem;
+    font-family: 'Bebas Neue', sans-serif;
+}
