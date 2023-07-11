@@ -62,6 +62,20 @@ addRow(genre2Movies, `Top ${genre2} Movies`);
 addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
 
+function addToList(id) {
+    fetch('/add_list', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: id})
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.log(error))
+}
+
+
 async function getYoutubeTrailerKey(movie_id) {
     let trailer_id = null;
     try {
@@ -114,23 +128,26 @@ function changeMovie(movie) {
 // fetch the information for the banner movies
 function requestBanner() {
     if (bannerMovie == null) {
-        var banner_title = document.getElementById("banner_title");
+        const banner_title = document.getElementById("banner_title");
         banner_title.innerText = "Retry Search";
-        var banner_description = document.getElementById("banner_description");
+        const banner_description = document.getElementById("banner_description");
         banner_description.innerText = "Movie not found in the TMDB database."
         return
     }
-    var banner = document.getElementById("banner");
-    var banner_title = document.getElementById("banner_title");
-    var banner_description = document.getElementById("banner_description");
+    const banner = document.getElementById("banner");
+    const banner_title = document.getElementById("banner_title");
+    const banner_description = document.getElementById("banner_description");
+    const banner_List = document.querySelector('#banner_button_list');
     banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
     if (window.innerWidth <= 450) {
         banner_description.innerText = truncateString(bannerMovie.overview, 250);
-    }
-    else {
+    } else {
         banner_description.innerText = truncateString(bannerMovie.overview, 600);
     }
     banner_title.innerText = bannerMovie.title;
+    if (banner_List){
+        banner_List.onclick = () => addToList(bannerMovie.id)
+    }
 }
 
 // if the banner movie is not in database, we can't give recommendations
@@ -203,13 +220,13 @@ function addRow(movieList, category) {
         const modalGenre = document.querySelector('#modal .modal-body .modal-info .modal-genre');
         const modalYear = document.querySelector('#modal .modal-body .modal-info .modal-year');
         const modalExpand = document.querySelector('#modal .modal-header #modal_button');
+        const modalList = document.querySelector('#modal .modal-header #modal_button_list');
 
         // Get the title, overview, image URL, and YouTube link of the clicked poster from its data-* attributes
         const title = this.getAttribute('data-title');
         const id = this.getAttribute('data-id');
         const overview = this.getAttribute('data-desc');
         const imgUrl = this.getAttribute('data-img');
-        const youtubeLink = this.getAttribute('data-youtube');
         const genres = this.getAttribute('data-genres');
         const year = this.getAttribute('data-year');
 
@@ -224,6 +241,7 @@ function addRow(movieList, category) {
         modalImg.src = imgUrl;
         displayTrailer(id, modalImg)
         modalExpand.onclick = () => changeMovie(title);
+        modalList.onclick = () => addToList(id)
         modal.classList.add('active');
         overlay.classList.add('active');
 

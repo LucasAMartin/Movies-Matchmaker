@@ -22,7 +22,7 @@
         {% if session['logged_in'] %}
             <button id="rightButton" onclick="window.location.href = '{{ url_for("logout") }}'">Logout</button>
         {% else %}
-            <button id="rightButton" onclick="window.location.href = '{{ url_for("login_screen") }}'">Login</button>
+            <button id="rightButton" onclick="window.location.href = '{{ url_for("login") }}'">Login</button>
         {% endif %}
 
     </div>

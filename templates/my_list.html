@@ -1,10 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Movies Matchmaker</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
+    <script>
+        let movies = {{ movies|tojson }};
+    </script>
+    <script src="{{ url_for('static',filename='app.js') }}" defer></script>
 </head>
-<body>
-Test
+<body class="preload">
+
+<!-- navbar section -->
+<div class="nav">
+    <div class="nav_left">
+        <a href="/">
+            <img class="nav_logo" src="/static/img/logo.png" alt="">
+        </a>
+    </div>
+    <div>
+        {% if session['logged_in'] %}
+            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("logout") }}'">Logout
+            </button>
+        {% else %}
+            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login_screen") }}'">Login
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+<!-- rows -->
+<div id="headrow">
+    <div class="row">
+        <h2 class="row_title"></h2>
+        <div class="row_posters"></div>
+    </div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-header">
+        <img src="null" alt="img">
+        <div>
+            <div class="title">Example Modal</div>
+            {% if session['logged_in'] %}
+                <button id="modal_button_list">Add to My List</button>
+            {% endif %}
+            <button id="modal_button">Expand</button>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="modal-info">
+            <div class="modal-year"></div>
+            <div class="modal-genre"></div>
+        </div>
+        <div class="modal-desc"></div>
+    </div>
+
+</div>
+<div id="overlay"></div>
+
+<script>
+    window.addEventListener("scroll", function () {
+
+        var nav = document.querySelector(".nav");
+        nav.classList.toggle("active", window.scrollY > 0);
+    })
+</script>
 </body>
 </html>

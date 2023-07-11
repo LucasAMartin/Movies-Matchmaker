@@ -112,10 +112,9 @@ def login_required(view_func):
     async def wrapper(*args, **kwargs):
         # Check if user is authenticated
         if not session['logged_in']:
-            return redirect(url_for('login'))  # Replace 'login' with your login route
+            return redirect(url_for('login_screen'))
         return await view_func(*args, **kwargs)
     return wrapper
-
 
 
 @app.before_serving
@@ -134,28 +133,29 @@ async def home():
     return await render_template('main_page.html')
 
 
-@app.route("/login_screen")
-async def login_screen():
-    return await render_template('login.html')
-
-
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 async def login():
-    form = await request.form
-    username = form['username']
-    password = form['password']
-    remember = form.get('remember') == 'on'
-    user = get_user(username)
-    if user:
-        hashed_password = user[2]
-        if isinstance(hashed_password, str):
-            hashed_password = hashed_password.encode('utf-8')
-        if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
-            session['logged_in'] = True
-            session['username'] = username
-            session.permanent = remember
-            return await render_template('main_page.html')
-    return await render_template('login.html', invalid_credentials=True)
+    if request.method == 'POST':
+        form = await request.form
+        username = form['username']
+        password = form['password']
+        remember = form.get('remember') == 'on'
+        user = get_user(username)
+        if user:
+            hashed_password = user[2]
+            if isinstance(hashed_password, str):
+                hashed_password = hashed_password.encode('utf-8')
+            if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+                session['logged_in'] = True
+                session['username'] = username
+                session.permanent = remember
+                previous_page = session.pop('previous_page', '/')
+                return redirect(previous_page)
+        return await render_template('login.html', invalid_credentials=True)
+    else:
+        session['previous_page'] = request.referrer or '/'
+        return await render_template('login.html')
+
 
 
 
@@ -166,39 +166,38 @@ async def logout():
     return await render_template('main_page.html')
 
 
-
-@app.route("/create_account")
+@app.route('/create_account', methods=['GET', 'POST'])
 async def create_account():
-    return await render_template('create_account.html')
-
-
-@app.route('/register', methods=['POST'])
-async def register():
-    form = await request.form
-    username = form['username']
-    password = form['password']
-    confirm_password = form['confirm_password']
-    if password == confirm_password:
-        response = insert_user(username, password)
-        if response == 'Username taken':
-            return await render_template('create_account.html', username_taken=True)
-        elif response == 'User successfully inserted':
-            return await render_template('main_page.html')
+    if request.method == 'POST':
+        form = await request.form
+        username = form['username']
+        password = form['password']
+        confirm_password = form['confirm_password']
+        if password == confirm_password:
+            response = insert_user(username, password)
+            if response == 'Username taken':
+                return await render_template('create_account.html', username_taken=True)
+            elif response == 'User successfully inserted':
+                return redirect('/')
+            else:
+                return "Unknown Error"
         else:
-            return "Unknown Error"
+            return await render_template('create_account.html', passwords_no_match=True)
     else:
-        return await render_template('create_account.html', passwords_no_match=True)
+        return await render_template('create_account.html')
 
 
-@app.route("/my_list")
-@login_required
+@app.route("/my_list", methods=['POST'])
 async def my_list():
+    movies = get_movie_ids(session['username'])
     return await render_template('my_list.html')
 
 
-@app.errorhandler(Unauthorized)
-async def redirect_to_login(*_: Exception) -> ResponseReturnValue:
-    return redirect(url_for("login_screen"))
+@app.route("/add_list", methods=['POST'])
+async def add_list():
+    data = await request.get_json()
+    movie_id = data['id']
+    response = insert_movie_id(session['username'], movie_id)
 
 
 @app.route('/get_trailer_id', methods=['POST'])
@@ -303,7 +302,6 @@ async def search_movies():
         genre_1_movies = await get_genre_info_async(session, movies, 0)
         genre_2_movies = await get_genre_info_async(session, movies, 1)
         s = time.process_time()
-        print(s - f)
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,

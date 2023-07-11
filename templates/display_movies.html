@@ -13,7 +13,6 @@
         let genre1Movies = {{ genre1|tojson }};
         let genre2Movies = {{ genre2|tojson }};
         let actorMovies = {{ actorMovies|tojson }};
-
     </script>
     <script src="{{ url_for('static',filename='app.js') }}" defer></script>
 </head>
@@ -33,7 +32,7 @@
             <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("logout") }}'">Logout
             </button>
         {% else %}
-            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login_screen") }}'">Login
+            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login") }}'">Login
             </button>
         {% endif %}
     </div>
@@ -47,10 +46,9 @@
     <div id="banner_contents">
         <h1 id="banner_title"></h1>
         <div id="banner_buttons">
-            <button id="banner_button" class="play" onclick="launchMoviePlayer()">Play</button>
+            <button id="banner_button" class="play">Play</button>
             {% if session['logged_in'] %}
-                <button id="banner_button" onclick="window.location.href = '{{ url_for("my_list") }}'">Add to My List
-                </button>
+                <button id="banner_button_list" onclick="addToList()">Add to My List</button>
             {% endif %}
         </div>
         <p id="banner_description"></p>
