@@ -167,7 +167,7 @@ body.preload * {
 .nav {
     position: fixed;
     top: 0;
-    padding: .5rem 2rem;
+    padding: 2rem 2rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -236,6 +236,8 @@ body.preload * {
     font-weight: 800;
     max-width: 55%;
     z-index: 2;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 #banner_description {
@@ -253,9 +255,6 @@ button {
     border: none;
     font-weight: 700;
     border-radius: .2vw;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
     background-color: rgba(51, 51, 51, .5);
     padding: .5rem 2rem;
     white-space: nowrap;
@@ -411,27 +410,22 @@ button:hover {
     }
 
     .modal-header .title {
-        margin-bottom: .5rem;
-        margin-left: 0;
-        left: 0;
-        top: auto;
-        right: auto;
-        bottom: 0;
-        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        max-width: 60%;
     }
 
-    #modal_button, #modal_button_list {
-        margin-bottom: .5rem;
-        left: auto;
-        top: auto;
-        right: 0;
-        bottom: 3%;
-        width: 20%;
+    #modal_button{
+        position: relative;
+        right: 1rem;
+        top: 1rem;
         font-size: small;
     }
 
     #modal_button_list {
-        margin-right: 3rem;
+        position: relative;
+        right: 1rem;
+        top: 1rem;
     }
 
     .modal-body {
@@ -462,11 +456,12 @@ button:hover {
         top: 1rem;
     }
 
-    #navMyList {
+    .nav_right_buttons {
         position: absolute;
-        left: 20rem;
-        top: 2rem;
+        right: 1rem;
+        top: 1rem;
     }
+
 
     #banner_contents {
         margin-left: 3rem;
@@ -497,35 +492,7 @@ button:hover {
     }
 
     #banner_buttons {
-        position: absolute;
-        right: 0;
-        top: 0;
-    }
-
-    #banner_play {
-        position: absolute;
-        right: 24.6rem;
-        top: 15rem;
-    }
-
-    #banner_button_list {
-        position: absolute;
-        right: 16.5rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        top: 15rem;
-    }
-
-    #navLogin{
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
-
-    #navMyList{
-        position: absolute;
-        top: 0;
-        margin-left: -3rem;
+        padding-bottom: 1rem;
     }
 
     .row {
@@ -544,10 +511,47 @@ button:hover {
     .nav__right {
         margin-right: -5%;
     }
-    .nav_active{
-       display: none;
+
+    .nav_active {
+        display: none;
     }
 }
+
+@media only screen and (max-width: 450px) {
+    .nav{
+        padding-bottom: 4rem;
+    }
+
+    .modal-header .title {
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        max-width: 60%;
+    }
+
+    .nav_right_buttons {
+        position: static;
+    }
+
+    #banner_play {
+
+    }
+
+    #banner_button_list {
+    }
+
+    #navLogin {
+        position: absolute;
+        top: 1rem;
+        right: 1rem
+    }
+
+    #navMyList {
+        position: absolute;
+        top: 3.2rem;
+        right: 1rem
+    }
+}
+
 
 
 

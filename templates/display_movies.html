@@ -25,14 +25,17 @@
             <img class="nav_logo" src="/static/img/logo.png" alt="">
         </a>
     </div>
-    <div>
+    <div class="nav_right_buttons">
         {% if session['logged_in'] %}
-            <button class=".nav_right .nav_list" id="navMyList" onclick="window.location.href = '{{ url_for("my_list") }}'">My List
+            <button class=".nav_right .nav_list" id="navMyList"
+                    onclick="window.location.href = '{{ url_for("my_list") }}'">My List
             </button>
-            <button class=".nav_right .nav_login" id="navLogin" onclick="window.location.href = '{{ url_for("logout") }}'">Logout
+            <button class=".nav_right .nav_login" id="navLogin"
+                    onclick="window.location.href = '{{ url_for("logout") }}'">Logout
             </button>
         {% else %}
-            <button class=".nav_right .nav_login" id="navLogin" onclick="window.location.href = '{{ url_for("login") }}'">Login
+            <button class=".nav_right .nav_login" id="navLogin"
+                    onclick="window.location.href = '{{ url_for("login") }}'">Login
             </button>
         {% endif %}
     </div>
@@ -67,13 +70,11 @@
 <div class="modal" id="modal">
     <div class="modal-header">
         <img src="null" alt="img">
-        <div>
-            <div class="title">Example Modal</div>
-            {% if session['logged_in'] %}
-                <button id="modal_button_list">Add to My List</button>
-            {% endif %}
-            <button id="modal_button">Expand</button>
-        </div>
+        <div class="title">Example Modal</div>
+        {% if session['logged_in'] %}
+            <button id="modal_button_list">Add to My List</button>
+        {% endif %}
+        <button id="modal_button">Expand</button>
     </div>
     <div class="modal-body">
         <div class="modal-info">
