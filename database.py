@@ -60,6 +60,23 @@ def insert_movie_id(username, movie_id):
         return f'Error: {e}'
 
 
+def remove_movie_id(username, movie_id):
+    try:
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute('SELECT movie_ids FROM users WHERE username=?', (username,))
+        current_movie_ids = c.fetchone()[0]
+        if str(movie_id) not in current_movie_ids.split(','):
+            return 'Movie is not in your list'
+        updated_movie_ids = ','.join([str(id) for id in current_movie_ids.split(',') if str(id) != str(movie_id)])
+        c.execute('UPDATE users SET movie_ids=? WHERE username=?', (updated_movie_ids, username))
+        conn.commit()
+        conn.close()
+        return 'Success: Movie removed from your list!'
+    except Exception as e:
+        return f'Error: {e}'
+
+
 def get_movie_ids(username):
     conn = sqlite3.connect('database.db')
     c = conn.cursor()

@@ -15,10 +15,11 @@
 <form method="post" action="{{ url_for('create_account') }}">
     <div class="container">
         <div class="card">
-            <p class="title">Login</p>
+            <p class="title">Create Account</p>
             <label for="username"></label>
             <input type="text" name="username" id="username" placeholder="Username"/>
-            <span id="errorMessage" style="display: none; color: red; font-size: 14px; position: absolute; top: 15rem; font-family: 'Roboto', sans-serif">Invalid credentials</span>
+            <span id="errorMessage"
+                  style="display: none; color: red; font-size: 14px; position: absolute; top: 15rem; font-family: 'Roboto', sans-serif">Invalid credentials</span>
             <label for="password"></label>
             <input type="password" name="password" class="password" placeholder="Password"/>
             <label for="confirmPassword"></label>
@@ -37,7 +38,12 @@
 
                 <a href='/login'>Login</a>
             </div>
-
+            <div class="firsttime">
+                <div>
+                    <p>First Time?</p>
+                    <a href="/">Subscribe Here.</a>
+                </div>
+            </div>
             <div class="other-login">
                 <div>
                     <img
@@ -45,13 +51,6 @@
                             alt=""
                     />
                     <p>Login with Facebook</p>
-                </div>
-            </div>
-
-            <div class="firsttime">
-                <div>
-                    <p>First Time?</p>
-                    <a href="/">Subscribe Here.</a>
                 </div>
             </div>
         </div>

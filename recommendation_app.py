@@ -107,16 +107,6 @@ async def get_trending_info_async(session, banner_movie):
     return movies
 
 
-def login_required(view_func):
-    @wraps(view_func)
-    async def wrapper(*args, **kwargs):
-        # Check if user is authenticated
-        if not session['logged_in']:
-            return redirect(url_for('login_screen'))
-        return await view_func(*args, **kwargs)
-    return wrapper
-
-
 @app.before_serving
 async def startup():
     init_db()
@@ -148,6 +138,7 @@ async def login():
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
                 session['logged_in'] = True
                 session['username'] = username
+                session['movie_ids'] = get_movie_ids(session['username'])
                 session.permanent = remember
                 previous_page = session.pop('previous_page', '/')
                 return redirect(previous_page)
@@ -157,6 +148,12 @@ async def login():
         return await render_template('login.html')
 
 
+@app.route('/get_movie_ids_session')
+async def get_movie_ids_session():
+    if not session.get('logged_in', False):
+        return '', 401
+    movie_ids = get_movie_ids(session['username'])
+    return jsonify(movie_ids)
 
 
 @app.route('/logout')
@@ -178,7 +175,8 @@ async def create_account():
             if response == 'Username taken':
                 return await render_template('create_account.html', username_taken=True)
             elif response == 'User successfully inserted':
-                return redirect('/')
+                previous_page = session.pop('previous_page', '/')
+                return redirect(previous_page)
             else:
                 return "Unknown Error"
         else:
@@ -195,23 +193,37 @@ async def my_list():
         for i, movie in enumerate(movies):
             url = f"{BASE_URL}/movie/{movie}?{API}"
             tasks.append(asyncio.ensure_future(get_data_async(client_session, url)))
-            print(url)
         movies = await asyncio.gather(*tasks)
-        print(movies)
     return await render_template('my_list.html', movies=movies)
 
 
 @app.route("/add_list", methods=['POST'])
 async def add_list():
+    if not session.get('logged_in', False):
+        return '', 401
     data = await request.get_json()
     movie_id = data['id']
-    response = insert_movie_id(session['username'], movie_id)
+    insert_movie_id(session['username'], movie_id)
+    movie_ids = get_movie_ids(session['username'])
+    return jsonify(movie_ids)
+
+
+@app.route("/remove_list", methods=['POST'])
+async def remove_list():
+    if not session.get('logged_in', False):
+        return '', 401
+    data = await request.get_json()
+    movie_id = data['id']
+    remove_movie_id(session['username'], movie_id)
+    movie_ids = get_movie_ids(session['username'])
+    return jsonify(movie_ids)
 
 
 @app.route('/get_trailer_id', methods=['POST'])
 async def get_trailer_id():
     data = await request.get_json()
     movie_id = data['movie_id']
+
     # Use the get_trailer_id_async function to retrieve the trailer ID
 
     async def get_trailer_id_async():
@@ -236,6 +248,7 @@ async def get_trailer_id():
 async def get_imdb_id():
     data = await request.get_json()
     tmdb_id = data['movie_id']
+
     # Use the get_imdb_id_async function to retrieve the imdb ID
 
     async def get_imdb_id_async():

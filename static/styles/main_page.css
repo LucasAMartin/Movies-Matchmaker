@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Roboto&display=swap');
 
 * {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Lato', sans-serif;
     box-sizing: border-box;
     color: white;
 }
@@ -51,6 +51,7 @@ button#rightButton {
 }
 
 button {
+    font-family: 'Roboto', sans-serif;
     display: flex;
     align-items: center;
     outline: 0;
@@ -85,7 +86,6 @@ button:active {
 }
 
 .mainText {
-    font-family: 'Lato', sans-serif;
     font-weight: bold;
     font-size: xx-large;
     text-align: center;

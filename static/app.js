@@ -28,6 +28,7 @@ const genreIdToName = {
 
 const bannerMovie = movies[0].results[0];
 const MAX_POSTERS = 20;
+let myListMovieIDS;
 
 // Create an instance of the Lozad.js library
 const lazyLoadInstance = lozad('.lazy', {
@@ -62,7 +63,7 @@ addRow(genre2Movies, `Top ${genre2} Movies`);
 addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
 
-function addToList(id) {
+function addToList(id, button) {
     fetch('/add_list', {
         method: 'POST',
         headers: {
@@ -70,8 +71,43 @@ function addToList(id) {
         },
         body: JSON.stringify({id: id})
     })
-        .then(response => response.json())
-        .then(data => console.log(data))
+        .then(response => {
+            if (response.status === 401) {
+                window.location.href = '/login';
+            } else {
+                if (button.textContent === 'Add to List') {
+                    button.textContent = 'Remove from List';
+                }
+                myListMovieIDS = response.json();
+            }
+        })
+        .then(movie_ids => {
+            // use the movie_ids as needed
+        })
+        .catch(error => console.log(error))
+}
+
+function removeFromList(id, button) {
+    fetch('/remove_list', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: id})
+    })
+        .then(response => {
+            if (response.status === 401) {
+                window.location.href = '/login';
+            } else {
+                if (button.textContent === 'Remove from List') {
+                    button.textContent = 'Add to List';
+                }
+                myListMovieIDS = response.json();
+            }
+        })
+        .then(movie_ids => {
+            // use the movie_ids as needed
+        })
         .catch(error => console.log(error))
 }
 
@@ -126,7 +162,7 @@ function changeMovie(movie) {
 }
 
 // fetch the information for the banner movies
-function requestBanner() {
+async function requestBanner() {
     if (bannerMovie == null) {
         const banner_title = document.getElementById("banner_title");
         banner_title.innerText = "Retry Search";
@@ -145,8 +181,25 @@ function requestBanner() {
         banner_description.innerText = truncateString(bannerMovie.overview, 600);
     }
     banner_title.innerText = bannerMovie.title;
-    if (banner_List){
-        banner_List.onclick = () => addToList(bannerMovie.id)
+    banner_List.textContent = 'Add to List';
+    banner_List.onclick = (event) => {
+        const clickedButton = event.target;
+        addToList(bannerMovie.id, clickedButton);
+    };
+    try {
+        const response = await fetch('/get_movie_ids_session');
+        movieIDS = await response.json();
+        myListMovieIDS = movieIDS
+        if (myListMovieIDS.includes(bannerMovie.id)) {
+            banner_List.textContent = 'Remove from List';
+            banner_List.onclick = (event) => {
+                const clickedButton = event.target;
+                removeFromList(bannerMovie.id, clickedButton);
+            };
+
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 

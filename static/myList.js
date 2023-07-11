@@ -2,6 +2,8 @@ const img_url = "https://image.tmdb.org/t/p/original";
 addMovies(movies, 'Your List')
 
 function addMovies(movieList, category) {
+    // newest first
+    movieList.reverse();
     // top recommendations
     const topRow = document.getElementById("topRowList");
     const row = document.querySelector('#topRowList .row')

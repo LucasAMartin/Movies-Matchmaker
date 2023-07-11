@@ -7,7 +7,6 @@
     <title>Movies Matchmaker</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/lozad@latest"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let movies = {{ movies|tojson }};
         let genre1Movies = {{ genre1|tojson }};
@@ -49,9 +48,7 @@
         <h1 id="banner_title"></h1>
         <div id="banner_buttons">
             <button id="banner_play" class="play">Play</button>
-            {% if session['logged_in'] %}
-                <button id="banner_button_list" onclick="addToList()">Add to My List</button>
-            {% endif %}
+            <button id="banner_button_list">Add to List</button>
         </div>
         <p id="banner_description"></p>
     </div>
@@ -63,7 +60,7 @@
 <div id="topRow">
     <div class="row">
         <h2 class="row_title"></h2>
-        <div class="row_posters" onclick="changeMovie()"></div>
+        <div class="row_posters"></div>
     </div>
 </div>
 
@@ -71,9 +68,7 @@
     <div class="modal-header">
         <img src="null" alt="img">
         <div class="title">Example Modal</div>
-        {% if session['logged_in'] %}
-            <button id="modal_button_list">Add to My List</button>
-        {% endif %}
+        <button id="modal_button_list">Add to My List</button>
         <button id="modal_button">Expand</button>
     </div>
     <div class="modal-body">
