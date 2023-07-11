@@ -49,7 +49,6 @@ def insert_movie_id(username, movie_id):
         c = conn.cursor()
         c.execute('SELECT movie_ids FROM users WHERE username=?', (username,))
         current_movie_ids = c.fetchone()[0]
-        print(current_movie_ids)
         if current_movie_ids is None:
             c.execute('UPDATE users SET movie_ids=? WHERE username=?', (movie_id, username))
             conn.commit()

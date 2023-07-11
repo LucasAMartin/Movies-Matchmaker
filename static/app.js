@@ -295,9 +295,21 @@ function addRow(movieList, category) {
         modalImg.src = imgUrl;
         displayTrailer(id, modalImg)
         modalExpand.onclick = () => changeMovie(title);
-        modalList.onclick = () => addToList(id)
+        modalList.onclick = (event) => {
+                const clickedButton = event.target;
+                addToList(id, clickedButton);
+            };
         modal.classList.add('active');
         overlay.classList.add('active');
+
+        if (myListMovieIDS.includes(parseInt(id, 10))) {
+            modalList.textContent = 'Remove from List';
+            modalList.onclick = (event) => {
+                const clickedButton = event.target;
+                removeFromList(id, clickedButton);
+            };
+
+        }
 
     }
 
