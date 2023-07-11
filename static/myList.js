@@ -2,6 +2,12 @@ const img_url = "https://image.tmdb.org/t/p/original";
 addMovies(movies, 'Your List')
 
 function addMovies(movieList, category) {
+    console.log(movieList)
+    if (movieList === null || movieList.length == 0) {
+        const title = document.querySelector("#topRowList .row .row_title");
+        title.innerText = 'Add movies to your list to view them here';
+        return
+    }
     // newest first
     movieList.reverse();
     // top recommendations
@@ -10,7 +16,7 @@ function addMovies(movieList, category) {
     const title = document.querySelector("#topRowList .row .row_title");
     const row_posters = document.querySelector("#topRowList .row .row_posters_list")
     title.innerText = category;
-    for (let i = 1; i <= movieList.length; i++) {
+    for (let i = 0; i <= movieList.length; i++) {
         try {
             let movie = movieList[i];
             let poster = document.createElement("img");

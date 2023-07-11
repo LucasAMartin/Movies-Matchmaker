@@ -140,8 +140,7 @@ async def login():
                 session['username'] = username
                 session['movie_ids'] = get_movie_ids(session['username'])
                 session.permanent = remember
-                previous_page = session.pop('previous_page', '/')
-                return redirect(previous_page)
+                return redirect('/')
         return await render_template('login.html', invalid_credentials=True)
     else:
         session['previous_page'] = request.referrer or '/'
@@ -160,6 +159,7 @@ async def get_movie_ids_session():
 async def logout():
     session.pop('logged_in', None)
     session.pop('username', None)
+    session.pop('movie_ids', None)
     return await render_template('main_page.html')
 
 
@@ -190,6 +190,8 @@ async def my_list():
     async with aiohttp.ClientSession() as client_session:
         movies = get_movie_ids(session['username'])
         tasks = []
+        if movies is None:
+            return await render_template('my_list.html', movies=movies)
         for i, movie in enumerate(movies):
             url = f"{BASE_URL}/movie/{movie}?{API}"
             tasks.append(asyncio.ensure_future(get_data_async(client_session, url)))

@@ -190,6 +190,7 @@ async function requestBanner() {
         const response = await fetch('/get_movie_ids_session');
         movieIDS = await response.json();
         myListMovieIDS = movieIDS
+        console.log(myListMovieIDS)
         if (myListMovieIDS.includes(bannerMovie.id)) {
             banner_List.textContent = 'Remove from List';
             banner_List.onclick = (event) => {

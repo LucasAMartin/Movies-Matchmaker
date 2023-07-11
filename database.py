@@ -49,6 +49,12 @@ def insert_movie_id(username, movie_id):
         c = conn.cursor()
         c.execute('SELECT movie_ids FROM users WHERE username=?', (username,))
         current_movie_ids = c.fetchone()[0]
+        print(current_movie_ids)
+        if current_movie_ids is None:
+            c.execute('UPDATE users SET movie_ids=? WHERE username=?', (movie_id, username))
+            conn.commit()
+            conn.close()
+            return 'Success: First movie added to your list!'
         if str(movie_id) in current_movie_ids.split(','):
             return 'Movie is already in your list'
         updated_movie_ids = current_movie_ids + ',' + str(movie_id)
@@ -83,5 +89,7 @@ def get_movie_ids(username):
     c.execute('SELECT movie_ids FROM users WHERE username=?', (username,))
     movie_ids_str = c.fetchone()[0]
     conn.close()
+    if movie_ids_str is None:
+        return None
     movie_ids = list(map(int, movie_ids_str.split(',')))
     return movie_ids
