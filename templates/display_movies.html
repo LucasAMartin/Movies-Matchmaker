@@ -27,16 +27,15 @@
     </div>
     <div>
         {% if session['logged_in'] %}
-            <button class=".nav_right .nav_list" onclick="window.location.href = '{{ url_for("my_list") }}'">My List
+            <button class=".nav_right .nav_list" id="navMyList" onclick="window.location.href = '{{ url_for("my_list") }}'">My List
             </button>
-            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("logout") }}'">Logout
+            <button class=".nav_right .nav_login" id="navLogin" onclick="window.location.href = '{{ url_for("logout") }}'">Logout
             </button>
         {% else %}
-            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login") }}'">Login
+            <button class=".nav_right .nav_login" id="navLogin" onclick="window.location.href = '{{ url_for("login") }}'">Login
             </button>
         {% endif %}
     </div>
-</div>
 </div>
 
 
@@ -46,7 +45,7 @@
     <div id="banner_contents">
         <h1 id="banner_title"></h1>
         <div id="banner_buttons">
-            <button id="banner_button" class="play">Play</button>
+            <button id="banner_play" class="play">Play</button>
             {% if session['logged_in'] %}
                 <button id="banner_button_list" onclick="addToList()">Add to My List</button>
             {% endif %}

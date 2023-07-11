@@ -154,9 +154,9 @@ body {
 }
 
 body.preload * {
-    animation-duration: 0s !important;
-    -webkit-animation-duration: 0s !important;
-    transition: background-color 0s, opacity 0s, color 0s, width 0s, height 0s, padding 0s, margin 0s !important;
+    animation-duration: 0s;
+    -webkit-animation-duration: 0s;
+    transition: background-color 0s, opacity 0s, color 0s, width 0s, height 0s, padding 0s, margin 0s;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -210,7 +210,7 @@ body.preload * {
     background-size: cover;
     position: relative;
     z-index: 0;
-    margin-bottom: -2rem;
+    margin-bottom: -4rem;
 }
 
 .banner_gradient {
@@ -242,7 +242,7 @@ body.preload * {
     line-height: 1.5;
     padding-top: 1rem;
     font-size: 1.2rem;
-    max-width: 40%;
+    max-width: 50%;
     height: 80px;
 }
 
@@ -258,6 +258,7 @@ button {
     margin-right: 1rem;
     background-color: rgba(51, 51, 51, .5);
     padding: .5rem 2rem;
+    white-space: nowrap;
 }
 
 button:hover {
@@ -355,6 +356,14 @@ button:hover {
 
 
 @media only screen and (max-width: 1250px) {
+    #banner {
+        margin-bottom: -2rem;
+    }
+
+    .nav_logo {
+        margin-left: 1rem;
+    }
+
     #banner_contents {
         margin-left: 3rem;
         padding-top: 80px;
@@ -367,8 +376,7 @@ button:hover {
 
     #banner_description {
         font-size: .9rem;
-        max-width: 50%;
-
+        max-width: 65%;
     }
 
     .modal {
@@ -448,9 +456,21 @@ button:hover {
 
     }
 
+    .nav_logo {
+        position: absolute;
+        margin-left: -1rem;
+        top: 1rem;
+    }
+
+    #navMyList {
+        position: absolute;
+        left: 20rem;
+        top: 2rem;
+    }
+
     #banner_contents {
         margin-left: 3rem;
-        padding-top: 80px;
+        padding-top: 4rem;
         margin-right: 0;
         margin-bottom: -5%;
     }
@@ -468,11 +488,44 @@ button:hover {
     #banner {
         margin-left: auto;
         margin-right: 0;
+        margin-bottom: -2rem;
     }
 
     #banner_description {
         max-width: 90%;
         padding-top: 0;
+    }
+
+    #banner_buttons {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    #banner_play {
+        position: absolute;
+        right: 24.6rem;
+        top: 15rem;
+    }
+
+    #banner_button_list {
+        position: absolute;
+        right: 16.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        top: 15rem;
+    }
+
+    #navLogin{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    #navMyList{
+        position: absolute;
+        top: 0;
+        margin-left: -3rem;
     }
 
     .row {
@@ -490,6 +543,9 @@ button:hover {
 
     .nav__right {
         margin-right: -5%;
+    }
+    .nav_active{
+       display: none;
     }
 }
 
