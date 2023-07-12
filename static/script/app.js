@@ -78,7 +78,6 @@ function addToList(id, button) {
                 if (button.textContent === 'Add to List') {
                     button.textContent = 'Remove from List';
                 }
-                myListMovieIDS = response.json();
             }
         })
         .then(movie_ids => {
@@ -102,7 +101,6 @@ function removeFromList(id, button) {
                 if (button.textContent === 'Remove from List') {
                     button.textContent = 'Add to List';
                 }
-                myListMovieIDS = response.json();
             }
         })
         .then(movie_ids => {
