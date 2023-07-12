@@ -294,6 +294,7 @@ function addRow(movieList, category) {
         // Set the src attribute of the modal image to the image URL of the clicked poster
         modalImg.src = imgUrl;
         displayTrailer(id, modalImg)
+        modalList.textContent = 'Add to List';
         modalExpand.onclick = () => changeMovie(title);
         modalList.onclick = (event) => {
                 const clickedButton = event.target;
