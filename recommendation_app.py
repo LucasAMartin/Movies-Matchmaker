@@ -1,7 +1,4 @@
 import time
-from datetime import timedelta
-from functools import wraps
-
 from quart import Quart, request, render_template, jsonify, ResponseReturnValue, redirect, url_for, session
 import re
 import aiohttp
@@ -140,11 +137,18 @@ async def login():
                 session['username'] = username
                 session['movie_ids'] = get_movie_ids(session['username'])
                 session.permanent = remember
-                return redirect('/')
+                # Redirect the user back to the search page they were on before logging in
+                previous_page = session.get('previous_page')
+                if previous_page and '/Search' in previous_page:
+                    return redirect(previous_page)
+                else:
+                    return redirect('/')
         return await render_template('login.html', invalid_credentials=True)
     else:
+        # Store the URL of the page the user was on before logging in
         session['previous_page'] = request.referrer or '/'
         return await render_template('login.html')
+
 
 
 @app.route('/get_movie_ids_session')
