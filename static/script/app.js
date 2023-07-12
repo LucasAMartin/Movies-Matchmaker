@@ -125,7 +125,6 @@ async function getYoutubeTrailerKey(movie_id) {
     } catch (error) {
         console.error(error);
     }
-    console.log(trailer_id)
     return trailer_id;
 }
 
@@ -206,12 +205,9 @@ async function requestBanner() {
 // if the banner movie is not in database, we can't give recommendations
 // in this case just display the trending movies
 function addRow(movieList, category) {
-    // top recommendations
-    const topRow = document.getElementById("topRow");
     const row = document.createElement("div");
     row.className = "row";
-    row.classList.add("top_row");
-    topRow.appendChild(row);
+    rowOutline.appendChild(row);
     const title = document.createElement("h2");
     title.className = "row_title";
     title.innerText = category;
@@ -308,9 +304,11 @@ function openModal() {
     modalExpand.onclick = () => changeMovie(title);
     displayTrailer(id, modalImg)
     modalList.textContent = 'Add to List';
-    if (myListMovieIDS.includes(parseInt(id, 10))) {
-        modalList.textContent = 'Remove from List';
-    }
+    try {
+        if (myListMovieIDS.includes(parseInt(id, 10))) {
+            modalList.textContent = 'Remove from List';
+        }
+    } catch (TypeError){}
     modalList.onclick = (event) => {
         const clickedButton = event.target;
         if (modalList.textContent === 'Add to List') {

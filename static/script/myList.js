@@ -11,8 +11,6 @@ function addMovies(movieList, category) {
     // newest first
     movieList.reverse();
     // top recommendations
-    const topRow = document.getElementById("topRowList");
-    const row = document.querySelector('#topRowList .row')
     const title = document.querySelector("#topRowList .row .row_title");
     const row_posters = document.querySelector("#topRowList .row .row_posters_list")
     title.innerText = category;
