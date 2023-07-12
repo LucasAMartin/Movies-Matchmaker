@@ -41,6 +41,7 @@ const lazyLoadInstance = lozad('.lazy', {
 // Start observing for lazy loading
 lazyLoadInstance.observe();
 
+
 // main functions, displays a banner and 3 rows
 requestBanner();
 
@@ -307,7 +308,8 @@ function openModal() {
         if (myListMovieIDS.includes(parseInt(id, 10))) {
             modalList.textContent = 'Remove from List';
         }
-    } catch (TypeError){}
+    } catch (TypeError) {
+    }
     modalList.onclick = (event) => {
         const clickedButton = event.target;
         if (modalList.textContent === 'Add to List') {
@@ -324,7 +326,6 @@ function openModal() {
 function closeModal() {
     const modal = document.querySelector('#modal');
     const overlay = document.querySelector('#overlay');
-
     modal.classList.remove('active');
     overlay.classList.remove('active');
 

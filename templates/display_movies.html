@@ -23,8 +23,12 @@
         <a href="/">
             <img class="nav_logo" src="/static/img/logo.png" alt="">
         </a>
+
     </div>
     <div class="nav_right_buttons">
+        <button class=".nav_right .nav_list" id="navMyList"
+                onclick="window.location.href = '{{ url_for("home") }}'">Home
+        </button>
         {% if session['logged_in'] %}
             <button class=".nav_right .nav_list" id="navMyList"
                     onclick="window.location.href = '{{ url_for("my_list") }}'">My List
@@ -65,7 +69,15 @@
         </div>
     </div>
 </div>
+<script>
+    window.addEventListener("scroll", function () {
 
+        var nav = document.querySelector(".nav");
+        nav.classList.toggle("active", window.scrollY > 0);
+    })
+</script>
+</body>
+</html>
 
 <div class="modal" id="modal">
     <div class="modal-header">
@@ -84,13 +96,3 @@
     </div>
 </div>
 <div id="overlay"></div>
-
-<script>
-    window.addEventListener("scroll", function () {
-
-        var nav = document.querySelector(".nav");
-        nav.classList.toggle("active", window.scrollY > 0);
-    })
-</script>
-</body>
-</html>
