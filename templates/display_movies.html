@@ -26,7 +26,7 @@
 
     </div>
     <div class="nav_right_buttons">
-        <button class=".nav_right .nav_list" id="navMyList"
+        <button class=".nav_right .nav_list" id="navHome"
                 onclick="window.location.href = '{{ url_for("home") }}'">Home
         </button>
         {% if session['logged_in'] %}
@@ -34,11 +34,11 @@
                     onclick="window.location.href = '{{ url_for("my_list") }}'">My List
             </button>
             <button class=".nav_right .nav_login" id="navLogin"
-                    onclick="window.location.href = '{{ url_for("logout") }}'">Logout
+                    onclick="window.location.href = '{{ url_for("logout") }}'">Sign Out
             </button>
         {% else %}
             <button class=".nav_right .nav_login" id="navLogin"
-                    onclick="window.location.href = '{{ url_for("login") }}'">Login
+                    onclick="window.location.href = '{{ url_for("login") }}'">Sign In
             </button>
         {% endif %}
     </div>

@@ -486,6 +486,10 @@ button:hover {
 
     }
 
+    #navHome{
+        display: none;
+    }
+
     .nav_logo {
         position: absolute;
         margin-left: -1rem;

@@ -22,15 +22,17 @@
             <img class="nav_logo_list" src="/static/img/logo.png" alt="">
         </a>
     </div>
-    <div class="nav_right_buttons">
-        <button class=".nav_right .nav_list" id="navMyList"
+    <div class="nav_right_buttons_list">
+        <button class=".nav_right .nav_list" id="navHomeList"
                 onclick="window.location.href = '{{ url_for("home") }}'">Home
         </button>
+        <button id="trendingButtonList" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies
+        </button>
         {% if session['logged_in'] %}
-            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("logout") }}'">Logout
+            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("logout") }}'">Sign Out
             </button>
         {% else %}
-            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login_screen") }}'">Login
+            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login_screen") }}'">Sign In
             </button>
         {% endif %}
     </div>

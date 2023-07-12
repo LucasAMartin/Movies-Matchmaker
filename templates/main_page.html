@@ -19,15 +19,14 @@
     <div id="headerButtons">
         </button>
         {% if session['logged_in'] %}
-            <button id="leftButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies
+            <button id="leftButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies</button>
             <button id="rightListButton" onclick="window.location.href = '{{ url_for("my_list") }}'">My List</button>
-            <button id="rightButton" onclick="window.location.href = '{{ url_for("logout") }}'">Logout</button>
+            <button id="rightButton" onclick="window.location.href = '{{ url_for("logout") }}'">Sign Out</button>
         {% else %}
             <button id="trendingButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending
-            Movies
-            <button id="rightButton" onclick="window.location.href = '{{ url_for("login") }}'">Login</button>
+            Movies</button>
+            <button id="rightButton" onclick="window.location.href = '{{ url_for("login") }}'">Sign in</button>
         {% endif %}
-
     </div>
 </nav>
 <section class="title">
