@@ -174,6 +174,8 @@ async function requestBanner() {
     const banner_title = document.getElementById("banner_title");
     const banner_description = document.getElementById("banner_description");
     const banner_List = document.querySelector('#banner_button_list');
+    const banner_play = document.querySelector('#banner_play');
+    banner_play.onclick = launchMoviePlayer
     banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
     if (window.innerWidth <= 450) {
         banner_description.innerText = truncateString(bannerMovie.overview, 250);
@@ -190,7 +192,6 @@ async function requestBanner() {
         const response = await fetch('/get_movie_ids_session');
         movieIDS = await response.json();
         myListMovieIDS = movieIDS
-        console.log(myListMovieIDS)
         if (myListMovieIDS.includes(bannerMovie.id)) {
             banner_List.textContent = 'Remove from List';
             banner_List.onclick = (event) => {
@@ -263,82 +264,6 @@ function addRow(movieList, category) {
             break;
         }
     }
-
-    function openModal() {
-        const modal = document.querySelector('#modal');
-        const overlay = document.querySelector('#overlay');
-        overlay.onclick = closeModal;
-        const modalImg = document.querySelector('#modal .modal-header img');
-        const modalTitle = document.querySelector('#modal .modal-header .title');
-        const modalDesc = document.querySelector('#modal .modal-body .modal-desc');
-        const modalGenre = document.querySelector('#modal .modal-body .modal-info .modal-genre');
-        const modalYear = document.querySelector('#modal .modal-body .modal-info .modal-year');
-        const modalExpand = document.querySelector('#modal .modal-header #modal_button');
-        const modalList = document.querySelector('#modal .modal-header #modal_button_list');
-
-        // Get the title, overview, image URL, and YouTube link of the clicked poster from its data-* attributes
-        const title = this.getAttribute('data-title');
-        const id = this.getAttribute('data-id');
-        const overview = this.getAttribute('data-desc');
-        const imgUrl = this.getAttribute('data-img');
-        const genres = this.getAttribute('data-genres');
-        const year = this.getAttribute('data-year');
-
-
-        // Set the text content of the modal title and body to the title and overview of the clicked poster
-        modalTitle.textContent = title;
-        modalDesc.textContent = overview;
-        modalGenre.textContent = genres;
-        modalYear.textContent = year;
-
-        // Set the src attribute of the modal image to the image URL of the clicked poster
-        modalImg.src = imgUrl;
-        displayTrailer(id, modalImg)
-        modalList.textContent = 'Add to List';
-        modalExpand.onclick = () => changeMovie(title);
-        modalList.onclick = (event) => {
-                const clickedButton = event.target;
-                addToList(id, clickedButton);
-            };
-        modal.classList.add('active');
-        overlay.classList.add('active');
-
-        if (myListMovieIDS.includes(parseInt(id, 10))) {
-            modalList.textContent = 'Remove from List';
-            modalList.onclick = (event) => {
-                const clickedButton = event.target;
-                removeFromList(id, clickedButton);
-            };
-
-        }
-
-    }
-
-
-    function closeModal() {
-        const modal = document.querySelector('#modal');
-        const overlay = document.querySelector('#overlay');
-
-        modal.classList.remove('active');
-        overlay.classList.remove('active');
-
-        // Get references to the image and iframe elements
-        const modalImg = document.querySelector('#modal .modal-header img');
-        const modalIframe = document.querySelector('#modal .modal-header .youtube-iframe');
-
-        // Check if an iframe element exists
-        if (modalIframe) {
-            // Remove the iframe element
-            modalIframe.remove();
-            // Show the image again
-            modalImg.style.display = 'block';
-            // Reset the opacity of the image
-            modalImg.style.opacity = '1';
-            modalImg.src = null;
-        }
-    }
-
-
     const prevButton = document.createElement("button");
     prevButton.className = "scroll-button prev";
     prevButton.innerText = "<";
@@ -351,6 +276,77 @@ function addRow(movieList, category) {
     row.appendChild(nextButton);
 
     lazyLoadInstance.observe()
+}
+
+function openModal() {
+    const modal = document.querySelector('#modal');
+    const overlay = document.querySelector('#overlay');
+    overlay.onclick = closeModal;
+    const modalImg = document.querySelector('#modal .modal-header img');
+    const modalTitle = document.querySelector('#modal .modal-header .title');
+    const modalDesc = document.querySelector('#modal .modal-body .modal-desc');
+    const modalGenre = document.querySelector('#modal .modal-body .modal-info .modal-genre');
+    const modalYear = document.querySelector('#modal .modal-body .modal-info .modal-year');
+    const modalExpand = document.querySelector('#modal .modal-header #modal_button');
+    const modalList = document.querySelector('#modal .modal-header #modal_button_list');
+
+    // Get the title, overview, image URL, and YouTube link of the clicked poster from its data-* attributes
+    const title = this.getAttribute('data-title');
+    const id = this.getAttribute('data-id');
+    const overview = this.getAttribute('data-desc');
+    const imgUrl = this.getAttribute('data-img');
+    const genres = this.getAttribute('data-genres');
+    const year = this.getAttribute('data-year');
+
+
+    // Set the text content of the modal title and body to the title and overview of the clicked poster
+    modalTitle.textContent = title;
+    modalDesc.textContent = overview;
+    modalGenre.textContent = genres;
+    modalYear.textContent = year;
+
+    // Set the src attribute of the modal image to the image URL of the clicked poster
+    modalImg.src = imgUrl;
+    modalExpand.onclick = () => changeMovie(title);
+    displayTrailer(id, modalImg)
+    modalList.textContent = 'Add to List';
+    if (myListMovieIDS.includes(parseInt(id, 10))) {
+        modalList.textContent = 'Remove from List';
+    }
+    modalList.onclick = (event) => {
+        const clickedButton = event.target;
+        if (modalList.textContent === 'Add to List') {
+            addToList(id, clickedButton);
+        } else if (modalList.textContent === 'Remove from List') {
+            removeFromList(id, clickedButton)
+        }
+    };
+    modal.classList.add('active');
+    overlay.classList.add('active');
+}
+
+
+function closeModal() {
+    const modal = document.querySelector('#modal');
+    const overlay = document.querySelector('#overlay');
+
+    modal.classList.remove('active');
+    overlay.classList.remove('active');
+
+    // Get references to the image and iframe elements
+    const modalImg = document.querySelector('#modal .modal-header img');
+    const modalIframe = document.querySelector('#modal .modal-header .youtube-iframe');
+
+    // Check if an iframe element exists
+    if (modalIframe) {
+        // Remove the iframe element
+        modalIframe.remove();
+        // Show the image again
+        modalImg.style.display = 'block';
+        // Reset the opacity of the image
+        modalImg.style.opacity = '1';
+        modalImg.src = null;
+    }
 }
 
 async function displayTrailer(movie_id, modalImg) {
