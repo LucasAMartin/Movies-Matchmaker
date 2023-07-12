@@ -124,7 +124,7 @@ async def home():
 async def login():
     if request.method == 'POST':
         form = await request.form
-        username = form['username']
+        username = form['username'].lower()
         password = form['password']
         remember = form.get('remember') == 'on'
         user = get_user(username)
@@ -171,7 +171,7 @@ async def logout():
 async def create_account():
     if request.method == 'POST':
         form = await request.form
-        username = form['username']
+        username = form['username'].lower()
         password = form['password']
         confirm_password = form['confirm_password']
         if password == confirm_password:
@@ -179,8 +179,11 @@ async def create_account():
             if response == 'Username taken':
                 return await render_template('create_account.html', username_taken=True)
             elif response == 'User successfully inserted':
-                previous_page = session.pop('previous_page', '/')
-                return redirect(previous_page)
+                session['logged_in'] = True
+                session['username'] = username
+                session.permanent = remember
+                # Redirect the user back to the search page they were on before logging in
+                return redirect('/')
             else:
                 return "Unknown Error"
         else:
