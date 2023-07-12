@@ -329,8 +329,6 @@ async def search_movies():
         genre_1_movies = await get_genre_info_async(session, movies, 0)
         genre_2_movies = await get_genre_info_async(session, movies, 1)
         s = time.process_time()
-        print(movies)
-        print(genre_2_movies)
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,

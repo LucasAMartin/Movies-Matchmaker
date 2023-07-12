@@ -33,21 +33,7 @@ nav {
 
 #headerButtons {
     display: flex;
-    gap: 10%;
-}
-
-button#leftButton {
-    width: 120px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-}
-
-button#rightButton {
-    width: 80px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
+    gap: 1rem;
 }
 
 button {
@@ -56,6 +42,7 @@ button {
     align-items: center;
     outline: 0;
     border: 0;
+    height: 30px;
     font-size: 12px;
     color: #fff;
     cursor: pointer;
@@ -64,7 +51,8 @@ button {
     white-space: nowrap;
     animation-duration: 1s;
     transition: background-color .4s;
-    background-color: #e50914;
+    background-color: rgba(40,40,40);
+    justify-content: center;
 }
 
 button:hover {
@@ -89,7 +77,8 @@ button:active {
     font-weight: bold;
     font-size: xx-large;
     text-align: center;
-    margin-top: -1rem;
+    margin-bottom: 0.5rem;
+
 }
 
 #mainTextExtra {
@@ -174,18 +163,13 @@ li.selected {
     }
 
     button#leftButton {
-        width: 6rem;
-        height: 2rem;
-        align-items: center;
-        justify-content: center;
+        position: absolute;
+        top: 3rem;
+        width: 155px;
     }
 
     button#rightButton {
         width: 4rem;
-        height: 2rem;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
     }
 
     .search {
@@ -210,8 +194,8 @@ li.selected {
 }
 
 @media only screen and (max-width: 380px) {
-    #headerButtons {
-        gap: 2%;
+    #trendingButton {
+        margin-right: -15px;
     }
 
     .search input {

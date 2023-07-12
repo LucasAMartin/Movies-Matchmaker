@@ -98,16 +98,6 @@
     height: auto;
 }
 
-.modal-header::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    right: 0;
-    height: 15%;
-    background-image: linear-gradient(to top, rgba(20, 20, 20, 1), rgba(20, 20, 20, 0));
-}
-
 .modal-info {
     display: flex;
     gap: 2%;
@@ -131,6 +121,16 @@
     margin-top: 1%;
     font-size: 1.8rem;
     font-family: 'Bebas Neue', sans-serif;
+}
+
+#modal_fadeBottom {
+    position: absolute;
+    bottom: 0;
+    content: '';
+    width: 100%;
+    height: 10%;
+    background: linear-gradient(180deg,rgba(20, 20, 20, 0), rgba(20, 20, 20)
+    );
 }
 
 #overlay {

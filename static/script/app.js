@@ -38,7 +38,6 @@ const lazyLoadInstance = lozad('.lazy', {
         el.classList.add('fade');
     }
 });
-
 // Start observing for lazy loading
 lazyLoadInstance.observe();
 
