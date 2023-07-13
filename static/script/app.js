@@ -376,7 +376,8 @@ async function launchMoviePlayer() {
     const bannerIMDB = await getImdbID(bannerTMDB);
     //  Uses the IMDB id to launch a movie player
     let movieURL = `https://vidsrc.me/embed/${bannerIMDB}/`;
-    window.open(movieURL);
+    console.log(movieURL)
+    //window.open(movieURL);
 }
 
 // used to truncate the string in the banner description
