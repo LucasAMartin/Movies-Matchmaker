@@ -12,51 +12,137 @@
     <a href="/">
         <img src="/static/img/logo.png" alt="">
     </a></div>
-<form method="post" action="{{ url_for('login') }}">
-    <div class="container">
-        <div class="card">
-            <p class="title">Login</p>
-            <label for="username"></label>
-            <span id="errorMessage" style="display: none; color: red; font-size: 14px; position: absolute; top: 15rem; font-family: 'Roboto', sans-serif">Invalid credentials</span>
-            <input type="text" name="username" id="username" placeholder="Username"/>
-            <label for="password"></label>
-            <input type="password" name="password" class="password" placeholder="Password"/>
-            <button type="submit">Sign In</button>
-            <div class="bottombutton">
-                <div class="remember">
-                    <label class="container-button">
-                        <input type="checkbox" name="remember" checked="checked"/>
-                        <span class="checkmark"></span>
-                    </label>
-                    <p>Remember Me</p>
+<div id="loginForm">
+    <form method="post" action="{{ url_for('login') }}">
+        <div class="container">
+            <div class="card">
+                <p class="title">Sign In</p>
+                <label for="username"></label>
+                <span id="errorMessage"
+                      style="display: none; color: red; font-size: 14px; position: absolute; top: 15rem; font-family: 'Roboto', sans-serif">Invalid credentials</span>
+                <input type="text" name="username" id="username" placeholder="Username"/>
+                <label for="password"></label>
+                <input type="password" name="password" class="password" placeholder="Password"/>
+                <button type="submit">Sign In</button>
+                <div class="bottombutton">
+                    <div class="remember">
+                        <label class="container-button">
+                            <input type="checkbox" name="remember" checked="checked"/>
+                            <span class="checkmark"></span>
+                        </label>
+                        <p>Remember Me</p>
+                    </div>
+
+                    <a href="#" id="showCreateAccountForm">Create Account</a>
                 </div>
 
-                <a href="/create_account">Create Account</a>
-            </div>
-
-            <div class="firsttime">
-                <div>
-                    <p>First Time?</p>
-                    <a href="/">Subscribe Here.</a>
+                <div class="firsttime">
+                    <div>
+                        <p>First Time?</p>
+                        <a href="/">Subscribe Here.</a>
+                    </div>
                 </div>
-            </div>
-            <div class="other-login">
-                <div>
-                    <img
-                            src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png"
-                            alt="Google logo"
-                    />
-                    <p>Sign In with Google</p>
+                <div class="other-login">
+                    <div>
+                        <img
+                                src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png"
+                                alt="Google logo"
+                        />
+                        <p>Sign In with Google</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+
+<div id="createAccountForm" style="display: none;">
+    <form method="post" action="{{ url_for('create_account') }}">
+        <div class="container">
+            <div class="card">
+                <p class="title">Create Account</p>
+                <label for="username"></label>
+                <input type="text" name="username" id="username" placeholder="Username"/>
+                <span id="errorMessage" class="createAccount"
+                      style="display: none; color: red; font-size: 14px; position: absolute; top: 15rem; font-family: 'Roboto', sans-serif">Invalid credentials</span>
+                <label for="password"></label>
+                <input type="password" name="password" class="password" placeholder="Password"/>
+                <label for="confirmPassword"></label>
+                <input type="password" name="confirm_password" class="password confirmPassword"
+                       placeholder="Confirm Password"/>
+                <button type="submit">Create Account</button>
+                <div class="bottombutton">
+                    <div class="remember">
+                        <label class="container-button">
+                            <input type="checkbox" name="remember" checked="checked"/>
+                            <span class="checkmark"></span>
+                        </label>
+
+                        <p>Remember Me</p>
+                    </div>
+
+                    <a href="#" id="showLoginForm">Sign In</a>
+                </div>
+                <div class="firsttime">
+                    <div>
+                        <p>First Time?</p>
+                        <a href="/">Subscribe Here.</a>
+                    </div>
+                </div>
+                <div class="other-login">
+                    <div>
+                        <img
+                                src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png"
+                                alt="Google logo"
+                        />
+                        <p>Sign In with Google</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>
 <script>
     // Check if invalid_credentials is true
     {% if invalid_credentials %}
         document.getElementById('errorMessage').style.display = 'inline';
+        document.getElementById('errorMessage').textContent = 'Invalid Credentials';
     {% endif %}
+    // Check if username_taken is true
+    {% if username_taken %}
+        loginForm.style.display = 'none';
+        createAccountForm.style.display = 'block';
+        document.querySelector('#errorMessage.createAccount').style.display = 'inline';
+        document.querySelector('#errorMessage.createAccount').textContent = 'Username Taken';
+    {% endif %}
+    // Check if passwords_no_match is true
+    {% if passwords_no_match %}
+        loginForm.style.display = 'none';
+        createAccountForm.style.display = 'block';
+        document.querySelector('#errorMessage.createAccount').style.display = 'inline';
+        document.querySelector('#errorMessage.createAccount').textContent = 'Passwords do not Match';
+    {% endif %}
+</script>
+<script>
+    // Get references to the form containers
+    const loginForm = document.querySelector('#loginForm');
+    const createAccountForm = document.querySelector('#createAccountForm');
+
+    // Get references to the links
+    const showCreateAccountFormLink = document.querySelector('#showCreateAccountForm');
+    const showLoginFormLink = document.querySelector('#showLoginForm');
+
+    // Add event listeners to the links
+    showCreateAccountFormLink.addEventListener('click', () => {
+        loginForm.style.display = 'none';
+        createAccountForm.style.display = 'block';
+    });
+
+    showLoginFormLink.addEventListener('click', () => {
+        loginForm.style.display = 'block';
+        createAccountForm.style.display = 'none';
+    });
 </script>

@@ -174,22 +174,22 @@ async def create_account():
         username = form['username'].lower()
         password = form['password']
         confirm_password = form['confirm_password']
+        remember = form.get('remember') == 'on'
         if password == confirm_password:
             response = insert_user(username, password)
             if response == 'Username taken':
-                return await render_template('create_account.html', username_taken=True)
+                return await render_template('login.html', username_taken=True)
             elif response == 'User successfully inserted':
                 session['logged_in'] = True
                 session['username'] = username
                 session.permanent = remember
-                # Redirect the user back to the search page they were on before logging in
                 return redirect('/')
             else:
                 return "Unknown Error"
         else:
-            return await render_template('create_account.html', passwords_no_match=True)
+            return await render_template('login.html', passwords_no_match=True)
     else:
-        return await render_template('create_account.html')
+        return await render_template('login.html')
 
 
 @app.route("/my_list", methods=['POST', 'GET'])
