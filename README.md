@@ -1,6 +1,6 @@
 # Movies-Matchmaker
 
-Movies Matchmaker is a web application that helps you find your perfect movie match. Built with a Python/Quart backend and a front end using CSS, HTML, and JavaScript, our app offers a modern and user-friendly interface for discovering new movies.
+Movies Matchmaker is a web application that helps you find your perfect movie match. Built with a Python/Quart backend for asynchronous API calling and a front end using CSS, HTML, and JavaScript, our app offers a modern and user-friendly interface for discovering new movies.
 
 ## Features
 
@@ -33,5 +33,5 @@ We welcome contributions to Movie Matchmaker! If you would like to contribute, p
 
 ## License
 
-Movie Matchmaker is released under the [Unlicense](https://unlicense.org/). This means that you are free to use, modify, 
-and distribute the code in this repository for any purpose, without any restrictions or requirements for attribution.
+Movie Matchmaker is released under the [MIT License](https://opensource.org/license/mit/). This means that you are free to use, modify, 
+and distribute the code in this repository for any purpose.
