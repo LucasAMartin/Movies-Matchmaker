@@ -16,6 +16,7 @@ Movie Matchmaker is a web application that helps you find your perfect movie mat
 If you would like to run Movie Matchmaker locally on your own computer, follow these steps:
 
 - Clone the repository to your local machine.
+- Create an API key from TMDB, put it in a .env file in the project root in the format API_KEY=api_key (Example, API_KEY=123kgh43jkh53jhk5jhk5)
 - Install the required dependencies by running `pip install -r requirements.txt`.
 - Start the Quart server by running `python recommendation_app.py`.
 - Open your web browser and navigate to `http://localhost:5000` to view the app.
