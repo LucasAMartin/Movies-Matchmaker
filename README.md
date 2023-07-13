@@ -1,6 +1,6 @@
 # Movies-Matchmaker
 
-Movie Matchmaker is a web application that helps you find your perfect movie match. Built with a Python/Quart backend and a front end using CSS, HTML, and JavaScript, our app offers a modern and user-friendly interface for discovering new movies.
+Movies Matchmaker is a web application that helps you find your perfect movie match. Built with a Python/Quart backend and a front end using CSS, HTML, and JavaScript, our app offers a modern and user-friendly interface for discovering new movies.
 
 ## Features
 
