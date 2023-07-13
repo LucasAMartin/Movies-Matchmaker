@@ -13,12 +13,11 @@ from quart_auth import QuartAuth
 from database import *
 import secrets
 import bcrypt
-from database import init_db
 
 app = Quart(__name__)
 QuartAuth(app)
 app.secret_key = secrets.token_urlsafe(16)
-# TEMPLATES_AUTO_RELOAD = True
+TEMPLATES_AUTO_RELOAD = True
 MAX_MOVIES = 20
 load_dotenv()
 # My Api key from TMDB
@@ -284,7 +283,7 @@ def get_recommendations(title, data, indices, cosine_sim):
         sim_scores = list(enumerate(cosine_sim[idx]))
         # Sort the movies based on the similarity score
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-        sim_scores = sim_scores[0:20]
+        sim_scores = sim_scores[0:MAX_MOVIES]
         movie_indices = [i[0] for i in sim_scores]
         # Return the top 20 most similar movies
         movies = list(data['Title'].iloc[movie_indices])
@@ -328,6 +327,7 @@ async def search_movies():
         genre_1_movies = await get_genre_info_async(session, movies, 0)
         genre_2_movies = await get_genre_info_async(session, movies, 1)
         s = time.process_time()
+        print(s-f)
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,
@@ -335,4 +335,4 @@ async def search_movies():
 
 
 if __name__ == "__main__":
-    app.run(debug='true')
+    app.run(debug=True)
