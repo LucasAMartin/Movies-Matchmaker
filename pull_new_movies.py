@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug 24 12:30:20 2021
-
-@author: Chandramouli
+Based on webscraping/recommendation algorithm from Chandramouli on medium
+Made modifications for improved error handling and implementation in my app
 """
 
 import pandas as pd
