@@ -11,6 +11,9 @@ Movies Matchmaker is a web application that helps you find your perfect movie ma
 - **Persistent Logins:** Our app uses browser cookies and Quart-Auth to keep you logged in, even after you close your browser. This allows you to save your favorite movies and access your personalized recommendations across multiple sessions.
 - **Movie Lists:** Keep track of your favorite movies by adding them to your personal list. Our app displays your list in a modern and visually appealing way, allowing you to easily browse and manage your collection.
 
+## Video Demo (Youtube)
+[![Video Demo](https://img.youtube.com/vi/uQgIYnDL5cM/0.jpg)](https://www.youtube.com/watch?v=uQgIYnDL5cM)
+
 ## Running the App Locally
 
 If you would like to run Movie Matchmaker locally on your own computer, follow these steps:
@@ -18,6 +21,7 @@ If you would like to run Movie Matchmaker locally on your own computer, follow t
 - Clone the repository to your local machine.
 - Create an API key from TMDB, put it in a .env file in the project root in the format API_KEY=api_key (Example, API_KEY=123kgh43jkh53jhk5jhk5)
 - Install the required dependencies by running `pip install -r requirements.txt`.
+- Run `pull_new_movies.py` and `cos_similarity.py`
 - Start the Quart server by running `python recommendation_app.py`.
 - Open your web browser and navigate to `http://localhost:5000` to view the app.
 
