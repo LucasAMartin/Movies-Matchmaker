@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Movies Matchmaker</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png">
     <script src="https://cdn.jsdelivr.net/npm/lozad@latest"></script>
     <script>
         let movies = {{ movies|tojson }};

@@ -1,5 +1,7 @@
+import os
 import time
-from quart import Quart, request, render_template, jsonify, ResponseReturnValue, redirect, url_for, session
+from dotenv import load_dotenv
+from quart import Quart, request, render_template, jsonify, redirect, session
 import re
 import aiohttp
 import asyncio
@@ -7,7 +9,7 @@ import platform
 import pickle
 import pandas as pd
 from fuzzywuzzy import process
-from quart_auth import QuartAuth, login_required, Unauthorized
+from quart_auth import QuartAuth
 from database import *
 import secrets
 import bcrypt
@@ -16,10 +18,10 @@ from database import init_db
 app = Quart(__name__)
 QuartAuth(app)
 app.secret_key = secrets.token_urlsafe(16)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
 MAX_MOVIES = 20
+load_dotenv()
 # My Api key from TMDB
-API = "api_key=65088f30b11eb50d43a411d49c206b5f"
+API = f"api_key={os.getenv('API_KEY')}"
 # base url of the tmdb site
 BASE_URL = "https://api.themoviedb.org/3"
 # Do this to avoid a huge stack trace of errors
@@ -109,12 +111,6 @@ async def startup():
     init_db()
 
 
-@app.after_request
-def add_header(response):
-    response.headers['Cache-Control'] = 'no-store'
-    return response
-
-
 @app.route("/")
 async def home():
     return await render_template('main_page.html')
@@ -148,7 +144,6 @@ async def login():
         # Store the URL of the page the user was on before logging in
         session['previous_page'] = request.referrer or '/'
         return await render_template('login.html')
-
 
 
 @app.route('/get_movie_ids_session')
@@ -339,4 +334,4 @@ async def search_movies():
 
 
 if __name__ == "__main__":
-    app.run(host='192.168.0.160')
+    app.run()

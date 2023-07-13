@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/display_movies.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/my_list.css') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png">
     <title>Movies Matchmaker</title>
     <script src="https://cdn.jsdelivr.net/npm/lozad@latest"></script>
     <script>
@@ -26,13 +29,15 @@
         <button class=".nav_right .nav_list" id="navHomeList"
                 onclick="window.location.href = '{{ url_for("home") }}'">Home
         </button>
-        <button id="trendingButtonList" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies
+        <button id="trendingButtonList" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending
+            Movies
         </button>
         {% if session['logged_in'] %}
             <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("logout") }}'">Sign Out
             </button>
         {% else %}
-            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login_screen") }}'">Sign In
+            <button class=".nav_right .nav_login" onclick="window.location.href = '{{ url_for("login_screen") }}'">Sign
+                In
             </button>
         {% endif %}
     </div>
