@@ -158,11 +158,11 @@ li.selected {
     button#leftButton {
         position: absolute;
         top: 3rem;
-        width: 9.2rem;
+        width: 10.2rem;
     }
 
     button#rightButton {
-        width: 4rem;
+        width: 5rem;
     }
 
     .search {
@@ -193,6 +193,9 @@ li.selected {
 
     .search button {
         width: 30%;
+    }
+    #headerButtons{
+        padding-right: 10px;
     }
 
 }

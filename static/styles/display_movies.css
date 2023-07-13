@@ -198,7 +198,7 @@ body.preload * {
     margin-right: 10px;
 }
 
-.nav_right_buttons{
+.nav_right_buttons {
     display: flex;
     gap: 1rem;
 }
@@ -372,6 +372,7 @@ button:hover {
     transition: transform 300ms, opacity 1s;
     opacity: 0;
 }
+
 .fade {
     opacity: 1;
 }
@@ -431,13 +432,7 @@ button:hover {
 
     #modal_button, #modal_button_list {
         margin-bottom: 1.4rem;
-        background-color: transparent;
     }
-
-    #modal_button_list {
-        margin-right: -3rem;
-    }
-
 }
 
 @media only screen and (max-width: 768px) {
@@ -486,7 +481,7 @@ button:hover {
 
     }
 
-    #navHome{
+    #navHome {
         display: none;
     }
 
@@ -562,10 +557,28 @@ button:hover {
         padding-bottom: 4rem;
     }
 
+
+    #modal_button_list{
+        margin-left: 1.4rem;
+        text-align: center;
+        width: 150px;
+        line-height: 16px; /* same as the button height */
+    }
+    .modal-header img{
+        margin-top: 15px;
+    }
+
     .modal-header .title {
         margin-bottom: 1rem;
         max-width: 100%;
+        font-size: 1.3rem;
     }
+
+    .modal-desc {
+        font-size: .8rem;
+        padding: 1%;
+    }
+
     #banner_title {
         max-width: 100%;
     }
@@ -583,7 +596,8 @@ button:hover {
     #navMyList {
         position: absolute;
         top: 3.2rem;
-        right: 1rem
+        right: 1rem;
+        width: 7.2rem;
     }
 }
 

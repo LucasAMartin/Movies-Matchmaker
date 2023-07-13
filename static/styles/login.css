@@ -8,9 +8,11 @@ body {
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../img/background.jpg');
     background-size: cover;
     background-position: center;
-    padding: 10px 8%;
     position: relative;
+    padding: 0;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
 }
 
 .login-container {
@@ -27,6 +29,9 @@ body {
 }
 
 .logo img {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
     width: 200px;
     height: auto;
 }
@@ -159,4 +164,10 @@ body {
     color: white;
     margin-top: 16px;
     font-size: 16px;
+}
+
+@media only screen and (max-width: 375px) {
+    .card {
+        margin-left: 50px;
+    }
 }

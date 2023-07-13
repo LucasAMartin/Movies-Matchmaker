@@ -66,15 +66,21 @@
     #rowOutlineList {
         margin-top: 4rem;
     }
-    #trendingButtonList{
+
+    #trendingButtonList {
         display: none;
     }
 }
+
 @media only screen and (max-width: 450px) {
-        .row_posters_list {
+    .row_posters_list {
         grid-template-columns: repeat(auto-fit, 150px);
     }
-    #navHomeList{
+
+    #navHomeList {
         display: none;
+    }
+    .nav{
+        padding: 1rem 1.5rem;
     }
 }

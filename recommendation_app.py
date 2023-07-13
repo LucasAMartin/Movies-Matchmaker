@@ -18,6 +18,7 @@ from database import init_db
 app = Quart(__name__)
 QuartAuth(app)
 app.secret_key = secrets.token_urlsafe(16)
+# TEMPLATES_AUTO_RELOAD = True
 MAX_MOVIES = 20
 load_dotenv()
 # My Api key from TMDB
