@@ -26,7 +26,6 @@ def get_from_cache(query):
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
     query = clean_query(query)
-    print(query)
     c.execute('SELECT response FROM cache WHERE query = ?', (query,))
     row = c.fetchone()
     conn.close()
@@ -43,12 +42,13 @@ def store_in_cache(query, response):
     # Serialize the response data to a JSON-formatted string
     response_json = json.dumps(response)
     query = clean_query(query)
-    print(query)
-    conn = sqlite3.connect('database.db')
-    c = conn.cursor()
-    c.execute('INSERT OR REPLACE INTO cache (query, response) VALUES (?, ?)', (query, response_json))
-    conn.commit()
-    conn.close()
+
+    if 'with_genres' not in query and 'trending' not in query:
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute('INSERT OR REPLACE INTO cache (query, response) VALUES (?, ?)', (query, response_json))
+        conn.commit()
+        conn.close()
 
 
 def clear_cache(age):

@@ -48,7 +48,7 @@ def save_cosine_similarity(cosine_sim, file_name):
 
 def main():
     # Load the data
-    data = load_data('movie data_new.xlsx')
+    data = load_data('movie_data.xlsx')
 
     # Get the important features
     data['important_features'] = get_important_features(data)

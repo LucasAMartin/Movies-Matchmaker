@@ -101,16 +101,7 @@ async def get_actor_movies_async(session, actor_id):
     return movies
 
 
-async def get_trending_movie_async(session):
-    request = f"{BASE_URL}/trending/all/week?{API}&language=en-US"
-    response = await get_data_async(session, request)
-    if response and response.get('results'):
-        movie = response['results'][0]
-        return movie.get('title')
-    return None
-
-
-async def get_trending_info_async(session, banner_movie):
+async def get_trending_info_async(session):
     # create query request
     request = f"{BASE_URL}/trending/all/week?{API}&language=en-US"
     # fetch movies for the genre
@@ -119,7 +110,6 @@ async def get_trending_info_async(session, banner_movie):
     for movie in response['results']:
         if 'title' in movie:
             movies.append(movie['title'])
-    movies[0] = banner_movie
     return movies
 
 
@@ -315,12 +305,12 @@ async def search_movies():
     async with aiohttp.ClientSession() as session:
         f = time.process_time()
         if choice is None:
-            choice = await get_trending_movie_async(session)
-            movies = await get_trending_info_async(session, choice)
+            movies = await get_trending_info_async(session)
+            choice = movies[0]
         else:
             movies = get_recommendations(choice, movie_data, indices, cosine_sim)
         if movies is None:
-            movies = await get_trending_info_async(session, choice)
+            movies = await get_trending_info_async(session)
         movies = await get_movie_info_async(session, movies)
         banner_movie, lead_actor_data, genre_1_movies, genre_2_movies = await asyncio.gather(
             get_data_async(session, f"{BASE_URL}/search/movie?query={choice}&{API}"),
