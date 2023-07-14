@@ -234,7 +234,7 @@ body.preload * {
     background-size: cover;
     position: relative;
     z-index: 0;
-    margin-bottom: -4rem;
+    display: inline-block;
 }
 
 .banner_gradient {
@@ -317,6 +317,7 @@ button:hover {
             #111
     );
 }
+
 
 .row {
     margin-left: 1.1rem;
@@ -406,8 +407,8 @@ button:hover {
 
 
 @media only screen and (max-width: 1250px) {
-    #banner {
-        margin-bottom: -2rem;
+    #rowOutline{
+        margin-top: 1rem;
     }
 
     .nav_logo {
@@ -448,16 +449,19 @@ button:hover {
         margin-bottom: 1.4rem;
     }
 }
+
 @media only screen and (max-width: 950px) {
-    .search{
+    .search {
         position: absolute;
         top: 5rem;
         right: 1.5rem;
     }
-    .search input{
+
+    .search input {
         width: 250px;
     }
-    .nav{
+
+    .nav {
         padding-bottom: 4rem;
     }
 }
@@ -466,7 +470,8 @@ button:hover {
     .search input {
         display: none;
     }
-    .search button{
+
+    .search button {
         display: none;
     }
 
