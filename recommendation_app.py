@@ -1,3 +1,4 @@
+import heapq
 import os
 import time
 from dotenv import load_dotenv
@@ -283,11 +284,10 @@ def get_recommendations(title, data, indices, cosine_sim):
         idx = indices[title]
         # Get the pairwise similarity scores of all movies with that movie
         sim_scores = list(enumerate(cosine_sim[idx]))
-        # Sort the movies based on the similarity score
-        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-        sim_scores = sim_scores[0:MAX_MOVIES]
-        movie_indices = [i[0] for i in sim_scores]
-        # Return the top 20 most similar movies
+        # Find the top MAX_MOVIES most similar movies using a heap
+        most_similar = heapq.nlargest(MAX_MOVIES, sim_scores, key=lambda x: x[1])
+        movie_indices = [i[0] for i in most_similar]
+        # Return the top MAX_MOVIES most similar movies
         movies = list(data['Title'].iloc[movie_indices])
         movies[0] = title
         s = time.process_time()
