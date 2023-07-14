@@ -2,7 +2,6 @@ import os
 import time
 from dotenv import load_dotenv
 from quart import Quart, request, render_template, jsonify, redirect, session
-import re
 import aiohttp
 import asyncio
 import platform
@@ -11,6 +10,7 @@ import pandas as pd
 from fuzzywuzzy import process
 from quart_auth import QuartAuth
 from database import *
+from cache import *
 import secrets
 import bcrypt
 
@@ -28,11 +28,28 @@ BASE_URL = "https://api.themoviedb.org/3"
 if platform.system() == 'Windows':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
+# Load the pickled objects from the cos_similarity class
+movie_data = pickle.load(open('movie_data.pkl', 'rb'))
+cosine_sim = pickle.load(open('cosine_sim.pkl', 'rb'))
+indices = pd.Series(movie_data.index, index=movie_data['Title']).drop_duplicates()
+
 
 async def get_data_async(session, query):
+    # Check if the data is in the cache
+    data = get_from_cache(query)
+    if data is not None:
+        # Data is in the cache, so return it
+        return data
+
+    # Data is not in the cache, so make an API call
     async with session.get(query) as response:
         if response.status == 200:
-            return await response.json()
+            data = await response.json()
+
+            # Store the data in the cache
+            store_in_cache(query, data)
+
+            return data
         else:
             return "error"
 
@@ -108,7 +125,8 @@ async def get_trending_info_async(session, banner_movie):
 
 @app.before_serving
 async def startup():
-    init_db()
+    init_users()
+    init_cache()
 
 
 @app.route("/")
@@ -254,7 +272,6 @@ async def get_imdb_id():
     tmdb_id = data['movie_id']
 
     # Use the get_imdb_id_async function to retrieve the imdb ID
-
     async def get_imdb_id_async():
         async with aiohttp.ClientSession() as session:
             # Construct the URL
@@ -268,14 +285,9 @@ async def get_imdb_id():
     return jsonify({'imdb_id': imdb_id})
 
 
-# Load the pickled objects from the cos_similarity class
-movie_data = pickle.load(open('movie_data.pkl', 'rb'))
-cosine_sim = pickle.load(open('cosine_sim.pkl', 'rb'))
-indices = pd.Series(movie_data.index, index=movie_data['Title']).drop_duplicates()
-
-
 def get_recommendations(title, data, indices, cosine_sim):
     try:
+        f = time.process_time()
         # Find the closest matching title in the data
         title = process.extractOne(title, data['Title'])[0]
         idx = indices[title]
@@ -288,6 +300,8 @@ def get_recommendations(title, data, indices, cosine_sim):
         # Return the top 20 most similar movies
         movies = list(data['Title'].iloc[movie_indices])
         movies[0] = title
+        s = time.process_time()
+        print(f'Recommendation {s-f}')
         return movies
     except ValueError:
         return None
@@ -304,34 +318,28 @@ async def search_movies():
             choice = await get_trending_movie_async(session)
             movies = await get_trending_info_async(session, choice)
         else:
-            # Get recommended movies based on the user's choice
             movies = get_recommendations(choice, movie_data, indices, cosine_sim)
-        # Fallback in case the movie is not in the dataset
         if movies is None:
             movies = await get_trending_info_async(session, choice)
-        # Get information for the recommended movies
         movies = await get_movie_info_async(session, movies)
-        # Makes sure that the banner movie is correct
-        banner_movie = await get_data_async(session, f"{BASE_URL}/search/movie?query={choice}&{API}")
+        banner_movie, lead_actor_data, genre_1_movies, genre_2_movies = await asyncio.gather(
+            get_data_async(session, f"{BASE_URL}/search/movie?query={choice}&{API}"),
+            get_lead_actor_async(session, movies[0]['results'][0]['id']),
+            get_genre_info_async(session, movies, 0),
+            get_genre_info_async(session, movies, 1),
+        )
+        lead_actor, lead_actor_id = lead_actor_data
+        lead_actor_movies = await get_actor_movies_async(session, lead_actor_id)
+        lead_actor_movies_info = await get_movie_info_async(session, lead_actor_movies)
+        lead_actor_movies_info.insert(0, lead_actor)
         if banner_movie and 'results' in banner_movie and banner_movie['results']:
             movies[0] = banner_movie
-        # Get the lead actor and their ID for the first recommended movie
-        lead_actor, lead_actor_id = await get_lead_actor_async(session, movies[0]['results'][0]['id'])
-        # Get movies featuring the lead actor
-        lead_actor_movies = await get_actor_movies_async(session, lead_actor_id)
-        # Get information for the lead actor's movie
-        lead_actor_movies = await get_movie_info_async(session, lead_actor_movies)
-        # Add the lead actor's name to the list of their movies
-        lead_actor_movies.insert(0, lead_actor)
-        # Get movies in the same genres as the first two recommended movies
-        genre_1_movies = await get_genre_info_async(session, movies, 0)
-        genre_2_movies = await get_genre_info_async(session, movies, 1)
         s = time.process_time()
-        print(s-f)
+        print(f'Total {s-f}')
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,
-                                     actorMovies=lead_actor_movies, s='opps')
+                                     actorMovies=lead_actor_movies_info, s='opps')
 
 
 if __name__ == "__main__":

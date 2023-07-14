@@ -10,6 +10,7 @@ Movies Matchmaker is a web application that helps you find your perfect movie ma
 - **Detailed Information:** Click on any movie to view more information about it, including its release date, cast, and plot summary. You can also receive recommendations for other movies based on the one you clicked.
 - **Persistent Logins:** Our app uses browser cookies and Quart-Auth to keep you logged in, even after you close your browser. This allows you to save your favorite movies and access your personalized recommendations across multiple sessions.
 - **Movie Lists:** Keep track of your favorite movies by adding them to your personal list. Our app displays your list in a modern and visually appealing way, allowing you to easily browse and manage your collection.
+- **SQlite caching** To speed up often used request, API calls are stored in a custom SQlite cache. Clear the old entries at any time with the clear_cache.py script.
 
 ## Video Demo (Youtube)
 [![Video Demo](https://img.youtube.com/vi/uQgIYnDL5cM/0.jpg)](https://www.youtube.com/watch?v=uQgIYnDL5cM)

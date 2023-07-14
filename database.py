@@ -1,9 +1,8 @@
 import sqlite3
-
 import bcrypt
 
 
-def init_db():
+def init_users():
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
     c.execute('''
