@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Movies Matchmaker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../static/styles/main_page.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+    <meta name="description" content="Find your perfect movie match with Movies Matchmaker. Our app offers custom recommendations, an intuitive search bar, and a modern display. Keep track of your favorites and access detailed information about movies.">
     <link rel="apple-touch-icon" sizes="180x180" href="../static/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png">
-    <script src="https://cdn.jsdelivr.net/npm/minisearch@6.1.0/dist/umd/index.min.js"></script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/minisearch@6.1.0/dist/umd/index.min.js" defer></script>
     <script src="{{ url_for('static',filename='script/autocomplete.js') }}" defer></script>
 </head>
 <body>
@@ -18,12 +21,14 @@
     <div id="headerButtons">
         </button>
         {% if session['logged_in'] %}
-            <button id="leftButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies</button>
+            <button id="leftButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies
+            </button>
             <button id="rightListButton" onclick="window.location.href = '{{ url_for("my_list") }}'">My List</button>
             <button id="rightButton" onclick="window.location.href = '{{ url_for("logout") }}'">Sign Out</button>
         {% else %}
             <button id="trendingButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending
-            Movies</button>
+                Movies
+            </button>
             <button id="rightButton" onclick="window.location.href = '{{ url_for("login") }}'">Sign in</button>
         {% endif %}
     </div>
