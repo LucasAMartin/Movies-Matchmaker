@@ -75,7 +75,7 @@
         grid-template-columns: repeat(auto-fit, 150px);
     }
 
-    #navHomeList {
+    button.\.nav_login {
         display: none;
     }
     .nav{

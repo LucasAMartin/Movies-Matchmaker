@@ -297,12 +297,6 @@ def get_recommendations(title, data, indices, cosine_sim):
         return None
 
 
-@app.after_request
-def after_request(response):
-    response.headers["Cache-Control"] = "no-store"
-    return response
-
-
 @app.route("/Search")
 async def search_movies():
     # Get user input for movie search

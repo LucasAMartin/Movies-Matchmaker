@@ -11,10 +11,13 @@
     <title>Login</title>
 </head>
 <body>
+
 <div class="logo">
     <a href="/">
         <img src="/static/img/logo.png" alt="">
     </a></div>
+
+<!-- login section -->
 <div id="loginForm">
     <form method="post" action="{{ url_for('login') }}">
         <div class="container">
@@ -59,6 +62,9 @@
     </form>
 </div>
 
+
+<!-- create account section -->
+<!-- same as login, just some different links and an extra box -->
 <div id="createAccountForm" style="display: none;">
     <form method="post" action="{{ url_for('create_account') }}">
         <div class="container">

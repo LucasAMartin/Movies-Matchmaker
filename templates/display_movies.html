@@ -20,6 +20,7 @@
 </head>
 <body class="preload">
 
+<!-- loading screen -->
 <div id="loading" style="display: none;">
     <div id="load">
         <span></span>
@@ -82,7 +83,10 @@
 <div id="rowOutline">
     <!-- Rows go here -->
 </div>
+
+
 <script>
+    // used for scrolling
     window.addEventListener("scroll", function () {
 
         var nav = document.querySelector(".nav");
@@ -92,6 +96,8 @@
 </body>
 </html>
 
+
+<!-- modal section, offscreen when inactive -->
 <div class="modal" id="modal">
     <div class="modal-header">
         <img src="null" alt="img">
