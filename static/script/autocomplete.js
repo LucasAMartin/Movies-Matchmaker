@@ -24,15 +24,23 @@ d3.csv('/static/movieNames.csv').then(data => {
         // Get the input value
         let query = event.target.value
         // Search for matching documents
-        // Reset the current suggestion index
-        currentSuggestionIndex = 0
-        let results = miniSearch.search(query)
-        // Filter the results to only include complete matches
-        let suggestions = results.filter(result => result.Title.toLowerCase().includes(query.toLowerCase())).map(result => result.Title)
+        let results = miniSearch.search(query, {
+            prefix: true, // match query terms with a prefix
+            fuzzy: 0.5 // allow for some typos or spelling variations
+        })
+        // Assign a score to each result based on its relevance and popularity
+        results.forEach(result => {
+            result.score = result.score + (data.length - result.id) / data.length
+        })
+        // Sort the results by their score
+        results.sort((a, b) => b.score - a.score)
+        // Map the results to an array of titles
+        let suggestions = results.map(result => result.Title)
         // Limit the number of suggestions to 5 or less
         if (suggestions.length > 5) {
             suggestions = suggestions.slice(0, 5)
         }
+
         // Update the suggestions list with the suggestions
         suggestionsList.innerHTML = ''
         for (let suggestion of suggestions) {
@@ -53,6 +61,7 @@ d3.csv('/static/movieNames.csv').then(data => {
             suggestionsList.appendChild(li)
         }
     })
+
 
     // Initialize the current suggestion index to -1
     let currentSuggestionNumber = -1
@@ -116,8 +125,8 @@ d3.csv('/static/movieNames.csv').then(data => {
 })
 
 document.querySelector('input[name="movie"]').addEventListener('keypress', function (event) {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                document.querySelector('form.search').submit();
-            }
-        });
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector('form.search').submit();
+    }
+});
