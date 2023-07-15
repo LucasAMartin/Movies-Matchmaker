@@ -107,3 +107,4 @@ movie_list = pd.DataFrame(
     {"Title": movie_name, "Year of Release": year, "Watch Time": time, "Genre": genre, "Movie Rating": rating,
      "Metascore of movie": metascore, "Director": director, "Cast": cas, "Votes": votes, "Description": description})
 movie_list.to_excel("movie_data.xlsx")
+movie_list['Title'].head(2000).to_csv('static/movieNames.csv', index=False)
