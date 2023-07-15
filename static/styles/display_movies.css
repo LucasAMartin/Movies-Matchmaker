@@ -418,7 +418,7 @@ button:hover {
     border-radius: 60px;
     height: 20%;
     width: 20%;
-    background: rgba(20,20,20,.8);
+    background: rgba(20, 20, 20, .8);
 }
 
 #loading #load {
@@ -498,6 +498,11 @@ button:hover {
 
 
 @media only screen and (max-width: 1250px) {
+    #loading {
+        width: 30%;
+        margin-left: -15%;
+    }
+
     #rowOutline {
         margin-top: 1rem;
     }
@@ -558,6 +563,15 @@ button:hover {
 }
 
 @media only screen and (max-width: 768px) {
+    #loading .logo {
+        display: none;
+    }
+
+    #loading {
+        width: 50%;
+        margin-left: -25%;
+    }
+
     .search input {
         display: none;
     }
@@ -683,6 +697,11 @@ button:hover {
 }
 
 @media only screen and (max-width: 450px) {
+    #loading {
+        width: 70%;
+        margin-left: -35%;
+    }
+
     .nav {
         padding-bottom: 4rem;
     }
