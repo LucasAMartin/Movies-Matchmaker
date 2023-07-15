@@ -5,7 +5,7 @@
     <title>Movies Matchmaker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../static/styles/main_page.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
@@ -18,17 +18,29 @@
     <script src="{{ url_for('static',filename='script/autocomplete.js') }}" defer></script>
 </head>
 <body>
+
+<div id="loading" style="display: none;">
+    <div id="load">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="logo">Finding your custom picks now</div>
+</div>
 <nav class="nav">
     <img src="static/img/logo.png" id="logo" alt="Logo">
     <div id="headerButtons">
         {% if session['logged_in'] %}
-            <button id="leftButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending Movies
+            <button onclick="(function() { window.location.href = '{{ url_for("search_movies") }}'; let loadingOverlay = document.getElementById('loading'); loadingOverlay.style.display = 'flex'; })()">
+                Trending Movies
             </button>
             <button id="rightListButton" onclick="window.location.href = '{{ url_for("my_list") }}'">My List</button>
             <button id="rightButton" onclick="window.location.href = '{{ url_for("logout") }}'">Sign Out</button>
         {% else %}
-            <button id="trendingButton" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending
-                Movies
+            <button onclick="(function() { let loadingOverlay = document.getElementById('loading'); loadingOverlay.style.display = 'flex'; window.location.href = '{{ url_for("search_movies") }}'; })()">
+                Trending Movies
             </button>
             <button id="rightButton" onclick="window.location.href = '{{ url_for("login") }}'">Sign in</button>
         {% endif %}
@@ -39,7 +51,10 @@
     <p id="mainTextExtra"> Recommendations based on your favorite movie</p>
     <form class="search" autocomplete="off" action="{{ url_for('search_movies') }}">
         <input type="text" name="movie" list="movies" placeholder="Search here..." required>
-        <button type="submit">Search</button>
+        <button type="submit"
+                onclick=" let loadingOverlay = document.getElementById('loading'); loadingOverlay.style.display = 'flex';">
+            Search
+        </button>
         <ul id="ul"></ul>
     </form>
 </section>

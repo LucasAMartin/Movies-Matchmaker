@@ -41,7 +41,6 @@ const lazyLoadInstance = lozad('.lazy', {
 // Start observing for lazy loading
 lazyLoadInstance.observe();
 
-
 // main functions, displays a banner and 3 rows
 requestBanner();
 
