@@ -223,6 +223,7 @@ function addRow(movieList, category) {
                 movie = movieList.results[i];
             }
             let poster = document.createElement("img");
+            let loadingOverlay = document.getElementById('loading');
             poster.className = "row_poster";
 
             // Set the src attribute to the low-quality image placeholder
@@ -282,6 +283,8 @@ function openModal() {
     const modalYear = document.querySelector('#modal .modal-body .modal-info .modal-year');
     const modalExpand = document.querySelector('#modal .modal-header #modal_button');
     const modalList = document.querySelector('#modal .modal-header #modal_button_list');
+    const loadingOverlay = document.getElementById('loading');
+
 
     // Get the title, overview, image URL, and YouTube link of the clicked poster from its data-* attributes
     const title = this.getAttribute('data-title');
@@ -300,7 +303,10 @@ function openModal() {
 
     // Set the src attribute of the modal image to the image URL of the clicked poster
     modalImg.src = imgUrl;
-    modalExpand.onclick = () => changeMovie(title);
+    modalExpand.onclick = function () {
+        changeMovie(title);
+        loadingOverlay.style.display = 'flex';
+    };
     displayTrailer(id, modalImg)
     modalList.textContent = 'Add to List';
     try {

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Bebas+Neue&display=swap');
+
 * {
     font-family: 'Lato', sans-serif;
     box-sizing: border-box;
@@ -21,99 +23,6 @@ body, html {
 .sign a:hover {
     color: #fff;
 }
-
-/* Loading courtesy of https://codepen.io/alimirayman/pen/XKOZOL*/
-#loading {
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background: rgba(20, 20, 20);
-}
-
-#loading #load {
-    height: 60px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-    width: 180px;
-}
-
-#loading #load span {
-    height: 20px;
-    width: 20px;
-    background: #ccc;
-    border-radius: 10px;
-}
-
-#loading #load span:nth-child(1) {
-    background: red;
-    animation: extend 1s ease-in-out infinite;
-}
-
-#loading #load span:nth-child(2) {
-    background: orangered;
-    animation: extend 1s ease-in-out 0.15s infinite;
-}
-
-#loading #load span:nth-child(3) {
-    background: limegreen;
-    animation: extend 1s ease-in-out 0.30s infinite;
-}
-
-#loading #load span:nth-child(4) {
-    background: blue;
-    animation: extend 1s ease-in-out 0.45s infinite;
-}
-
-#loading #load span:nth-child(5) {
-    background: purple;
-    animation: extend 1s ease-in-out .60s infinite;
-}
-
-#loading .logo {
-    display: block;
-    font-size: 30px;
-    font-family: 'Bebas Neue', sans-serif;
-    margin-top: 1rem;
-    color: #ecf0f1;
-}
-
-@keyframes disappear {
-    0% {
-        opacity: 1;
-        height: 100vh;
-    }
-
-    99% {
-        height: 100vh;
-    }
-
-    100% {
-        opacity: 0;
-        height: 0;
-    }
-}
-
-@keyframes extend {
-    0%, 80% {
-        height: 20px;
-    }
-
-    40% {
-        height: 60px;
-    }
-}
-
 
 body {
     width: 100%;
@@ -292,11 +201,105 @@ li.selected {
     }
 }
 
+/* Loading courtesy of https://codepen.io/alimirayman/pen/XKOZOL*/
+#loading {
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background: rgba(20, 20, 20);
+}
+
+#loading #load {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 180px;
+}
+
+#loading #load span {
+    height: 20px;
+    width: 20px;
+    background: #ccc;
+    border-radius: 10px;
+}
+
+#loading #load span:nth-child(1) {
+    background: red;
+    animation: extend 1s ease-in-out infinite;
+}
+
+#loading #load span:nth-child(2) {
+    background: orangered;
+    animation: extend 1s ease-in-out 0.15s infinite;
+}
+
+#loading #load span:nth-child(3) {
+    background: limegreen;
+    animation: extend 1s ease-in-out 0.30s infinite;
+}
+
+#loading #load span:nth-child(4) {
+    background: blue;
+    animation: extend 1s ease-in-out 0.45s infinite;
+}
+
+#loading #load span:nth-child(5) {
+    background: purple;
+    animation: extend 1s ease-in-out .60s infinite;
+}
+
+#loading .logo {
+    display: block;
+    font-size: 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    margin-top: 1rem;
+    color: #ecf0f1;
+}
+
+@keyframes disappear {
+    0% {
+        opacity: 1;
+        height: 100vh;
+    }
+
+    99% {
+        height: 100vh;
+    }
+
+    100% {
+        opacity: 0;
+        height: 0;
+    }
+}
+
+@keyframes extend {
+    0%, 80% {
+        height: 20px;
+    }
+
+    40% {
+        height: 60px;
+    }
+}
+
+
 @media only screen and (max-width: 450px) {
     #loading .logo {
-    font-size: 16px;
+        font-size: 16px;
 
-}
+    }
+
     .search input {
         width: 70%;
     }
@@ -310,6 +313,7 @@ li.selected {
     }
 
 }
+
 
 
 

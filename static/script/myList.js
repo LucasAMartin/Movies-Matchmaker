@@ -31,6 +31,8 @@ function addMovies(movieList, category) {
         try {
             let movie = movieList[i];
             let poster = document.createElement("img");
+            const loadingOverlay = document.getElementById('loading');
+
             poster.className = "row_poster_list";
 
             // Set the src attribute to the low-quality image placeholder
@@ -42,7 +44,10 @@ function addMovies(movieList, category) {
             // Add the 'lazy' class to the img element
             poster.classList.add('lazy');
 
-            poster.onclick = () => changeMovie(movie.original_title);
+            poster.onclick = function () {
+                changeMovie(movie.original_title);
+                loadingOverlay.style.display = 'flex';
+            };
             row_posters.appendChild(poster);
         } catch (error) {
             console.log(error)
