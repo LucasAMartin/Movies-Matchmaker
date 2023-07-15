@@ -291,10 +291,16 @@ def get_recommendations(title, data, indices, cosine_sim):
         movies = list(data['Title'].iloc[movie_indices])
         movies[0] = title
         s = time.process_time()
-        print(f'Recommendation {s-f}')
+        print(f'Recommendation {s - f}')
         return movies
     except ValueError:
         return None
+
+
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 @app.route("/Search")
@@ -325,7 +331,7 @@ async def search_movies():
         if banner_movie and 'results' in banner_movie and banner_movie['results']:
             movies[0] = banner_movie
         s = time.process_time()
-        print(f'Total {s-f}')
+        print(f'Total {s - f}')
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,
