@@ -13,8 +13,11 @@
     <script src="https://d3js.org/d3.v7.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/minisearch@6.1.0/dist/umd/index.min.js" defer></script>
     <script src="{{ url_for('static',filename='script/autocomplete.js') }}" defer></script>
+    <script>setTimeout(function () {
+        document.body.className = "";
+    }, 1);</script>
 </head>
-<body>
+<body class="preload">
 
 <!-- loading screen -->
 <div id="loading" style="display: none;">
@@ -33,17 +36,61 @@
     <img src="static/img/logo.png" id="logo" alt="Logo">
     <div id="headerButtons">
         {% if session['logged_in'] %}
-            <button onclick="(function() { window.location.href = '{{ url_for("search_movies") }}'; let loadingOverlay = document.getElementById('loading'); loadingOverlay.style.display = 'flex'; })()">
+            <button onclick="showLoadingOverlayAndSearch()">
                 Trending Movies
             </button>
             <button id="rightListButton" onclick="window.location.href = '{{ url_for("my_list") }}'">My List</button>
             <button id="rightButton" onclick="window.location.href = '{{ url_for("logout") }}'">Sign Out</button>
         {% else %}
-            <button onclick="(function() { let loadingOverlay = document.getElementById('loading'); loadingOverlay.style.display = 'flex'; window.location.href = '{{ url_for("search_movies") }}'; })()">
+            <button onclick="showLoadingOverlayAndSearch()">
                 Trending Movies
             </button>
             <button id="rightButton" onclick="window.location.href = '{{ url_for("login") }}'">Sign in</button>
         {% endif %}
+    </div>
+
+
+    <div id="menuToggle">
+        <!--
+        A fake / hidden checkbox is used as click reciever,
+        so you can use the :checked selector on it.
+        -->
+        <input type="checkbox"/>
+
+        <!--
+        Some spans to act as a hamburger.
+
+        They are acting like a real hamburger,
+        not that McDonalds stuff.
+        -->
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <!--
+        Too bad the menu has to be inside of the button
+        but hey, it's pure CSS magic.
+        -->
+        <ul id="menu">
+            {% if session['logged_in'] %}
+                <a href="{{ url_for('search_movies') }}">
+                    <li onclick="showLoadingOverlay()">Trending Movies</li>
+                </a>
+                <a href="{{ url_for('my_list') }}">
+                    <li>My List</li>
+                </a>
+                <a href="{{ url_for('logout') }}">
+                    <li>Sign Out</li>
+                </a>
+            {% else %}
+                <a href="{{ url_for('search_movies') }}">
+                    <li onclick="showLoadingOverlay()">Trending Movies</li>
+                </a>
+                <a href="{{ url_for('login') }}">
+                    <li>Sign In</li>
+                </a>
+            {% endif %}
+        </ul>
     </div>
 </nav>
 
@@ -54,11 +101,23 @@
     <form class="search" autocomplete="off" action="{{ url_for('search_movies') }}">
         <input type="text" name="movie" list="movies" placeholder="Search here..." required>
         <button type="submit"
-                onclick=" let loadingOverlay = document.getElementById('loading'); loadingOverlay.style.display = 'flex';">
+                onclick="showLoadingOverlay()">
             Search
         </button>
         <ul id="ul"></ul>
     </form>
 </section>
 </body>
+<script>
+    function showLoadingOverlay() {
+        let loadingOverlay = document.getElementById('loading');
+        loadingOverlay.style.display = 'flex';
+    }
+
+    function showLoadingOverlayAndSearch() {
+        let loadingOverlay = document.getElementById('loading');
+        loadingOverlay.style.display = 'flex';
+        window.location.href = '{{ url_for("search_movies") }}';
+    }
+</script>
 </html>

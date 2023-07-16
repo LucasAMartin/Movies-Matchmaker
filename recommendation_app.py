@@ -296,7 +296,7 @@ def get_recommendations(title, data, indices, cosine_sim):
     except ValueError:
         return None
 
-
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 @app.route("/Search")
 async def search_movies():
     # Get user input for movie search

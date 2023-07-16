@@ -30,13 +30,15 @@ body {
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../img/background.jpg');
     background-size: cover;
     background-position: center;
-    padding: 10px 8%;
     position: relative;
 }
 
 #logo {
-    width: 200px;
-    height: 33px;
+    position: absolute;
+    margin-left: 2rem;
+    margin-top: 3rem;
+    width: 180px;
+    height: 30px;
 }
 
 nav {
@@ -48,6 +50,9 @@ nav {
 #headerButtons {
     display: flex;
     gap: .5rem;
+    position: absolute;
+    top: 10px;
+    right: 8%;
 }
 
 button {
@@ -74,6 +79,7 @@ button:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 10px 8%;
 }
 
 .mainText {
@@ -129,7 +135,7 @@ button:hover {
 }
 
 
-ul {
+#ul {
     list-style: none;
     padding: 0;
     margin-top: 40px;
@@ -144,21 +150,160 @@ ul {
     position: absolute;
 }
 
-li {
+#ul li {
     padding: 12px;
     transition: background-color 100ms ease-in-out;
 }
 
-li:hover,
-li.selected {
+#ul li:hover,
+#ul li.selected {
     background-color: #b20303;
 }
 
 
+#menuToggle {
+    display: block;
+    position: relative;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    z-index: 1;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#menuToggle a {
+    text-decoration: none;
+    color: #232323;
+    transition: color 0.3s ease;
+}
+
+#menuToggle a:hover {
+    color: tomato;
+}
+
+
+#menuToggle input {
+    display: block;
+    width: 40px;
+    height: 32px;
+    position: absolute;
+    top: -7px;
+    left: -5px;
+
+    cursor: pointer;
+
+    opacity: 0; /* hide this */
+    z-index: 2; /* and place it over the hamburger */
+
+    -webkit-touch-callout: none;
+}
+
+/*
+ * Just a quick hamburger
+ */
+#menuToggle span {
+    display: block;
+    width: 33px;
+    height: 4px;
+    margin-bottom: 5px;
+    position: relative;
+    background: #cdcdcd;
+    border-radius: 3px;
+    z-index: 1;
+    transform-origin: 4px 0px;
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+    background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+    opacity 0.55s ease;
+}
+
+#menuToggle span:first-child {
+    transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2) {
+    transform-origin: 0% 100%;
+}
+
+/*
+ * Transform all the slices of hamburger
+ * into a crossmark.
+ */
+#menuToggle input:checked ~ span {
+    opacity: 1;
+    transform: rotate(45deg) translate(-2px, -1px);
+    background: #cdcdcd;
+}
+
+/*
+ * But let's hide the middle one.
+ */
+#menuToggle input:checked ~ span:nth-last-child(3) {
+    opacity: 0;
+    transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+/*
+ * Ohyeah and the last one should go the other direction
+ */
+#menuToggle input:checked ~ span:nth-last-child(2) {
+    transform: rotate(-45deg) translate(0, -1px);
+}
+
+/*
+ * Make this absolute positioned
+ * at the top left of the screen
+ */
+#menu {
+    position: absolute;
+    width: 300px;
+    margin: -100px 0 0 -50px;
+    padding: 50px;
+    padding-right: 15px;
+    padding-top: 125px;
+    background: rgba(20, 20, 20);
+    list-style-type: none;
+    -webkit-font-smoothing: antialiased;
+    /* to stop flickering of text in safari */
+    transform-origin: 0% 0%;
+    transform: translate(-100%, 0);
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+
+}
+
+#menu li {
+    padding: 10px;
+    background: rgba(30,30,30);
+    font-size: 22px;
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/*
+ * And let's slide it in from the left
+ */
+#menuToggle input:checked ~ ul {
+    transform: none;
+}
+
+#menuToggle {
+    display: none;
+}
+
+
 @media only screen and (max-width: 768px) {
+    #menuToggle {
+        display: block;
+    }
+
+    #headerButtons {
+        display: none;
+    }
+
     #logo {
-        width: 10rem;
-        height: auto;
+        position: absolute;
+        margin-top: 1.5rem;
+        right: 1rem;
     }
 
     .nav {
@@ -192,7 +337,7 @@ li.selected {
         width: 25%;
     }
 
-    ul {
+    #ul {
         width: 83%;
     }
 
@@ -200,6 +345,65 @@ li.selected {
         margin-bottom: 4px;
     }
 }
+
+@keyframes disappear {
+    0% {
+        opacity: 1;
+        height: 100vh;
+    }
+
+    99% {
+        height: 100vh;
+    }
+
+    100% {
+        opacity: 0;
+        height: 0;
+    }
+}
+
+@keyframes extend {
+    0%, 80% {
+        height: 20px;
+    }
+
+    40% {
+        height: 60px;
+    }
+}
+
+
+@media only screen and (max-width: 450px) {
+    #loading .logo {
+        font-size: 16px;
+    }
+
+    nav {
+        align-items: start;
+    }
+
+    .search input {
+        width: 70%;
+    }
+
+    .search button {
+        width: 30%;
+    }
+
+    #headerButtons {
+        padding-right: 10px;
+    }
+
+    button#rightButton {
+        width: 128px;
+    }
+
+    button#leftButton {
+        width: 128px;
+    }
+
+}
+
 
 /* Loading courtesy of https://codepen.io/alimirayman/pen/XKOZOL*/
 #loading {
@@ -266,66 +470,6 @@ li.selected {
     margin-top: 1rem;
     color: #ecf0f1;
 }
-
-@keyframes disappear {
-    0% {
-        opacity: 1;
-        height: 100vh;
-    }
-
-    99% {
-        height: 100vh;
-    }
-
-    100% {
-        opacity: 0;
-        height: 0;
-    }
-}
-
-@keyframes extend {
-    0%, 80% {
-        height: 20px;
-    }
-
-    40% {
-        height: 60px;
-    }
-}
-
-
-
-@media only screen and (max-width: 450px) {
-    #loading .logo {
-        font-size: 16px;
-    }
-    #headerButtons{
-        display: flex;
-        flex-direction: column;
-    }
-    nav{
-        align-items: start;
-    }
-    .search input {
-        width: 70%;
-    }
-
-    .search button {
-        width: 30%;
-    }
-
-    #headerButtons {
-        padding-right: 10px;
-    }
-    button#rightButton{
-        width: 128px;
-    }
-    button#leftButton{
-        width: 128px;
-    }
-
-}
-
 
 
 
