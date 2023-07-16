@@ -19,6 +19,7 @@ body {
     left: 2rem;
     width: 180px;
     height: 30px;
+    z-index: 20;
 }
 
 .card {
