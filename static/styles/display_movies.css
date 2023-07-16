@@ -200,7 +200,7 @@ button:hover {
 
 .scroll-button {
     position: absolute;
-    top: 50%;
+    top: 52%;
     transform: translateY(-50%);
     z-index: 1;
     background-color: rgba(0, 0, 0, 0.6);
@@ -208,15 +208,20 @@ button:hover {
     color: white;
     font-size: 1.5rem;
     margin-right: 1rem;
-    padding: 5rem 1rem;
+    padding: 126px 2rem;
     cursor: pointer;
-    border-radius: 25px;
+    border-radius: 10px;
     opacity: 0;
     transition: opacity 200ms;
 }
 
 .scroll-button.active {
     opacity: 1;
+}
+
+.scroll-button:hover{
+    color: white;
+    background: rgba(20,20,20,.9);
 }
 
 

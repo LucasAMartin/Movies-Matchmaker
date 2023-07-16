@@ -6,11 +6,11 @@ Movies Matchmaker is a web application that helps you find your perfect movie ma
 
 - **Search Bar:** Search for almost any movie using our intuitive search bar. Our search algorithm uses fuzzy matching to help you find the movie you're looking for, even if you don't know the exact title.
 - **Custom Recommendations:** Our app uses web scraping with BeautifulSoup to gather data about movies and build an effective content-based recommendation system. This system analyzes the attributes of movies you like and provides you with personalized suggestions for other movies you might enjoy.
-- **Modern Display:** Movies are displayed in a visually appealing and modern fashion, inspired by Netflix's user interface. While it was built for desktop and that is recommended for the best experience, the app uses a responsive design to ensure that it looks great on any device.
+- **Modern Display:** Movies are displayed in a visually appealing and modern fashion, inspired by Netflix's user interface. The app has a responsive design to ensure that it looks great on any device.
 - **Detailed Information:** Click on any movie to view more information about it, including its release date, cast, and plot summary. You can also receive recommendations for other movies based on the one you clicked.
 - **Persistent Logins:** Our app uses browser cookies and Quart-Auth to keep you logged in, even after you close your browser. This allows you to save your favorite movies and access your personalized recommendations across multiple sessions.
 - **Movie Lists:** Keep track of your favorite movies by adding them to your personal list. Our app displays your list in a modern and visually appealing way, allowing you to easily browse and manage your collection.
-- **SQlite caching** To speed up often used request, API calls are stored in a custom SQlite cache. Clear the old entries at any time with the clear_cache.py script.
+- **SQlite caching** To speed up often used requests, API calls are stored in a custom SQlite cache. Clear the old entries at any time with the clear_cache.py script.
 
 ## Video Demo (Youtube)
 [![Video Demo](https://img.youtube.com/vi/uQgIYnDL5cM/0.jpg)](https://www.youtube.com/watch?v=uQgIYnDL5cM)
