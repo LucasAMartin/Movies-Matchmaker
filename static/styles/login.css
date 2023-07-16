@@ -109,11 +109,10 @@ body {
 
 .other-login {
     cursor: pointer;
-}
-
-.other-login div:nth-child(1) {
     display: flex;
-    align-items: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .other-login div img {
@@ -121,24 +120,24 @@ body {
     height: 20px;
 }
 
-.other-login div p {
+.other-login div span {
     color: #737373;
     font-size: 13px;
     margin-left: 8px;
 }
 
-.firsttime div:nth-child(1) {
+.firsttime {
     display: flex;
 }
 
-.firsttime div p {
+.firsttime p {
     color: #737373;
     margin-top: 16px;
     font-size: 16px;
     margin-right: 8px;
 }
 
-.firsttime div a {
+.firsttime a {
     text-decoration: none;
     color: white;
     margin-top: 16px;
