@@ -10,146 +10,6 @@
     box-sizing: border-box;
 }
 
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    opacity: 0;
-    transform: translate(-50%, 100%);
-    transition: transform 400ms cubic-bezier(0.5, 0, 0.5, 1); /*Change animation duration in js code, openModal function*/
-    z-index: 10; /*Also change close duration, closeModal function*/
-    width: 70%;
-    max-width: 80%;
-    color: white;
-}
-
-.modal.active {
-    transform: translate(-50%, -50%);
-    opacity: 1;
-}
-
-
-.modal-header {
-    position: relative;
-    padding-bottom: 42.857%;
-    overflow: hidden;
-    border-radius: 25px 25px 0 0;
-}
-
-.modal-header img {
-    position: absolute;
-    width: 100%;
-    height: auto;
-    transition: opacity 1s;
-}
-
-.youtube-iframe {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform: scale(1.4);
-    transition: opacity 1s;
-    opacity: 0;
-
-}
-
-.modal-header .title {
-    font-family: 'Bebas Neue', sans-serif;
-    text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
-    position: absolute;
-    margin-bottom: 1rem;
-    bottom: 0;
-    z-index: 10;
-    left: 0;
-    right: 0;
-    padding: 1% 1% 1% 2%;
-    color: white;
-    font-size: 4rem;
-    font-weight: bold;
-    max-width: 75%;
-}
-
-
-#modal_button {
-    z-index: 11;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin-bottom: 2rem;
-    color: white;
-    margin-right: 1rem;
-}
-
-.modal-body {
-    background-color: rgb(20, 20, 20, 1);
-    border-radius: 0 0 25px 25px;
-    display: flex;
-    padding-left: 2%;
-    padding-bottom: 3%;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-#modal_button_list {
-    z-index: 11;
-    position: absolute;
-    right: 8rem;
-    bottom: 0;
-    margin-bottom: 2rem;
-    height: auto;
-}
-
-.modal-info {
-    display: flex;
-    gap: 2%;
-}
-
-.modal-desc {
-    margin-top: 1%;
-    max-width: 80%;
-    font-family: 'Lato', sans-serif;
-    font-size: 1.1rem;
-}
-
-.modal-genre {
-    margin-top: 1%;
-    font-size: 1.8rem;
-    font-family: 'Bebas Neue', sans-serif;
-}
-
-.modal-year {
-    margin-top: 1%;
-    font-size: 1.8rem;
-    font-family: 'Bebas Neue', sans-serif;
-}
-
-#modal_fadeBottom {
-    position: absolute;
-    bottom: 0;
-    content: '';
-    width: 100%;
-    height: 10%;
-    background: linear-gradient(180deg, rgba(20, 20, 20, 0), rgba(20, 20, 20)
-    );
-}
-
-#overlay {
-    position: fixed;
-    opacity: 0;
-    transition: 200ms ease-in-out;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, .5);
-    pointer-events: none;
-}
-
-#overlay.active {
-    opacity: 1;
-    pointer-events: all;
-}
-
 body, html {
     overflow-x: hidden;
 }
@@ -172,7 +32,7 @@ body.preload * {
 .nav {
     position: fixed;
     top: 0;
-    padding: 2rem 1.5rem;
+    padding: 1rem 2rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -403,6 +263,146 @@ button:hover {
     font-size: 2rem;
 }
 
+.modal {
+    position: fixed;
+    top: 100%;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%, 100%);
+    transition: transform 400ms cubic-bezier(0.5, 0, 0.5, 1); /*Change animation duration in js code, openModal function*/
+    z-index: 10; /*Also change close duration, closeModal function*/
+    width: 70%;
+    max-width: 80%;
+    color: white;
+}
+
+.modal.active {
+    transform: translate(-50%, -80vh);
+    opacity: 1;
+}
+
+
+.modal-header {
+    position: relative;
+    padding-bottom: 42.857%;
+    overflow: hidden;
+    border-radius: 25px 25px 0 0;
+}
+
+.modal-header img {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    transition: opacity 1s;
+}
+
+.youtube-iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: scale(1.4);
+    transition: opacity 1s;
+    opacity: 0;
+
+}
+
+.modal-header .title {
+    font-family: 'Bebas Neue', sans-serif;
+    text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+    position: absolute;
+    margin-bottom: 1rem;
+    bottom: 0;
+    z-index: 10;
+    left: 0;
+    right: 0;
+    padding: 1% 1% 1% 2%;
+    color: white;
+    font-size: 4rem;
+    font-weight: bold;
+    max-width: 75%;
+}
+
+
+#modal_button {
+    z-index: 11;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 2rem;
+    color: white;
+    margin-right: 1rem;
+}
+
+.modal-body {
+    background-color: rgb(20, 20, 20, 1);
+    border-radius: 0 0 25px 25px;
+    display: flex;
+    padding-left: 2%;
+    padding-bottom: 3%;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#modal_button_list {
+    z-index: 11;
+    position: absolute;
+    right: 8rem;
+    bottom: 0;
+    margin-bottom: 2rem;
+    height: auto;
+}
+
+.modal-info {
+    display: flex;
+    gap: 2%;
+}
+
+.modal-desc {
+    margin-top: 1%;
+    max-width: 80%;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.1rem;
+}
+
+.modal-genre {
+    margin-top: 1%;
+    font-size: 1.8rem;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.modal-year {
+    margin-top: 1%;
+    font-size: 1.8rem;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+#modal_fadeBottom {
+    position: absolute;
+    bottom: 0;
+    content: '';
+    width: 100%;
+    height: 10%;
+    background: linear-gradient(180deg, rgba(20, 20, 20, 0), rgba(20, 20, 20)
+    );
+}
+
+#overlay {
+    position: fixed;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
 /* Loading courtesy of https://codepen.io/alimirayman/pen/XKOZOL*/
 #loading {
     z-index: 9999;
@@ -562,7 +562,123 @@ button:hover {
     }
 }
 
+#menuToggle {
+    display: block;
+    position: absolute;
+    margin-top: 2rem;
+    margin-right: 2rem;
+    right: 0;
+    z-index: 1;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#menuToggle a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+#menuToggle a:hover {
+    color: tomato;
+}
+
+
+#menuToggle input {
+    display: block;
+    width: 40px;
+    height: 32px;
+    position: absolute;
+    top: -7px;
+    left: -5px;
+
+    cursor: pointer;
+
+    opacity: 0; /* hide this */
+    z-index: 2; /* and place it over the hamburger */
+
+    -webkit-touch-callout: none;
+}
+
+
+#menuToggle span {
+    display: block;
+    width: 33px;
+    height: 4px;
+    margin-bottom: 5px;
+    position: relative;
+    background: white;
+    border-radius: 3px;
+    z-index: 1;
+    transform-origin: 4px 0px;
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+    background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
+    opacity 0.55s ease;
+}
+
+#menuToggle span:first-child {
+    transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2) {
+    transform-origin: 0% 100%;
+}
+
+
+#menuToggle input:checked ~ span {
+    opacity: 1;
+    transform: rotate(45deg) translate(-2px, -1px);
+    background: #cdcdcd;
+}
+
+
+#menuToggle input:checked ~ span:nth-last-child(3) {
+    opacity: 0;
+    transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+
+#menuToggle input:checked ~ span:nth-last-child(2) {
+    transform: rotate(-45deg) translate(0, -1px);
+}
+
+#menu {
+    position: absolute;
+    top: 0;
+    width: 240px;
+    height: 110vh;
+    margin: -35px 0 0 -175px;
+    padding: 30px;
+    padding-top: 80px;
+    background: rgba(20, 20, 20);
+    list-style-type: none;
+    -webkit-font-smoothing: antialiased;
+    transform-origin: 100% 0%;
+    transform: translate(100%, 0);
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+}
+
+
+#menu li {
+    padding: 10px;
+    font-size: 22px;
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#menuToggle input:checked ~ ul {
+    transform: none;
+}
+
+#menuToggle {
+    display: none;
+}
+
 @media only screen and (max-width: 768px) {
+    #menuToggle{
+        display: block;
+    }
     #loading .logo {
         display: none;
     }
@@ -580,49 +696,15 @@ button:hover {
         display: none;
     }
 
-    .modal {
-        width: 80%;
+    #navLogin{
+        display: none;
     }
 
-    .modal-header .title {
-        margin-bottom: 1rem;
-        font-size: 2rem;
-        max-width: 60%;
+    #navMyList{
+        display: none;
     }
-
-    #modal_button {
-        position: relative;
-        right: 1rem;
-        top: 1rem;
-        font-size: small;
-    }
-
-    #modal_button_list {
-        position: relative;
-        right: 1rem;
-        top: 1rem;
-    }
-
-    .modal-body {
-        font-size: small;
-    }
-
     #muteButton {
         bottom: .8rem;
-    }
-
-    .modal-desc {
-        margin-top: 1rem;
-        font-size: 1rem;
-    }
-
-    .modal-genre {
-        font-size: 1rem;
-    }
-
-    .modal-year {
-        font-size: 1rem;
-
     }
 
     #navHome {
@@ -704,28 +786,6 @@ button:hover {
 
     .nav {
         padding-bottom: 4rem;
-    }
-
-
-    #modal_button_list {
-        text-align: center;
-        width: 150px;
-        line-height: 16px; /* same as the button height */
-    }
-
-    .modal-header img {
-        margin-top: 15px;
-    }
-
-    .modal-header .title {
-        margin-bottom: 1rem;
-        max-width: 100%;
-        font-size: 1.3rem;
-    }
-
-    .modal-desc {
-        font-size: .8rem;
-        padding: 1%;
     }
 
     #banner_title {

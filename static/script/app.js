@@ -147,7 +147,6 @@ async function getImdbID(movie_id) {
 
 
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
-// this.id is the id of the banner that it is pressed from
 function changeMovie(movie) {
     const urlParams = new URLSearchParams(window.location.search);
     const cleanedMovieName = movie.replace(/[^a-zA-Z0-9 ]/g, "");
@@ -201,8 +200,7 @@ async function requestBanner() {
     }
 }
 
-// if the banner movie is not in database, we can't give recommendations
-// in this case just display the trending movies
+// Function for adding rows, takes a list of movies and the row title category
 function addRow(movieList, category) {
     const row = document.createElement("div");
     row.className = "row";
@@ -252,7 +250,14 @@ function addRow(movieList, category) {
             poster.setAttribute("data-year", movie.release_date.substring(0, 4));
             poster.setAttribute("data-img", img_url + movie.backdrop_path);
 
-            poster.onclick = openModal;
+            if (window.matchMedia("(max-width: 768px)").matches) {
+                poster.onclick = function () {
+                    changeMovie(movie.title);
+                    loadingOverlay.style.display = 'flex';
+                };
+            } else {
+                poster.onclick = openModal;
+            }
             row_posters.appendChild(poster);
         } catch (error) {
             break;

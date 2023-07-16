@@ -29,9 +29,8 @@
         <span></span>
         <span></span>
     </div>
-        <div class="logo">Loading Info</div>
+    <div class="logo">Loading Info</div>
 </div>
-
 <!-- navbar section -->
 <div class="nav">
     <div class="nav_left">
@@ -60,6 +59,55 @@
                     onclick="window.location.href = '{{ url_for("login") }}'">Sign In
             </button>
         {% endif %}
+    </div>
+
+    <div id="menuToggle">
+        <!--
+        A fake / hidden checkbox is used as click reciever,
+        so you can use the :checked selector on it.
+        -->
+        <input type="checkbox"/>
+
+        <!--
+        Some spans to act as a hamburger.
+
+        They are acting like a real hamburger,
+        not that McDonalds stuff.
+        -->
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <!--
+        Too bad the menu has to be inside of the button
+        but hey, it's pure CSS magic.
+        -->
+        <ul id="menu">
+            {% if session['logged_in'] %}
+                <a href="{{ url_for('home') }}">
+                    <li>Home</li>
+                </a>
+                <a href="{{ url_for('search_movies') }}">
+                    <li onclick="showLoadingOverlay()">Trending Movies</li>
+                </a>
+                <a href="{{ url_for('my_list') }}">
+                    <li>My List</li>
+                </a>
+                <a href="{{ url_for('logout') }}">
+                    <li>Sign Out</li>
+                </a>
+            {% else %}
+                <a href="{{ url_for('home') }}">
+                    <li>Home</li>
+                </a>
+                <a href="{{ url_for('search_movies') }}">
+                    <li onclick="showLoadingOverlay()">Trending Movies</li>
+                </a>
+                <a href="{{ url_for('login') }}">
+                    <li>Sign In</li>
+                </a>
+            {% endif %}
+        </ul>
     </div>
 </div>
 
@@ -92,6 +140,11 @@
         var nav = document.querySelector(".nav");
         nav.classList.toggle("active", window.scrollY > 0);
     })
+
+    function showLoadingOverlay() {
+        let loadingOverlay = document.getElementById('loading');
+        loadingOverlay.style.display = 'flex';
+    }
 </script>
 </body>
 </html>
