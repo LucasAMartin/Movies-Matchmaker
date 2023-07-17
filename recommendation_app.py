@@ -1,6 +1,8 @@
 import heapq
 import os
 import time
+
+import requests
 from dotenv import load_dotenv
 from quart import Quart, request, render_template, jsonify, redirect, session
 import aiohttp
@@ -114,10 +116,19 @@ async def get_trending_info_async(session):
     return movies
 
 
+async def keep_awake():
+    async with aiohttp.ClientSession() as session:
+        while True:
+            async with session.get("https://movies-matchmaker.onrender.com/") as response:
+                # print(f"Sent GET request to {response.url} at {time.ctime()}")
+                await asyncio.sleep(14 * 60)
+
+
 @app.before_serving
 async def startup():
     init_users()
     init_cache()
+    asyncio.create_task(keep_awake())
 
 
 @app.route("/")
@@ -296,7 +307,10 @@ def get_recommendations(title, data, indices, cosine_sim):
     except ValueError:
         return None
 
+
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+
 @app.route("/Search")
 async def search_movies():
     # Get user input for movie search
