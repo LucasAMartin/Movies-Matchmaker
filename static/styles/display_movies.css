@@ -565,7 +565,6 @@ button:hover {
 #menuToggle {
     display: block;
     position: absolute;
-    margin-top: 2rem;
     margin-right: 2rem;
     right: 0;
     z-index: 1;
