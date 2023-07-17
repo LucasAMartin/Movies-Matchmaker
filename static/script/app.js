@@ -172,11 +172,7 @@ async function requestBanner() {
     const banner_play = document.querySelector('#banner_play');
     banner_play.onclick = launchMoviePlayer
     banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
-    if (window.innerWidth <= 450) {
-        banner_description.innerText = truncateString(bannerMovie.overview, 250);
-    } else {
-        banner_description.innerText = truncateString(bannerMovie.overview, 600);
-    }
+    banner_description.innerText = truncateString(bannerMovie.overview, 600);
     banner_title.innerText = bannerMovie.title;
     banner_List.textContent = 'Add to List';
     banner_List.onclick = (event) => {
