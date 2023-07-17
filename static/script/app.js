@@ -378,12 +378,29 @@ async function displayTrailer(movie_id, modalImg) {
 }
 
 async function launchMoviePlayer() {
-    let bannerTMDB = bannerMovie.id;
-    const bannerIMDB = await getImdbID(bannerTMDB);
-    //  Uses the IMDB id to launch a movie player
-    let movieURL = `https://vidsrc.me/embed/${bannerIMDB}/`;
-    console.log(movieURL)
-    //window.open(movieURL);
+    const trailer_id = await getYoutubeTrailerKey(bannerMovie.id);
+    // Check if a YouTube link was provided
+    if (trailer_id) {
+        // Create an iframe element
+        let movieURL = `${youtubeBase}${trailer_id}?autoplay=1&mute=1&modestbranding=1&showinfo=0`;
+        let iframe = document.createElement('iframe');
+        iframe.src = movieURL;
+        // Set the width of the iframe to 80% of the screen width
+        let screenWidth = window.innerWidth;
+        let iframeWidth = screenWidth * 0.8;
+        iframe.style.width = `${iframeWidth}px`;
+        // Set the height of the iframe based on a 16:9 aspect ratio
+        let iframeHeight = (iframeWidth / 16) * 9;
+        iframe.style.height = `${iframeHeight}px`;
+        iframe.style.zIndex = 999;
+        iframe.style.position = 'fixed';
+        iframe.allowFullscreen = true;
+        iframe.style.top = '50%';
+        iframe.style.left = '50%';
+        iframe.style.transform = 'translate(-50%, -50%)';
+        // Append the iframe to the body of the new window
+        document.body.appendChild(iframe);
+    }
 }
 
 // used to truncate the string in the banner description

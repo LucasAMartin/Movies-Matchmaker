@@ -1,8 +1,6 @@
 import heapq
 import os
 import time
-
-import requests
 from dotenv import load_dotenv
 from quart import Quart, request, render_template, jsonify, redirect, session
 import aiohttp
