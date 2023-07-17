@@ -328,7 +328,6 @@ function openModal() {
     overlay.classList.add('active');
 }
 
-
 function closeModal() {
     const modal = document.querySelector('#modal');
     const overlay = document.querySelector('#overlay');
@@ -373,7 +372,6 @@ async function displayTrailer(movie_id, modalImg) {
                 iframe.style.opacity = '1';
             }, 1000);
         });
-
     }
 }
 
@@ -400,6 +398,13 @@ async function launchMoviePlayer() {
         iframe.style.transform = 'translate(-50%, -50%)';
         // Append the iframe to the body of the new window
         document.body.appendChild(iframe);
+
+        const overlay = document.querySelector('#overlay');
+        overlay.classList.add('active');
+        overlay.onclick = (event) => {
+            iframe.remove()
+            overlay.classList.remove('active');
+        };
     }
 }
 
