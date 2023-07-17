@@ -183,7 +183,14 @@ button:hover {
         top: 10px;
         left: 10px;
     }
-
+    .card{
+        background-color: transparent;
+        width: 430px;
+        padding: 20px 50px 40px 60px;
+    }
+    body{
+        background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('../img/background.jpg');
+    }
     #navHome {
         display: none;
     }
