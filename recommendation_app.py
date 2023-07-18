@@ -155,7 +155,7 @@ async def login():
                 session.permanent = remember
                 # Redirect the user back to the search page they were on before logging in
                 previous_page = session.get('previous_page')
-                if previous_page and '/Search' in previous_page:
+                if previous_page and '/Recommend' in previous_page:
                     return redirect(previous_page)
                 else:
                     return redirect('/')
@@ -316,8 +316,8 @@ def get_recommendations(title, data, indices, cosine_sim):
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
-@app.route("/Search")
-async def search_movies():
+@app.route("/Recommend")
+async def recommend_movies():
     # Get user input for movie search
     choice = request.args.get('movie')
     # If no user input, get a trending movie as the default choice

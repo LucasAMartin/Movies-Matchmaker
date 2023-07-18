@@ -64,7 +64,7 @@ function changeMovie(movie) {
     const urlParams = new URLSearchParams(window.location.search);
     const cleanedMovieName = movie.replace(/[^a-zA-Z0-9 ]/g, "");
     urlParams.set('movie', cleanedMovieName.trim().replace(/\s+/g, ' '));
-    const newUrl = '/Search' + '?' + urlParams.toString();
+    const newUrl = '/Recommend' + '?' + urlParams.toString();
     window.history.pushState({}, '', newUrl);
     location.href = location.href;
 }

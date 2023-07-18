@@ -74,7 +74,7 @@
         -->
         <ul id="menu">
             {% if session['logged_in'] %}
-                <a href="{{ url_for('search_movies') }}">
+                <a href="{{ url_for('recommend_movies') }}">
                     <li onclick="showLoadingOverlay()">Trending Movies</li>
                 </a>
                 <a href="{{ url_for('my_list') }}">
@@ -84,7 +84,7 @@
                     <li>Sign Out</li>
                 </a>
             {% else %}
-                <a href="{{ url_for('search_movies') }}">
+                <a href="{{ url_for('recommend_movies') }}">
                     <li onclick="showLoadingOverlay()">Trending Movies</li>
                 </a>
                 <a href="{{ url_for('login') }}">
@@ -99,7 +99,7 @@
 <section class="title">
     <h1 class="mainText"> Can't Decide? Enter a great movie and let us do the work!</h1>
     <p id="mainTextExtra"> Recommendations based on your favorite movie</p>
-    <form class="search" autocomplete="off" action="{{ url_for('search_movies') }}">
+    <form class="search" autocomplete="off" action="{{ url_for('recommend_movies') }}">
         <input type="text" name="movie" list="movies" placeholder="Search here..." required>
         <button type="submit"
                 onclick="showLoadingOverlay()">
@@ -118,7 +118,7 @@
     function showLoadingOverlayAndSearch() {
         let loadingOverlay = document.getElementById('loading');
         loadingOverlay.style.display = 'flex';
-        window.location.href = '{{ url_for("search_movies") }}';
+        window.location.href = '{{ url_for("recommend_movies") }}';
     }
 </script>
 </html>

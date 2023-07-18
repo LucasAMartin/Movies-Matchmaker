@@ -41,7 +41,7 @@
         <button class=".nav_right .nav_list" id="navHomeList"
                 onclick="window.location.href = '{{ url_for("home") }}'">Home
         </button>
-        <button id="trendingButtonList" onclick="window.location.href = '{{ url_for("search_movies") }}'">Trending
+        <button id="trendingButtonList" onclick="window.location.href = '{{ url_for("recommend_movies") }}'">Trending
             Movies
         </button>
         {% if session['logged_in'] %}
@@ -80,7 +80,7 @@
                 <a href="{{ url_for('home') }}">
                     <li>Home</li>
                 </a>
-                <a href="{{ url_for('search_movies') }}">
+                <a href="{{ url_for('recommend_movies') }}">
                     <li onclick="showLoadingOverlay()">Trending Movies</li>
                 </a>
                 <a href="{{ url_for('logout') }}">
@@ -90,7 +90,7 @@
                 <a href="{{ url_for('home') }}">
                     <li>Home</li>
                 </a>
-                <a href="{{ url_for('search_movies') }}">
+                <a href="{{ url_for('recommend_movies') }}">
                     <li onclick="showLoadingOverlay()">Trending Movies</li>
                 </a>
                 <a href="{{ url_for('login') }}">
