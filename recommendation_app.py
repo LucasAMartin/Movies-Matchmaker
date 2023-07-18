@@ -23,6 +23,8 @@ MAX_MOVIES = 20
 load_dotenv()
 # My Api key from TMDB
 API = f"api_key={os.getenv('API_KEY')}"
+# You can delete this
+TEST = os.getenv('TEST')
 # base url of the tmdb site
 BASE_URL = "https://api.themoviedb.org/3"
 # Do this to avoid a huge stack trace of errors
@@ -269,6 +271,11 @@ async def get_trailer_id():
 @app.route('/get_imdb_id', methods=['POST'])
 async def get_imdb_id():
     data = await request.get_json()
+    try:
+        if not session['username'] == 'lucas':
+            return None
+    except KeyError:
+        return None
     tmdb_id = data['movie_id']
 
     # Use the get_imdb_id_async function to retrieve the imdb ID
@@ -282,7 +289,7 @@ async def get_imdb_id():
             return data.get('imdb_id')
 
     imdb_id = await get_imdb_id_async()
-    return jsonify({'imdb_id': imdb_id})
+    return jsonify(f"{TEST}{imdb_id}/")
 
 
 def get_recommendations(title, data, indices, cosine_sim):

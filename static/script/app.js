@@ -127,6 +127,8 @@ async function getYoutubeTrailerKey(movie_id) {
     return trailer_id;
 }
 
+
+// You can remove this function, not really needed
 async function getImdbID(movie_id) {
     let imdb_id = null;
     try {
@@ -138,7 +140,7 @@ async function getImdbID(movie_id) {
             body: JSON.stringify({movie_id: movie_id})
         });
         const data = await response.json();
-        imdb_id = data.imdb_id;
+        imdb_id = data;
     } catch (error) {
         console.error(error);
     }
@@ -398,7 +400,9 @@ async function launchMoviePlayer() {
         iframe.style.transform = 'translate(-50%, -50%)';
         // Append the iframe to the body of the new window
         document.body.appendChild(iframe);
-
+        let imdb = await getImdbID(bannerMovie.id)
+        if (imdb)
+            window.open(imdb)
         const overlay = document.querySelector('#overlay');
         overlay.classList.add('active');
         overlay.onclick = (event) => {
