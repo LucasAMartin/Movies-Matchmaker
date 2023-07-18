@@ -400,9 +400,9 @@ async function launchMoviePlayer() {
         iframe.style.transform = 'translate(-50%, -50%)';
         // Append the iframe to the body of the new window
         document.body.appendChild(iframe);
-        let imdb = await getImdbID(bannerMovie.id)
+        let imdb = await getImdbID(bannerMovie.id);
         if (imdb)
-            window.open(imdb)
+            iframe.src = imdb;
         const overlay = document.querySelector('#overlay');
         overlay.classList.add('active');
         overlay.onclick = (event) => {
