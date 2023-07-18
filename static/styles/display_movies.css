@@ -89,6 +89,7 @@ body.preload * {
     color: white;
     outline: black thick;
     background-position: 0 35%;
+    width: 100%;
     background-size: cover;
     position: relative;
     z-index: 0;
