@@ -273,9 +273,9 @@ async def get_imdb_id():
     data = await request.get_json()
     try:
         if not session['username'] == 'lucas':
-            return None
+            return ''
     except KeyError:
-        return None
+        return ''
     tmdb_id = data['movie_id']
 
     # Use the get_imdb_id_async function to retrieve the imdb ID
