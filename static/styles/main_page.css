@@ -322,11 +322,14 @@ button:hover {
     }
 
     .search input {
-        width: 75%;
+        width: 60%;
     }
 
     .search button {
         width: 25%;
+    }
+    #searchButton{
+        width: 15%;
     }
 
     #ul {
@@ -371,11 +374,14 @@ button:hover {
     }
 
     .search input {
-        width: 70%;
+        width: 55%;
     }
 
     .search button {
         width: 30%;
+    }
+    #searchButton{
+        width: 15%;
     }
 
     #headerButtons {
