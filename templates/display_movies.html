@@ -42,7 +42,7 @@
     <div class="nav_right_buttons">
         <form class="search" autocomplete="off" action="{{ url_for('recommend_movies') }}">
             <input type="text" name="movie" list="movies" placeholder="Search here..." required>
-            <button type="submit">Search</button>
+            <button type="submit" name="action" value="search">Search</button>
         </form>
         <button class=".nav_right .nav_list" id="navHome"
                 onclick="window.location.href = '{{ url_for("home") }}'">Home

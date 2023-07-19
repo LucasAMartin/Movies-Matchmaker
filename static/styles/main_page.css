@@ -76,6 +76,10 @@ button:hover {
     transition: all .3s;
 }
 
+#searchButton{
+    width: 80px;
+}
+
 .title {
     display: flex;
     height: 70vh;
@@ -111,7 +115,7 @@ button:hover {
 
 .search input {
     align-content: center;
-    width: 378px;
+    width: 298px;
     float: left;
     padding: 12px;
     color: #ccc;

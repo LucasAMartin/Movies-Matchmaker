@@ -98,12 +98,14 @@
 <!-- search section -->
 <section class="title">
     <h1 class="mainText"> Can't Decide? Enter a great movie and let us do the work!</h1>
-    <p id="mainTextExtra"> Recommendations based on your favorite movie</p>
+    <p id="mainTextExtra"> Get recommendations based on your favorite movie, or just search</p>
     <form class="search" autocomplete="off" action="{{ url_for('recommend_movies') }}">
-        <input type="text" name="movie" list="movies" placeholder="Search here..." required>
-        <button type="submit"
-                onclick="showLoadingOverlay()">
+        <input type="text" name="movie" list="movies" onsubmit="showLoadingOverlay()" placeholder="Search here..." required>
+        <button type="submit" id="searchButton" name="action" value="search">
             Search
+        </button>
+        <button type="submit">
+            Recommend
         </button>
         <ul id="ul"></ul>
     </form>

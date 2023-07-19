@@ -326,10 +326,11 @@ async def recommend_movies():
         if choice is None:
             movies = await get_trending_info_async(session)
             choice = movies[0]
+        elif request.args.get('action') == 'search':
+            movies = await get_trending_info_async(session)
+            movies[0] = choice
         else:
             movies = get_recommendations(choice, movie_data, indices, cosine_sim)
-        if movies is None:
-            movies = await get_trending_info_async(session)
         movies = await get_movie_info_async(session, movies)
         banner_movie, lead_actor_data, genre_1_movies, genre_2_movies = await asyncio.gather(
             get_data_async(session, f"{BASE_URL}/search/movie?query={choice}&{API}"),
@@ -348,7 +349,7 @@ async def recommend_movies():
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,
-                                     actorMovies=lead_actor_movies_info, s='opps')
+                                     actorMovies=lead_actor_movies_info)
 
 
 if __name__ == "__main__":
