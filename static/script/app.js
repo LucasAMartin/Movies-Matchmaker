@@ -377,7 +377,7 @@ async function displayTrailer(movie_id, modalImg) {
     }
 }
 
-async function launchMoviePlayer() {
+async function launchMoviePlayer(qualifiedName, value) {
     const trailer_id = await getYoutubeTrailerKey(bannerMovie.id);
     // Check if a YouTube link was provided
     if (trailer_id) {
