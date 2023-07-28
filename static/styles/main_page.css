@@ -115,7 +115,7 @@ button:hover {
 
 .search input {
     align-content: center;
-    width: 298px;
+    width: 378px;
     float: left;
     padding: 12px;
     color: #ccc;
@@ -322,7 +322,7 @@ button:hover {
     }
 
     .search input {
-        width: 60%;
+        width: 85%;
     }
 
     .search button {
@@ -371,10 +371,6 @@ button:hover {
 @media only screen and (max-width: 450px) {
     #loading .logo {
         font-size: 16px;
-    }
-
-    .search input {
-        width: 55%;
     }
 
     .search button {
