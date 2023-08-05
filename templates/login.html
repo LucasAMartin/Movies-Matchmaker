@@ -48,21 +48,21 @@
                 <a href="/">Subscribe Here.</a>
             </div>
             <div class="other-login">
-                <div>
-                    <img
-                            src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png"
-                            alt="Google logo"
-                    />
-                    <span>Sign In with Google</span>
-                </div>
                 <a href='https://github.com/LucasAMartin' target=”_blank” style="text-decoration: none">
-                    <div>
-                        <img
-                                src="/static/img/github-mark-white.png"
-                                alt="Github logo"
-                        />
-                        <span>My github</span>
-                    </div>
+                    <img
+                            src="/static/img/github-mark-white.png"
+                            alt="Github logo"
+                    />
+                    <span>My github</span>
+                </a>
+                <a href='https://www.linkedin.com/in/lucas-martin-2b175023b/' target=”_blank”
+                   style="text-decoration: none">
+
+                    <img
+                            src="/static/img/linkedin.png"
+                            alt="Linkedin logo"
+                    />
+                    <span>My LinkedIn</span>
                 </a>
             </div>
         </div>
@@ -101,21 +101,22 @@
                 <a href="/">Subscribe Here.</a>
             </div>
             <div class="other-login">
-                <div>
-                    <img
-                            src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png"
-                            alt="Google logo"
-                    />
-                    <span>Sign In with Google</span>
-                </div>
                 <a href='https://github.com/LucasAMartin' target=”_blank” style="text-decoration: none">
-                    <div>
-                        <img
-                                src="/static/img/github-mark-white.png"
-                                alt="Github logo"
-                        />
-                        <span>My github</span>
-                    </div>
+                    <img
+                            src="/static/img/github-mark-white.png"
+                            alt="Github logo"
+                    />
+                    <span>My github</span>
+                </a>
+
+                <a href='https://www.linkedin.com/in/lucas-martin-2b175023b/' target=”_blank”
+                   style="text-decoration: none">
+
+                    <img
+                            src="/static/img/linkedin.png"
+                            alt="Linkedin logo"
+                    />
+                    <span>My LinkedIn</span>
                 </a>
             </div>
         </div>
@@ -163,5 +164,11 @@
     showLoginFormLink.addEventListener('click', () => {
         loginForm.style.display = 'block';
         createAccountForm.style.display = 'none';
+    });
+
+    const button = document.querySelector(".card button");
+
+    button.addEventListener("click", () => {
+        button.classList.add("button--loading");
     });
 </script>
