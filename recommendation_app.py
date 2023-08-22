@@ -332,6 +332,8 @@ async def recommend_movies():
         else:
             movies = get_recommendations(choice, movie_data, indices, cosine_sim)
         movies = await get_movie_info_async(session, movies)
+        if len(movies[0]['results']) == 0:
+            movies[0] = movies[1]
         banner_movie, lead_actor_data, genre_1_movies, genre_2_movies = await asyncio.gather(
             get_data_async(session, f"{BASE_URL}/search/movie?query={choice}&{API}"),
             get_lead_actor_async(session, movies[0]['results'][0]['id']),
