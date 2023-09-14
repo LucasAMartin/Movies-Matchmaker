@@ -292,9 +292,21 @@ async def get_imdb_id():
     return jsonify(f"{TEST}{imdb_id}/")
 
 
+@app.route('/get_streaming_link', methods=['POST'])
+async def get_streaming_link():
+    data = await request.get_json()
+    movie_id = data['movie_id']
+    async with aiohttp.ClientSession() as session:
+        # Construct the URL
+        query = f"{BASE_URL}/movie/{movie_id}/watch/providers?{API}"
+        # Make the API call
+        data = await get_data_async(session, query)
+        # Find the trailer ID
+        return data['results']['US']['link']
+
+
 def get_recommendations(title, data, indices, cosine_sim):
     try:
-        f = time.process_time()
         # Find the closest matching title in the data
         title = process.extractOne(title, data['Title'])[0]
         idx = indices[title]
@@ -306,8 +318,6 @@ def get_recommendations(title, data, indices, cosine_sim):
         # Return the top MAX_MOVIES most similar movies
         movies = list(data['Title'].iloc[movie_indices])
         movies[0] = title
-        s = time.process_time()
-        print(f'Recommendation {s - f}')
         return movies
     except ValueError:
         return None
@@ -347,7 +357,6 @@ async def recommend_movies():
         if banner_movie and 'results' in banner_movie and banner_movie['results']:
             movies[0] = banner_movie
         s = time.process_time()
-        print(f'Total {s - f}')
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,

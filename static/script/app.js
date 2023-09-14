@@ -111,6 +111,7 @@ function removeFromList(id, button) {
 
 async function getYoutubeTrailerKey(movie_id) {
     let trailer_id = null;
+    console.log(movie_id)
     try {
         const response = await fetch('/get_trailer_id', {
             method: 'POST',
@@ -148,6 +149,25 @@ async function getImdbID(movie_id) {
 }
 
 
+async function getMovieStreaming(movie_id) {
+    let link = '';
+    try {
+        const response = await fetch('/get_streaming_link', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({movie_id: movie_id})
+        });
+        link = await response.text();
+    } catch (error) {
+        console.error(error);
+    }
+    window.open(link, '_blank');
+}
+
+
+
 // changes the movie in the banner to a new movie, is called when a movie poster is pressed
 function changeMovie(movie) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -172,7 +192,8 @@ async function requestBanner() {
     const banner_description = document.getElementById("banner_description");
     const banner_List = document.querySelector('#banner_button_list');
     const banner_play = document.querySelector('#banner_play');
-    banner_play.onclick = launchMoviePlayer
+    const banner_stream = document.querySelector('#banner_stream');
+    banner_play.onclick = launchMoviePlayer;
     banner.style.backgroundImage = "url(" + img_url + bannerMovie.backdrop_path + ")";
     banner_description.innerText = truncateString(bannerMovie.overview, 600);
     banner_title.innerText = bannerMovie.title;
@@ -180,6 +201,9 @@ async function requestBanner() {
     banner_List.onclick = (event) => {
         const clickedButton = event.target;
         addToList(bannerMovie.id, clickedButton);
+    };
+    banner_stream.onclick = (event) => {
+        getMovieStreaming(bannerMovie.id);
     };
     try {
         const response = await fetch('/get_movie_ids_session');
