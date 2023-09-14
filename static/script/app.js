@@ -163,7 +163,7 @@ async function getMovieStreaming(movie_id) {
     } catch (error) {
         console.error(error);
     }
-    window.open(link, '_blank');
+    window.open(link);
 }
 
 
