@@ -127,10 +127,18 @@ d3.csv('/static/movieNames.csv').then(data => {
 })
 
 const loadingOverlay = document.getElementById('loading');
+
+document.querySelector('form.search').addEventListener('submit', function(event) {
+    event.preventDefault();
+    loadingOverlay.style.display = 'flex';
+    document.querySelector('form.search').submit();
+    console.log('called')
+});
 document.querySelector('input[name="movie"]').addEventListener('keypress', function (event) {
     if (event.keyCode === 13) {
         event.preventDefault();
         loadingOverlay.style.display = 'flex';
         document.querySelector('form.search').submit();
+        console.log('called')
     }
 });

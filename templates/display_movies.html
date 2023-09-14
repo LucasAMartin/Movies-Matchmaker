@@ -17,6 +17,8 @@
         let actorMovies = {{ actorMovies|tojson }};
     </script>
     <script src="{{ url_for('static',filename='script/app.js') }}" defer></script>
+    <script src="https://d3js.org/d3.v7.min.js" defer></script>
+    <script src="{{ url_for('static',filename='script/autocomplete.js') }}" defer></script>
 </head>
 <body class="preload">
 
