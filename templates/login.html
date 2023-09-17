@@ -126,10 +126,22 @@
 </body>
 </html>
 <script>
-    // Check if invalid_credentials is true
-    {% if invalid_credentials %}
+    // Check if invalid_password is true
+    {% if invalid_username %}
         document.getElementById('errorMessage').style.display = 'inline';
-        document.getElementById('errorMessage').textContent = 'Invalid Credentials';
+        document.getElementById('errorMessage').textContent = 'User not found';
+    {% endif %}
+    // Check if invalid_password is true
+    {% if invalid_password %}
+        document.getElementById('errorMessage').style.display = 'inline';
+        document.getElementById('errorMessage').textContent = 'Incorrect Password';
+    {% endif %}
+    // Check if username_invalid is true
+    {% if username_invalid %}
+        loginForm.style.display = 'none';
+        createAccountForm.style.display = 'block';
+        document.querySelector('#errorMessage.createAccount').style.display = 'inline';
+        document.querySelector('#errorMessage.createAccount').textContent = 'Username is invalid';
     {% endif %}
     // Check if username_taken is true
     {% if username_taken %}

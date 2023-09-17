@@ -159,7 +159,9 @@ async def login():
                     return redirect(previous_page)
                 else:
                     return redirect('/')
-        return await render_template('login.html', invalid_credentials=True)
+            else:
+                return await render_template('login.html', invalid_password=True)
+        return await render_template('login.html', invalid_username=True)
     else:
         # Store the URL of the page the user was on before logging in
         session['previous_page'] = request.referrer or '/'
@@ -187,6 +189,9 @@ async def create_account():
     if request.method == 'POST':
         form = await request.form
         username = form['username'].lower()
+        print(username)
+        if len(username) == 0:
+            return await render_template('login.html', username_invalid=True)
         password = form['password']
         confirm_password = form['confirm_password']
         remember = form.get('remember') == 'on'
@@ -341,6 +346,9 @@ async def recommend_movies():
             movies[0] = choice
         else:
             movies = get_recommendations(choice, movie_data, indices, cosine_sim)
+        if movies is None:
+            movies = await get_trending_info_async(session)
+            movies[0] = choice
         movies = await get_movie_info_async(session, movies)
         if len(movies[0]['results']) == 0:
             movies[0] = movies[1]
