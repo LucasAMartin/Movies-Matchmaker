@@ -133,7 +133,12 @@ async def startup():
 
 @app.route("/")
 async def home():
-    return await render_template('main_page.html')
+    # Check the 'Host' header in the request
+    if request.headers.get('Host') == 'movies-matchmaker.onrender.com':
+        # Redirect to the custom domain
+        return redirect('https://moviesmatchmaker.com', code=301)
+    else:
+        return await render_template('main_page.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
