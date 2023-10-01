@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movies Matchmaker</title>
     <link rel="stylesheet" type="text/css" href="../static/styles/main_page.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="/static/manifest.json">
+    <link rel="canonical" href="https://moviesmatchmaker.com/" />
     <meta name="description"
           content="Find your perfect movie match with Movies Matchmaker. Our app offers custom recommendations, an intuitive search bar, and a modern display. Keep track of your favorites and access detailed information about movies.">
+    <!--Social Media Display-->
+    <meta property="og:title" content="Movies Matchmaker" />
+    <meta
+      property="og:description"
+      content="Find your perfect movie match with Movies Matchmaker. Our app offers custom recommendations, an intuitive search bar, and a modern display. Keep track of your favorites and access detailed information about movies."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://moviesmatchmaker.com/" />
+    <meta property="og:image" content="static/img/icon.png" />
+    <meta property="og:image:secure_url" content="../static/img/icon.png" />
     <link rel="apple-touch-icon" sizes="1024x1024" href="../static/img/icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../static/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png">
@@ -90,7 +103,7 @@
 
 <!-- search section -->
 <section class="title">
-    <h1 class="mainText">Endless personalized movie recommendations at your fingertips</h1>
+    <h1 class="mainText">Personalized movie recommendations at your fingertips</h1>
     <p id="mainTextExtra">Ready to start? Just enter your favorite movie.</p>
     <form class="search" autocomplete="off" action="{{ url_for('recommend_movies') }}">
         <input type="text" name="movie" list="movies" onsubmit="showLoadingOverlay()" placeholder="Search here..." required>
