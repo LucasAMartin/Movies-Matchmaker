@@ -368,6 +368,7 @@ async def recommend_movies():
         if banner_movie and 'results' in banner_movie and banner_movie['results']:
             movies[0] = banner_movie
         s = time.process_time()
+        print(s-f)
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,

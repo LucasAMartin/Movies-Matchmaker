@@ -90,8 +90,8 @@
 
 <!-- search section -->
 <section class="title">
-    <h1 class="mainText"> Can't Decide? Enter a great movie and let us do the work!</h1>
-    <p id="mainTextExtra"> Get recommendations based on your favorite, or just search any movie</p>
+    <h1 class="mainText">Endless personalized movie recommendations at your fingertips</h1>
+    <p id="mainTextExtra">Ready to start? Just enter your favorite movie.</p>
     <form class="search" autocomplete="off" action="{{ url_for('recommend_movies') }}">
         <input type="text" name="movie" list="movies" onsubmit="showLoadingOverlay()" placeholder="Search here..." required>
         <button type="submit" id="searchButton" name="action" value="search">
