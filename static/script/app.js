@@ -1,3 +1,5 @@
+// JS FOR THE MAIN MOVIE DISPLAY PAGE
+
 // img url
 const img_url = "https://image.tmdb.org/t/p/original";
 
@@ -43,25 +45,24 @@ lazyLoadInstance.observe();
 
 // main functions, displays a banner and 3 rows
 requestBanner();
-
 let genre1 = genreIdToName[bannerMovie.genre_ids[0]];
 let genre2 = genreIdToName[bannerMovie.genre_ids[1]];
 
+// In case these genres are undefined
 if (typeof genre1 === "undefined") {
     genre1 = "Adventure";
 }
-
 if (typeof genre2 === "undefined") {
     genre2 = "Adventure";
 }
 
-
+// Add the rows of movies to the page
 addRow(movies, "Top Recommendations");
 addRow(genre1Movies, `Top ${genre1} Movies`);
 addRow(genre2Movies, `Top ${genre2} Movies`);
 addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
-
+// Adds movies to user's list
 function addToList(id, button) {
     fetch('/add_list', {
         method: 'POST',
@@ -85,6 +86,7 @@ function addToList(id, button) {
         .catch(error => console.log(error))
 }
 
+// Removes movie from user's list
 function removeFromList(id, button) {
     fetch('/remove_list', {
         method: 'POST',
@@ -108,7 +110,8 @@ function removeFromList(id, button) {
         .catch(error => console.log(error))
 }
 
-
+// Get the link for the youtube trailer
+// Used in the popup modal for autoplay
 async function getYoutubeTrailerKey(movie_id) {
     let trailer_id = null;
     console.log(movie_id)
@@ -147,8 +150,8 @@ async function getImdbID(movie_id) {
     }
     return imdb_id;
 }
-
-
+s
+// Gets the link to the page that shows where users can stream movies
 async function getMovieStreaming(movie_id) {
     let link = '';
     try {
@@ -168,7 +171,7 @@ async function getMovieStreaming(movie_id) {
 
 
 
-// changes the movie in the banner to a new movie, is called when a movie poster is pressed
+// changes the movie in the banner to a new movie, is called when a movie poster is pressed and the expand button is pressed
 function changeMovie(movie) {
     const urlParams = new URLSearchParams(window.location.search);
     const cleanedMovieName = movie.replace(/[^a-zA-Z0-9 ]/g, "");
@@ -299,6 +302,7 @@ function addRow(movieList, category) {
     lazyLoadInstance.observe()
 }
 
+// Opens the modal for a movie, called when a movie is pressed
 function openModal() {
     const modal = document.querySelector('#modal');
     const overlay = document.querySelector('#overlay');
@@ -354,6 +358,7 @@ function openModal() {
     overlay.classList.add('active');
 }
 
+// Close the modal by pressing anywhere outside it
 function closeModal() {
     const modal = document.querySelector('#modal');
     const overlay = document.querySelector('#overlay');
@@ -376,6 +381,8 @@ function closeModal() {
     }
 }
 
+
+// Plays the youtube trailer in the background of the modal
 async function displayTrailer(movie_id, modalImg) {
     const trailer_id = await getYoutubeTrailerKey(movie_id);
     // Check if a YouTube link was provided
@@ -401,6 +408,7 @@ async function displayTrailer(movie_id, modalImg) {
     }
 }
 
+// Launches the movie trailer in a fulscreen iframe when trailer is pressed
 async function launchMoviePlayer(qualifiedName, value) {
     const trailer_id = await getYoutubeTrailerKey(bannerMovie.id);
     // Check if a YouTube link was provided

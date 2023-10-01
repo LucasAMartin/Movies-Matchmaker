@@ -1,3 +1,5 @@
+// JS FOR THE MY LIST PAGE
+
 const img_url = "https://image.tmdb.org/t/p/original";
 
 // Create an instance of the Lozad.js library

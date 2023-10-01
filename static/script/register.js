@@ -1,3 +1,6 @@
+// USED FOR PWA SUPPORT, SO APP CAN BE INSTALLED LOCALLY
+
+
 if("serviceWorker" in navigator){
     navigator.serviceWorker.register("/static/script/service_worker.js").then(registration=>{
       console.log("SW Registered!");

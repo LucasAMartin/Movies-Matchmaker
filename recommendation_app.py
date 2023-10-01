@@ -258,8 +258,6 @@ async def get_trailer_id():
     data = await request.get_json()
     movie_id = data['movie_id']
 
-    # Use the get_trailer_id_async function to retrieve the trailer ID
-
     async def get_trailer_id_async():
         async with aiohttp.ClientSession() as session:
             # Construct the URL

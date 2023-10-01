@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+PYTHON SCRIPT THAT SCRAPES IMDB.COM FOR THE TOP 5000 MOVIES, INDEXES IMPORTANT INFORMATION ABOUT THEM
+
 Based on webscraping/recommendation algorithm from Chandramouli on medium
 Made modifications for improved error handling and implementation in my app
 """

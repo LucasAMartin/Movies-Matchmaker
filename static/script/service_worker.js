@@ -1,3 +1,5 @@
+// USED FOR PWA SUPPORT, SO APP CAN BE INSTALLED LOCALLY
+
 // Cached core static resources
 self.addEventListener("install", e => {
   e.waitUntil(

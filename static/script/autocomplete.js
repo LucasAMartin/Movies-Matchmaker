@@ -1,3 +1,5 @@
+// JS FOR THE AUTOCOMPLETE USED IN THE SEARCH BAR
+
 d3.csv('/static/movieNames.csv').then(data => {
     // Add a unique ID to each row
     data.forEach((row, index) => {

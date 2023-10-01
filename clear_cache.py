@@ -1,3 +1,5 @@
+# PYTHON SCRIPT CLEARS THE CACHE WHEN RUN, TAKES AGE OF ELEMENTS AS INPUT TO DELETE
+
 import sys
 from cache import clear_cache
 

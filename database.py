@@ -1,3 +1,6 @@
+# PYTHON FILE THAT DEFINES THE DB FOR USER INFO AND CONTROLS THE DB METHODS
+
+
 import sqlite3
 import bcrypt
 
