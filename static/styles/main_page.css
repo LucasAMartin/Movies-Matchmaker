@@ -355,16 +355,6 @@ button:hover {
     }
 }
 
-@keyframes extend {
-    0%, 80% {
-        height: 20px;
-    }
-
-    40% {
-        height: 60px;
-    }
-}
-
 
 @media only screen and (max-width: 450px) {
     #loading .logo {
@@ -390,7 +380,6 @@ button:hover {
 }
 
 
-/* Loading courtesy of https://codepen.io/alimirayman/pen/XKOZOL*/
 #loading {
     z-index: 9999;
     top: 0;
@@ -426,26 +415,31 @@ button:hover {
 #loading #load span:nth-child(1) {
     background: #8B0000;
     animation: extend 1s ease-in-out infinite;
+    -webkit-animation: extend 1s ease-in-out infinite;
 }
 
 #loading #load span:nth-child(2) {
     background: #B22222;
     animation: extend 1s ease-in-out 0.15s infinite;
+    -webkit-animation: extend 1s ease-in-out 0.15s infinite;
 }
 
 #loading #load span:nth-child(3) {
     background: #DC143C;
     animation: extend 1s ease-in-out 0.30s infinite;
+    -webkit-animation: extend 1s ease-in-out 0.30s infinite;
 }
 
 #loading #load span:nth-child(4) {
     background: #FF6347;
     animation: extend 1s ease-in-out 0.45s infinite;
+    -webkit-animation: extend 1s ease-in-out 0.45s infinite;
 }
 
 #loading #load span:nth-child(5) {
     background: #FFB6C1;
     animation: extend 1s ease-in-out .60s infinite;
+    -webkit-animation: extend 1s ease-in-out .60s infinite;
 }
 
 #loading .logo {
@@ -456,6 +450,24 @@ button:hover {
     color: #ecf0f1;
 }
 
+@keyframes extend {
+    0%, 80% {
+        height: 20px;
+    }
 
+    40% {
+        height: 60px;
+    }
+}
+
+@-webkit-keyframes extend {
+    0%, 80% {
+        height: 20px;
+    }
+
+    40% {
+        height: 60px;
+    }
+}
 
 
