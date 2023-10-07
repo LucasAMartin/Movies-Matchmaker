@@ -150,7 +150,7 @@ async function getImdbID(movie_id) {
     }
     return imdb_id;
 }
-s
+
 // Gets the link to the page that shows where users can stream movies
 async function getMovieStreaming(movie_id) {
     let link = '';
