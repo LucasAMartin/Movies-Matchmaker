@@ -15,6 +15,7 @@
         let genre1Movies = {{ genre1|tojson }};
         let genre2Movies = {{ genre2|tojson }};
         let actorMovies = {{ actorMovies|tojson }};
+        let trendingMovies = {{ trendingMovies | safe }};
     </script>
     <script src="{{ url_for('static',filename='script/app.js') }}" defer></script>
     <script src="https://d3js.org/d3.v7.min.js" defer></script>
@@ -120,7 +121,7 @@
     <div id="banner_contents">
         <h1 id="banner_title"></h1>
         <div id="banner_buttons">
-            <button id="banner_stream" class="stream">Stream</button>
+            <button id="banner_stream" class="stream">Where To Stream</button>
             <button id="banner_play" class="play">Trailer</button>
             <button id="banner_button_list">Add to List</button>
         </div>

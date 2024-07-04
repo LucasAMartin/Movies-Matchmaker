@@ -57,10 +57,13 @@ if (typeof genre2 === "undefined") {
 }
 
 // Add the rows of movies to the page
-addRow(movies, "Top Recommendations");
+if (!trendingMovies) {
+    addRow(actorMovies, `Movies With ${actorMovies[0]}`);
+} else {
+    addRow(movies, "Trending Movies");
+}
 addRow(genre1Movies, `Top ${genre1} Movies`);
 addRow(genre2Movies, `Top ${genre2} Movies`);
-addRow(actorMovies, `Movies With ${actorMovies[0]}`);
 
 // Adds movies to user's list
 function addToList(id, button) {
@@ -166,7 +169,7 @@ async function getMovieStreaming(movie_id) {
     } catch (error) {
         console.error(error);
     }
-    window.location.href = link;
+    window.open(link, '_blank');
 }
 
 

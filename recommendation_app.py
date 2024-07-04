@@ -1,14 +1,9 @@
-import heapq
 import os
-import time
 from dotenv import load_dotenv
 from quart import Quart, request, render_template, jsonify, redirect, session
 import aiohttp
 import asyncio
 import platform
-import pickle
-import pandas as pd
-from fuzzywuzzy import process
 from quart_auth import QuartAuth
 from database import *
 from cache import *
@@ -30,11 +25,6 @@ BASE_URL = "https://api.themoviedb.org/3"
 # Do this to avoid a huge stack trace of errors
 if platform.system() == 'Windows':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
-# Load the pickled objects from the cos_similarity class
-movie_data = pickle.load(open('movie_data.pkl', 'rb'))
-cosine_sim = pickle.load(open('cosine_sim.pkl', 'rb'))
-indices = pd.Series(movie_data.index, index=movie_data['Title']).drop_duplicates()
 
 
 async def get_data_async(session, query):
@@ -165,8 +155,8 @@ async def login():
                 else:
                     return redirect('/')
             else:
-                return await render_template('login.html', invalid_password=True)
-        return await render_template('login.html', invalid_username=True)
+                return await render_template('login.html', invalid=True)
+        return await render_template('login.html', invalid=True)
     else:
         # Store the URL of the page the user was on before logging in
         session['previous_page'] = request.referrer or '/'
@@ -303,32 +293,21 @@ async def get_imdb_id():
 @app.route('/get_streaming_link', methods=['POST'])
 async def get_streaming_link():
     data = await request.get_json()
+    print(data)
     movie_id = data['movie_id']
     async with aiohttp.ClientSession() as session:
         # Construct the URL
         query = f"{BASE_URL}/movie/{movie_id}/watch/providers?{API}"
+        print(query)
         # Make the API call
         data = await get_data_async(session, query)
-        # Find the trailer ID
-        return data['results']['US']['link']
-
-
-def get_recommendations(title, data, indices, cosine_sim):
-    try:
-        # Find the closest matching title in the data
-        title = process.extractOne(title, data['Title'])[0]
-        idx = indices[title]
-        # Get the pairwise similarity scores of all movies with that movie
-        sim_scores = list(enumerate(cosine_sim[idx]))
-        # Find the top MAX_MOVIES most similar movies using a heap
-        most_similar = heapq.nlargest(MAX_MOVIES, sim_scores, key=lambda x: x[1])
-        movie_indices = [i[0] for i in most_similar]
-        # Return the top MAX_MOVIES most similar movies
-        movies = list(data['Title'].iloc[movie_indices])
-        movies[0] = title
-        return movies
-    except ValueError:
-        return None
+        print(data)
+        # Try to find the trailer ID
+        try:
+            return data['results']['US']['link']
+        except KeyError:
+            # If 'US' key does not exist, return the default link
+            return f"https://www.themoviedb.org/movie/{movie_id}/watch?locale=US"
 
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -340,18 +319,14 @@ async def recommend_movies():
     choice = request.args.get('movie')
     # If no user input, get a trending movie as the default choice
     async with aiohttp.ClientSession() as session:
-        f = time.process_time()
         if choice is None:
             movies = await get_trending_info_async(session)
             choice = movies[0]
-        elif request.args.get('action') == 'search':
-            movies = await get_trending_info_async(session)
-            movies[0] = choice
+            trending = True
         else:
-            movies = get_recommendations(choice, movie_data, indices, cosine_sim)
-        if movies is None:
             movies = await get_trending_info_async(session)
             movies[0] = choice
+            trending = False
         movies = await get_movie_info_async(session, movies)
         if len(movies[0]['results']) == 0:
             movies[0] = movies[1]
@@ -367,12 +342,11 @@ async def recommend_movies():
         lead_actor_movies_info.insert(0, lead_actor)
         if banner_movie and 'results' in banner_movie and banner_movie['results']:
             movies[0] = banner_movie
-        s = time.process_time()
-        print(s-f)
         return await render_template('display_movies.html', movies=movies,
                                      genre1=genre_1_movies,
                                      genre2=genre_2_movies,
-                                     actorMovies=lead_actor_movies_info)
+                                     actorMovies=lead_actor_movies_info,
+                                     trendingMovies=json.dumps(trending))
 
 
 if __name__ == "__main__":

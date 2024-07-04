@@ -127,14 +127,9 @@
 </html>
 <script>
     // Check if invalid_password is true
-    {% if invalid_username %}
+    {% if invalid %}
         document.getElementById('errorMessage').style.display = 'inline';
-        document.getElementById('errorMessage').textContent = 'User not found';
-    {% endif %}
-    // Check if invalid_password is true
-    {% if invalid_password %}
-        document.getElementById('errorMessage').style.display = 'inline';
-        document.getElementById('errorMessage').textContent = 'Incorrect Password';
+        document.getElementById('errorMessage').textContent = 'Invalid Login';
     {% endif %}
     // Check if username_invalid is true
     {% if username_invalid %}
