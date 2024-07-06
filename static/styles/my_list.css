@@ -32,7 +32,6 @@
 
 .row_title_list {
     font-size: 3rem;
-    font-family: 'Bebas Neue', sans-serif;
 }
 
 .row_posters_list {
@@ -142,7 +141,7 @@
     background: rgba(20, 20, 20);
     list-style-type: none;
     -webkit-font-smoothing: antialiased;
-    transform-origin: 100% 0%;
+    transform-origin: 100% 0;
     transform: translate(100%, 0);
     transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0);
 }
@@ -151,7 +150,6 @@
 #menu li {
     padding: 10px;
     font-size: 22px;
-    font-family: 'Lato', sans-serif;
     margin-bottom: 15px;
     text-align: center;
 }

@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&family=Bebas+Neue&display=swap');
 
 * {
-    font-family: 'Lato', sans-serif;
     box-sizing: border-box;
     color: white;
+    font-family: Roboto, sans-serif;
 }
 
 body, html {
@@ -265,7 +265,6 @@ button:hover {
 #menu li {
     padding: 10px;
     font-size: 22px;
-    font-family: 'Lato', sans-serif;
     margin-bottom: 15px;
     text-align: center;
 }
@@ -445,7 +444,6 @@ button:hover {
 #loading .logo {
     display: block;
     font-size: 30px;
-    font-family: 'Bebas Neue', sans-serif;
     margin-top: 1rem;
     color: #ecf0f1;
 }
